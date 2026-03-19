@@ -1,0 +1,834 @@
+@import 'tailwindcss';
+@import 'tw-animate-css';
+
+@custom-variant dark (&:is(.dark *));
+
+:root {
+  --background: oklch(0.96 0.01 70);
+  --foreground: oklch(0.2 0 0);
+  --card: oklch(0.98 0 0);
+  --card-foreground: oklch(0.2 0 0);
+  --popover: oklch(0.98 0 0);
+  --popover-foreground: oklch(0.2 0 0);
+  --primary: oklch(0.6 0.18 60);
+  --primary-foreground: oklch(1 0 0);
+  --secondary: oklch(0.92 0.01 70);
+  --secondary-foreground: oklch(0.2 0 0);
+  --muted: oklch(0.85 0.01 70);
+  --muted-foreground: oklch(0.45 0 0);
+  --accent: oklch(0.6 0.18 60);
+  --accent-foreground: oklch(1 0 0);
+  --destructive: oklch(0.577 0.245 27.325);
+  --destructive-foreground: oklch(0.577 0.245 27.325);
+  --border: oklch(0.88 0.01 70);
+  --input: oklch(0.92 0.01 70);
+  --ring: oklch(0.6 0.18 60);
+  --chart-1: oklch(0.6 0.18 60);
+  --chart-2: oklch(0.5 0.15 45);
+  --chart-3: oklch(0.7 0.12 80);
+  --chart-4: oklch(0.45 0.1 40);
+  --chart-5: oklch(0.65 0.14 65);
+  --radius: 0.5rem;
+  --sidebar: oklch(0.96 0.01 70);
+  --sidebar-foreground: oklch(0.2 0 0);
+  --sidebar-primary: oklch(0.6 0.18 60);
+  --sidebar-primary-foreground: oklch(1 0 0);
+  --sidebar-accent: oklch(0.6 0.18 60);
+  --sidebar-accent-foreground: oklch(1 0 0);
+  --sidebar-border: oklch(0.88 0.01 70);
+  --sidebar-ring: oklch(0.6 0.18 60);
+}
+
+.dark {
+  --background: oklch(0.145 0 0);
+  --foreground: oklch(0.985 0 0);
+  --card: oklch(0.145 0 0);
+  --card-foreground: oklch(0.985 0 0);
+  --popover: oklch(0.145 0 0);
+  --popover-foreground: oklch(0.985 0 0);
+  --primary: oklch(0.985 0 0);
+  --primary-foreground: oklch(0.205 0 0);
+  --secondary: oklch(0.269 0 0);
+  --secondary-foreground: oklch(0.985 0 0);
+  --muted: oklch(0.269 0 0);
+  --muted-foreground: oklch(0.708 0 0);
+  --accent: oklch(0.269 0 0);
+  --accent-foreground: oklch(0.985 0 0);
+  --destructive: oklch(0.396 0.141 25.723);
+  --destructive-foreground: oklch(0.637 0.237 25.331);
+  --border: oklch(0.269 0 0);
+  --input: oklch(0.269 0 0);
+  --ring: oklch(0.439 0 0);
+  --chart-1: oklch(0.488 0.243 264.376);
+  --chart-2: oklch(0.696 0.17 162.48);
+  --chart-3: oklch(0.769 0.188 70.08);
+  --chart-4: oklch(0.627 0.265 303.9);
+  --chart-5: oklch(0.645 0.246 16.439);
+  --sidebar: oklch(0.205 0 0);
+  --sidebar-foreground: oklch(0.985 0 0);
+  --sidebar-primary: oklch(0.488 0.243 264.376);
+  --sidebar-primary-foreground: oklch(0.985 0 0);
+  --sidebar-accent: oklch(0.269 0 0);
+  --sidebar-accent-foreground: oklch(0.985 0 0);
+  --sidebar-border: oklch(0.269 0 0);
+  --sidebar-ring: oklch(0.439 0 0);
+}
+
+@theme inline {
+  --font-sans: var(--font-geist), ui-sans-serif, system-ui, sans-serif;
+  --font-serif: var(--font-script), ui-serif, Georgia, serif;
+  --font-mono: ui-monospace, monospace;
+  --color-background: var(--background);
+  --color-foreground: var(--foreground);
+  --color-card: var(--card);
+  --color-card-foreground: var(--card-foreground);
+  --color-popover: var(--popover);
+  --color-popover-foreground: var(--popover-foreground);
+  --color-primary: var(--primary);
+  --color-primary-foreground: var(--primary-foreground);
+  --color-secondary: var(--secondary);
+  --color-secondary-foreground: var(--secondary-foreground);
+  --color-muted: var(--muted);
+  --color-muted-foreground: var(--muted-foreground);
+  --color-accent: var(--accent);
+  --color-accent-foreground: var(--accent-foreground);
+  --color-destructive: var(--destructive);
+  --color-destructive-foreground: var(--destructive-foreground);
+  --color-border: var(--border);
+  --color-input: var(--input);
+  --color-ring: var(--ring);
+  --color-chart-1: var(--chart-1);
+  --color-chart-2: var(--chart-2);
+  --color-chart-3: var(--chart-3);
+  --color-chart-4: var(--chart-4);
+  --color-chart-5: var(--chart-5);
+  --radius-sm: calc(var(--radius) - 4px);
+  --radius-md: calc(var(--radius) - 2px);
+  --radius-lg: var(--radius);
+  --radius-xl: calc(var(--radius) + 4px);
+  --color-sidebar: var(--sidebar);
+  --color-sidebar-foreground: var(--sidebar-foreground);
+  --color-sidebar-primary: var(--sidebar-primary);
+  --color-sidebar-primary-foreground: var(--sidebar-primary-foreground);
+  --color-sidebar-accent: var(--sidebar-accent);
+  --color-sidebar-accent-foreground: var(--sidebar-accent-foreground);
+  --color-sidebar-border: var(--sidebar-border);
+  --color-sidebar-ring: var(--sidebar-ring);
+}
+
+@layer base {
+  * {
+    @apply border-border;
+  }
+  html {
+    scroll-behavior: smooth;
+  }
+  body {
+    @apply bg-red-50 text-red-900;
+  }
+  /* Safe area cho mobile (notch, home indicator) */
+  .safe-area-inset-top {
+    padding-top: env(safe-area-inset-top);
+  }
+
+  /* Theme màu nền - đồng bộ 1 màu toàn trang */
+  [data-theme="red"] .theme-bg,
+  [data-theme="red"] [data-theme-section],
+  [data-theme="red"] .section-end,
+  [data-theme="red"] .theme-cover,
+  [data-theme="red"] .card-wedding,
+  [data-theme="red"] .theme-card,
+  [data-theme="red"] .border-wedding-section {
+    background-color: #fca5a5 !important;
+  }
+  [data-theme="green"] .theme-bg,
+  [data-theme="green"] [data-theme-section],
+  [data-theme="green"] .section-end,
+  [data-theme="green"] .theme-cover,
+  [data-theme="green"] .card-wedding,
+  [data-theme="green"] .theme-card,
+  [data-theme="green"] .border-wedding-section {
+    background-color: #bbf7d0 !important;
+  }
+  [data-theme="pink"] .theme-bg,
+  [data-theme="pink"] [data-theme-section],
+  [data-theme="pink"] .section-end,
+  [data-theme="pink"] .theme-cover,
+  [data-theme="pink"] .card-wedding,
+  [data-theme="pink"] .theme-card,
+  [data-theme="pink"] .border-wedding-section {
+    background-color: #fecdd3 !important;
+  }
+  [data-theme="white"] .theme-bg,
+  [data-theme="white"] [data-theme-section],
+  [data-theme="white"] .section-end,
+  [data-theme="white"] .theme-cover,
+  [data-theme="white"] .card-wedding,
+  [data-theme="white"] .theme-card,
+  [data-theme="white"] .border-wedding-section {
+    background-color: #f5f5f5 !important;
+  }
+  [data-theme="tho"] .theme-bg,
+  [data-theme="tho"] [data-theme-section],
+  [data-theme="tho"] .section-end,
+  [data-theme="tho"] .theme-cover,
+  [data-theme="tho"] .card-wedding,
+  [data-theme="tho"] .theme-card,
+  [data-theme="tho"] .border-wedding-section {
+    background-color: #fde68a !important;
+  }
+  [data-theme="moc"] .theme-bg,
+  [data-theme="moc"] [data-theme-section],
+  [data-theme="moc"] .section-end,
+  [data-theme="moc"] .theme-cover,
+  [data-theme="moc"] .card-wedding,
+  [data-theme="moc"] .theme-card,
+  [data-theme="moc"] .border-wedding-section {
+    background-color: #86efac !important;
+  }
+  /* Đỏ thẫm #4a0101 - mặc định, đồng bộ toàn trang */
+  [data-theme="bordeaux"] .theme-bg,
+  [data-theme="bordeaux"] [data-theme-section],
+  [data-theme="bordeaux"] .section-end,
+  [data-theme="bordeaux"] .theme-cover,
+  [data-theme="bordeaux"] .border-wedding-section {
+    background-color: #4a0101 !important;
+  }
+  [data-theme="bordeaux"] .card-wedding,
+  [data-theme="bordeaux"] .theme-card {
+    background-color: #5a0d0d !important;
+  }
+  [data-theme="bordeaux"] .theme-bg,
+  [data-theme="bordeaux"] [data-theme-section] {
+    color: #fecaca;
+  }
+  [data-theme="bordeaux"] [data-theme-section] .text-red-900 { color: #fef2f2 !important; }
+  [data-theme="bordeaux"] [data-theme-section] .text-red-800 { color: #fee2e2 !important; }
+  [data-theme="bordeaux"] [data-theme-section] .text-red-700 { color: #fecaca !important; }
+  [data-theme="bordeaux"] [data-theme-section] .text-red-600 { color: #fca5a5 !important; }
+  [data-theme="bordeaux"] [data-theme-section] .text-red-500 { color: #f87171 !important; }
+  [data-theme="bordeaux"] [data-theme-section="end"] .text-red-600 { color: #fca5a5 !important; }
+  [data-theme="bordeaux"] [data-theme-section="end"] .text-red-900 { color: #fef2f2 !important; }
+  [data-theme="bordeaux"] [data-theme-section="end"] .gift-icon-wrap {
+    background-color: rgba(212, 165, 116, 0.4) !important;
+  }
+  [data-theme="bordeaux"] [data-theme-section="end"] .gift-icon-wrap .text-red-600 {
+    color: #5e0202 !important;
+  }
+  /* Card màu đồng bộ theme bordeaux */
+  [data-theme="bordeaux"] .card-wedding,
+  [data-theme="bordeaux"] .theme-card {
+    background-color: #5a0d0d !important;
+  }
+  /* QR card đồng bộ theme */
+  [data-theme="red"] .theme-qr-card { background-color: #f87171 !important; }
+  [data-theme="green"] .theme-qr-card { background-color: #86efac !important; }
+  [data-theme="pink"] .theme-qr-card { background-color: #fda4af !important; }
+  [data-theme="white"] .theme-qr-card { background-color: #e5e5e5 !important; }
+  [data-theme="tho"] .theme-qr-card { background-color: #fcd34d !important; }
+  [data-theme="moc"] .theme-qr-card { background-color: #4ade80 !important; }
+  [data-theme="bordeaux"] .theme-qr-card { background-color: #5a0d0d !important; }
+  [data-theme]:not([data-theme="bordeaux"]) .theme-qr-card h3,
+  [data-theme]:not([data-theme="bordeaux"]) .theme-qr-card p { color: #1f2937 !important; }
+  [data-theme="bordeaux"] .card-wedding .text-red-900,
+  [data-theme="bordeaux"] .theme-card .text-red-900 { color: #fef2f2 !important; }
+  [data-theme="bordeaux"] .card-wedding .text-red-800,
+  [data-theme="bordeaux"] .theme-card .text-red-800 { color: #fee2e2 !important; }
+  [data-theme="bordeaux"] .card-wedding .text-red-700,
+  [data-theme="bordeaux"] .theme-card .text-red-700 { color: #fecaca !important; }
+  [data-theme="bordeaux"] .card-wedding .text-red-600,
+  [data-theme="bordeaux"] .theme-card .text-red-600 { color: #fca5a5 !important; }
+  [data-theme="bordeaux"] .card-wedding .text-red-500,
+  [data-theme="bordeaux"] .theme-card .text-red-500 { color: #f87171 !important; }
+  [data-theme="bordeaux"] .card-wedding .bg-red-100,
+  [data-theme="bordeaux"] .theme-card .bg-red-100 { background-color: rgba(212, 165, 116, 0.25) !important; }
+  [data-theme="bordeaux"] .theme-card input,
+  [data-theme="bordeaux"] .theme-card textarea {
+    background-color: rgba(94, 2, 2, 0.6) !important;
+    border-color: rgba(212, 165, 116, 0.5) !important;
+    color: #fef2f2 !important;
+  }
+  [data-theme="bordeaux"] .theme-card input::placeholder,
+  [data-theme="bordeaux"] .theme-card textarea::placeholder {
+    color: rgba(254, 202, 202, 0.6) !important;
+  }
+  [data-theme="bordeaux"] .theme-card label,
+  [data-theme="bordeaux"] .theme-card [class*="FieldLegend"],
+  [data-theme="bordeaux"] .theme-card .text-red-800 { color: #fee2e2 !important; }
+  [data-theme="bordeaux"] .theme-card .text-red-600.text-sm { color: #fca5a5 !important; }
+  [data-theme="bordeaux"] .add-to-calendar {
+    background-color: #b91c1c !important;
+  }
+  [data-theme="bordeaux"] .add-to-calendar:hover {
+    background-color: #dc2626 !important;
+  }
+  [data-theme="bordeaux"] .theme-footer-inner {
+    border-color: rgba(212, 165, 116, 0.7);
+    box-shadow: 0 0 0 1px rgba(255, 255, 255, 0.15) inset;
+  }
+  [data-theme="bordeaux"] .theme-footer-title {
+    color: #fef2f2 !important;
+  }
+  [data-theme="bordeaux"] .theme-footer-text {
+    color: #fecaca !important;
+  }
+  [data-theme="bordeaux"] .theme-footer-credit {
+    color: rgba(254, 202, 202, 0.7) !important;
+  }
+  [data-theme]:not([data-theme="bordeaux"]) .theme-footer-title {
+    color: #5a0d0d !important;
+  }
+  [data-theme]:not([data-theme="bordeaux"]) .theme-footer-text {
+    color: #5a0d0d !important;
+  }
+  [data-theme]:not([data-theme="bordeaux"]) .theme-footer-credit {
+    color: #9ca3af !important;
+  }
+
+  /* Theme Header - đồng bộ màu theo theme */
+  [data-theme="red"] .theme-header {
+    background-color: rgba(252, 165, 165, 0.95);
+    border-color: rgba(248, 113, 113, 0.8);
+  }
+  [data-theme="red"] .theme-header-brand,
+  [data-theme="red"] .theme-header-link {
+    color: #7f1d1d;
+  }
+  [data-theme="red"] .theme-header-link:hover {
+    color: #991b1b;
+  }
+  [data-theme="red"] .theme-header-menu-btn {
+    color: #b91c1c;
+  }
+  [data-theme="red"] .theme-header-menu-btn:hover {
+    background-color: rgba(254, 202, 202, 0.8);
+  }
+  [data-theme="red"] .theme-header-mobile {
+    background-color: #fecaca;
+    border-color: #fca5a5;
+  }
+  [data-theme="red"] .theme-header-mobile-link:hover {
+    background-color: #fca5a5;
+  }
+
+  [data-theme="green"] .theme-header {
+    background-color: rgba(187, 247, 208, 0.95);
+    border-color: rgba(134, 239, 172, 0.8);
+  }
+  [data-theme="green"] .theme-header-brand,
+  [data-theme="green"] .theme-header-link {
+    color: #14532d;
+  }
+  [data-theme="green"] .theme-header-link:hover {
+    color: #166534;
+  }
+  [data-theme="green"] .theme-header-menu-btn {
+    color: #15803d;
+  }
+  [data-theme="green"] .theme-header-menu-btn:hover {
+    background-color: rgba(187, 247, 208, 0.8);
+  }
+  [data-theme="green"] .theme-header-mobile {
+    background-color: #bbf7d0;
+    border-color: #86efac;
+  }
+  [data-theme="green"] .theme-header-mobile-link:hover {
+    background-color: #86efac;
+  }
+
+  [data-theme="pink"] .theme-header {
+    background-color: rgba(254, 205, 211, 0.95);
+    border-color: rgba(253, 164, 175, 0.8);
+  }
+  [data-theme="pink"] .theme-header-brand,
+  [data-theme="pink"] .theme-header-link {
+    color: #881337;
+  }
+  [data-theme="pink"] .theme-header-link:hover {
+    color: #9f1239;
+  }
+  [data-theme="pink"] .theme-header-menu-btn {
+    color: #be123c;
+  }
+  [data-theme="pink"] .theme-header-menu-btn:hover {
+    background-color: rgba(254, 205, 211, 0.8);
+  }
+  [data-theme="pink"] .theme-header-mobile {
+    background-color: #fecdd3;
+    border-color: #fda4af;
+  }
+  [data-theme="pink"] .theme-header-mobile-link:hover {
+    background-color: #fda4af;
+  }
+
+  [data-theme="white"] .theme-header {
+    background-color: rgba(245, 245, 245, 0.95);
+    border-color: rgba(229, 229, 229, 0.8);
+  }
+  [data-theme="white"] .theme-header-brand,
+  [data-theme="white"] .theme-header-link {
+    color: #171717;
+  }
+  [data-theme="white"] .theme-header-link:hover {
+    color: #404040;
+  }
+  [data-theme="white"] .theme-header-menu-btn {
+    color: #525252;
+  }
+  [data-theme="white"] .theme-header-menu-btn:hover {
+    background-color: rgba(229, 229, 229, 0.8);
+  }
+  [data-theme="white"] .theme-header-mobile {
+    background-color: #f5f5f5;
+    border-color: #e5e5e5;
+  }
+  [data-theme="white"] .theme-header-mobile-link:hover {
+    background-color: #e5e5e5;
+  }
+
+  [data-theme="tho"] .theme-header {
+    background: linear-gradient(135deg, rgba(253, 230, 138, 0.95) 0%, rgba(212, 165, 116, 0.95) 100%);
+    border-color: rgba(202, 138, 4, 0.6);
+  }
+  [data-theme="tho"] .theme-header-brand,
+  [data-theme="tho"] .theme-header-link {
+    color: #713f12;
+  }
+  [data-theme="tho"] .theme-header-link:hover {
+    color: #a16207;
+  }
+  [data-theme="tho"] .theme-header-menu-btn {
+    color: #a16207;
+  }
+  [data-theme="tho"] .theme-header-menu-btn:hover {
+    background-color: rgba(253, 230, 138, 0.8);
+  }
+  [data-theme="tho"] .theme-header-mobile {
+    background: linear-gradient(180deg, #fde68a 0%, #fcd34d 100%);
+    border-color: #ca8a04;
+  }
+  [data-theme="tho"] .theme-header-mobile-link:hover {
+    background-color: #fcd34d;
+  }
+
+  [data-theme="moc"] .theme-header {
+    background: linear-gradient(135deg, rgba(187, 247, 208, 0.95) 0%, rgba(74, 222, 128, 0.95) 100%);
+    border-color: rgba(34, 197, 94, 0.6);
+  }
+  [data-theme="moc"] .theme-header-brand,
+  [data-theme="moc"] .theme-header-link {
+    color: #14532d;
+  }
+  [data-theme="moc"] .theme-header-link:hover {
+    color: #166534;
+  }
+  [data-theme="moc"] .theme-header-menu-btn {
+    color: #15803d;
+  }
+  [data-theme="moc"] .theme-header-menu-btn:hover {
+    background-color: rgba(187, 247, 208, 0.8);
+  }
+  [data-theme="moc"] .theme-header-mobile {
+    background: linear-gradient(180deg, #bbf7d0 0%, #86efac 100%);
+    border-color: #22c55e;
+  }
+  [data-theme="moc"] .theme-header-mobile-link:hover {
+    background-color: #86efac;
+  }
+
+  [data-theme="bordeaux"] .theme-header {
+    background-color: rgba(74, 1, 1, 0.95);
+    border-color: rgba(212, 165, 116, 0.6);
+    border-bottom-width: 2px;
+  }
+  [data-theme="bordeaux"] .theme-header-brand,
+  [data-theme="bordeaux"] .theme-header-link {
+    color: #fef2f2;
+  }
+  [data-theme="bordeaux"] .theme-header-link:hover {
+    color: #ffffff;
+  }
+  [data-theme="bordeaux"] .theme-header-menu-btn {
+    color: #fecaca;
+  }
+  [data-theme="bordeaux"] .theme-header-menu-btn:hover {
+    background-color: rgba(122, 3, 3, 0.8);
+  }
+  [data-theme="bordeaux"] .theme-header-mobile {
+    background-color: #4a0101;
+    border-color: rgba(212, 165, 116, 0.5);
+  }
+  [data-theme="bordeaux"] .theme-header-mobile-link:hover {
+    background-color: #5e0202;
+  }
+
+  /* Theme Floating Actions - đồng bộ màu theo theme */
+  [data-theme="red"] .theme-floating-btn {
+    border-color: #fca5a5;
+    color: #b91c1c;
+  }
+  [data-theme="red"] .theme-floating-btn:hover {
+    color: #991b1b;
+  }
+  [data-theme="red"] .theme-floating-btn:focus-visible {
+    box-shadow: 0 0 0 2px white, 0 0 0 4px #dc2626;
+  }
+
+  [data-theme="green"] .theme-floating-btn {
+    border-color: #86efac;
+    color: #15803d;
+  }
+  [data-theme="green"] .theme-floating-btn:hover {
+    color: #166534;
+  }
+  [data-theme="green"] .theme-floating-btn:focus-visible {
+    box-shadow: 0 0 0 2px white, 0 0 0 4px #22c55e;
+  }
+
+  [data-theme="pink"] .theme-floating-btn {
+    border-color: #fda4af;
+    color: #be123c;
+  }
+  [data-theme="pink"] .theme-floating-btn:hover {
+    color: #9f1239;
+  }
+  [data-theme="pink"] .theme-floating-btn:focus-visible {
+    box-shadow: 0 0 0 2px white, 0 0 0 4px #f43f5e;
+  }
+
+  [data-theme="white"] .theme-floating-btn {
+    border-color: #d4d4d4;
+    color: #525252;
+  }
+  [data-theme="white"] .theme-floating-btn:hover {
+    color: #404040;
+  }
+  [data-theme="white"] .theme-floating-btn:focus-visible {
+    box-shadow: 0 0 0 2px white, 0 0 0 4px #737373;
+  }
+
+  [data-theme="tho"] .theme-floating-btn {
+    border-color: #fcd34d;
+    color: #a16207;
+  }
+  [data-theme="tho"] .theme-floating-btn:hover {
+    color: #713f12;
+  }
+  [data-theme="tho"] .theme-floating-btn:focus-visible {
+    box-shadow: 0 0 0 2px white, 0 0 0 4px #ca8a04;
+  }
+
+  [data-theme="moc"] .theme-floating-btn {
+    border-color: #86efac;
+    color: #15803d;
+  }
+  [data-theme="moc"] .theme-floating-btn:hover {
+    color: #166534;
+  }
+  [data-theme="moc"] .theme-floating-btn:focus-visible {
+    box-shadow: 0 0 0 2px white, 0 0 0 4px #22c55e;
+  }
+
+  [data-theme="bordeaux"] .theme-floating-btn {
+    border-color: rgba(212, 165, 116, 0.8);
+    color: #fecaca;
+  }
+  [data-theme="bordeaux"] .theme-floating-btn:hover {
+    color: #ffffff;
+  }
+  [data-theme="bordeaux"] .theme-floating-btn:focus-visible {
+    box-shadow: 0 0 0 2px #5e0202, 0 0 0 4px #fecaca;
+  }
+
+  /* Thiệp cover - mặc định bordeaux */
+  .cover-border-inner { background-color: #4a0101; }
+  .cover-flap { background: linear-gradient(to bottom, #5e0202, #4a0101); }
+  .cover-content { background: linear-gradient(to bottom, #5e0202, #4a0101); }
+  .cover-text-announcement { color: #fecaca; }
+  .cover-text-names { color: white; }
+  .cover-icon-heart { color: #d4a574; }
+  .cover-divider-line { background-color: #d4a574; }
+  .cover-divider-left { background: linear-gradient(to right, transparent, #d4a574) !important; }
+  .cover-divider-right { background: linear-gradient(to left, transparent, #d4a574) !important; }
+  .cover-divider-dot { background-color: #d4a574; }
+  .cover-text-date { color: #e8c88a; }
+  .cover-text-invite { color: rgba(212, 165, 116, 0.95); }
+  .cover-btn {
+    background: linear-gradient(to bottom, #e8c88a, #d4a574);
+    color: #4a0101;
+    border-color: rgba(245, 230, 200, 0.5);
+  }
+  .cover-btn:hover:not(:disabled) {
+    background: linear-gradient(to bottom, #f0d9a0, #e0b580);
+    box-shadow: 0 6px 24px rgba(212, 165, 116, 0.4);
+  }
+  .cover-seal-glow { background-color: #d4a574; }
+  .cover-seal {
+    background: linear-gradient(to bottom right, #e8c88a, #d4a574, #b8860b);
+    border-color: #f5e6c8;
+  }
+  .cover-seal-heart { color: #5e0202; }
+
+  /* Thiệp cover - theme red */
+  [data-theme="red"] .cover-border-inner { background-color: #f87171 !important; }
+  [data-theme="red"] .cover-flap { background: linear-gradient(to bottom, #fca5a5, #f87171) !important; }
+  [data-theme="red"] .cover-content { background: linear-gradient(to bottom, #fca5a5, #f87171) !important; }
+  [data-theme="red"] .cover-text-announcement,
+  [data-theme="red"] .cover-text-names { color: #7f1d1d !important; }
+  [data-theme="red"] .cover-icon-heart { color: #b91c1c !important; }
+  [data-theme="red"] .cover-divider-line,
+  [data-theme="red"] .cover-divider-dot { background-color: #b91c1c !important; }
+  [data-theme="red"] .cover-divider-left { background: linear-gradient(to right, transparent, #b91c1c) !important; }
+  [data-theme="red"] .cover-divider-right { background: linear-gradient(to left, transparent, #b91c1c) !important; }
+  [data-theme="red"] .cover-text-date,
+  [data-theme="red"] .cover-text-invite { color: #7f1d1d !important; }
+  [data-theme="red"] .cover-btn {
+    background: linear-gradient(to bottom, #fef2f2, #fecaca) !important;
+    color: #7f1d1d !important;
+    border-color: #fca5a5 !important;
+  }
+  [data-theme="red"] .cover-seal-glow { background-color: #fca5a5 !important; }
+  [data-theme="red"] .cover-seal {
+    background: linear-gradient(to bottom right, #fef2f2, #fecaca) !important;
+    border-color: #fca5a5 !important;
+  }
+  [data-theme="red"] .cover-seal-heart { color: #b91c1c !important; }
+
+  /* Thiệp cover - theme green */
+  [data-theme="green"] .cover-border-inner { background-color: #86efac !important; }
+  [data-theme="green"] .cover-flap { background: linear-gradient(to bottom, #bbf7d0, #86efac) !important; }
+  [data-theme="green"] .cover-content { background: linear-gradient(to bottom, #bbf7d0, #86efac) !important; }
+  [data-theme="green"] .cover-text-announcement,
+  [data-theme="green"] .cover-text-names { color: #14532d !important; }
+  [data-theme="green"] .cover-icon-heart { color: #15803d !important; }
+  [data-theme="green"] .cover-divider-line,
+  [data-theme="green"] .cover-divider-dot { background-color: #15803d !important; }
+  [data-theme="green"] .cover-divider-left { background: linear-gradient(to right, transparent, #15803d) !important; }
+  [data-theme="green"] .cover-divider-right { background: linear-gradient(to left, transparent, #15803d) !important; }
+  [data-theme="green"] .cover-text-date,
+  [data-theme="green"] .cover-text-invite { color: #14532d !important; }
+  [data-theme="green"] .cover-btn {
+    background: linear-gradient(to bottom, #dcfce7, #bbf7d0) !important;
+    color: #14532d !important;
+    border-color: #86efac !important;
+  }
+  [data-theme="green"] .cover-seal-glow { background-color: #86efac !important; }
+  [data-theme="green"] .cover-seal {
+    background: linear-gradient(to bottom right, #dcfce7, #bbf7d0) !important;
+    border-color: #86efac !important;
+  }
+  [data-theme="green"] .cover-seal-heart { color: #15803d !important; }
+
+  /* Thiệp cover - theme pink */
+  [data-theme="pink"] .cover-border-inner { background-color: #fda4af !important; }
+  [data-theme="pink"] .cover-flap { background: linear-gradient(to bottom, #fecdd3, #fda4af) !important; }
+  [data-theme="pink"] .cover-content { background: linear-gradient(to bottom, #fecdd3, #fda4af) !important; }
+  [data-theme="pink"] .cover-text-announcement,
+  [data-theme="pink"] .cover-text-names { color: #881337 !important; }
+  [data-theme="pink"] .cover-icon-heart { color: #be123c !important; }
+  [data-theme="pink"] .cover-divider-line,
+  [data-theme="pink"] .cover-divider-dot { background-color: #be123c !important; }
+  [data-theme="pink"] .cover-divider-left { background: linear-gradient(to right, transparent, #be123c) !important; }
+  [data-theme="pink"] .cover-divider-right { background: linear-gradient(to left, transparent, #be123c) !important; }
+  [data-theme="pink"] .cover-text-date,
+  [data-theme="pink"] .cover-text-invite { color: #881337 !important; }
+  [data-theme="pink"] .cover-btn {
+    background: linear-gradient(to bottom, #fff1f2, #fecdd3) !important;
+    color: #881337 !important;
+    border-color: #fda4af !important;
+  }
+  [data-theme="pink"] .cover-seal-glow { background-color: #fda4af !important; }
+  [data-theme="pink"] .cover-seal {
+    background: linear-gradient(to bottom right, #fff1f2, #fecdd3) !important;
+    border-color: #fda4af !important;
+  }
+  [data-theme="pink"] .cover-seal-heart { color: #be123c !important; }
+
+  /* Thiệp cover - theme white */
+  [data-theme="white"] .cover-border-inner { background-color: #e5e5e5 !important; }
+  [data-theme="white"] .cover-flap { background: linear-gradient(to bottom, #f5f5f5, #e5e5e5) !important; }
+  [data-theme="white"] .cover-content { background: linear-gradient(to bottom, #f5f5f5, #e5e5e5) !important; }
+  [data-theme="white"] .cover-text-announcement,
+  [data-theme="white"] .cover-text-names { color: #171717 !important; }
+  [data-theme="white"] .cover-icon-heart { color: #525252 !important; }
+  [data-theme="white"] .cover-divider-line,
+  [data-theme="white"] .cover-divider-dot { background-color: #737373 !important; }
+  [data-theme="white"] .cover-divider-left { background: linear-gradient(to right, transparent, #737373) !important; }
+  [data-theme="white"] .cover-divider-right { background: linear-gradient(to left, transparent, #737373) !important; }
+  [data-theme="white"] .cover-text-date,
+  [data-theme="white"] .cover-text-invite { color: #404040 !important; }
+  [data-theme="white"] .cover-btn {
+    background: linear-gradient(to bottom, #fafafa, #f5f5f5) !important;
+    color: #171717 !important;
+    border-color: #d4d4d4 !important;
+  }
+  [data-theme="white"] .cover-seal-glow { background-color: #e5e5e5 !important; }
+  [data-theme="white"] .cover-seal {
+    background: linear-gradient(to bottom right, #fafafa, #f5f5f5) !important;
+    border-color: #d4d4d4 !important;
+  }
+  [data-theme="white"] .cover-seal-heart { color: #525252 !important; }
+
+  /* Thiệp cover - theme tho */
+  [data-theme="tho"] .cover-border-inner { background-color: #fcd34d !important; }
+  [data-theme="tho"] .cover-flap { background: linear-gradient(to bottom, #fde68a, #fcd34d) !important; }
+  [data-theme="tho"] .cover-content { background: linear-gradient(to bottom, #fde68a, #fcd34d) !important; }
+  [data-theme="tho"] .cover-text-announcement,
+  [data-theme="tho"] .cover-text-names { color: #713f12 !important; }
+  [data-theme="tho"] .cover-icon-heart { color: #a16207 !important; }
+  [data-theme="tho"] .cover-divider-line,
+  [data-theme="tho"] .cover-divider-dot { background-color: #a16207 !important; }
+  [data-theme="tho"] .cover-divider-left { background: linear-gradient(to right, transparent, #a16207) !important; }
+  [data-theme="tho"] .cover-divider-right { background: linear-gradient(to left, transparent, #a16207) !important; }
+  [data-theme="tho"] .cover-text-date,
+  [data-theme="tho"] .cover-text-invite { color: #713f12 !important; }
+  [data-theme="tho"] .cover-btn {
+    background: linear-gradient(to bottom, #fef3c7, #fde68a) !important;
+    color: #713f12 !important;
+    border-color: #fcd34d !important;
+  }
+  [data-theme="tho"] .cover-seal-glow { background-color: #fcd34d !important; }
+  [data-theme="tho"] .cover-seal {
+    background: linear-gradient(to bottom right, #fef3c7, #fde68a) !important;
+    border-color: #fcd34d !important;
+  }
+  [data-theme="tho"] .cover-seal-heart { color: #a16207 !important; }
+
+  /* Thiệp cover - theme moc */
+  [data-theme="moc"] .cover-border-inner { background-color: #4ade80 !important; }
+  [data-theme="moc"] .cover-flap { background: linear-gradient(to bottom, #86efac, #4ade80) !important; }
+  [data-theme="moc"] .cover-content { background: linear-gradient(to bottom, #86efac, #4ade80) !important; }
+  [data-theme="moc"] .cover-text-announcement,
+  [data-theme="moc"] .cover-text-names { color: #14532d !important; }
+  [data-theme="moc"] .cover-icon-heart { color: #15803d !important; }
+  [data-theme="moc"] .cover-divider-line,
+  [data-theme="moc"] .cover-divider-dot { background-color: #15803d !important; }
+  [data-theme="moc"] .cover-divider-left { background: linear-gradient(to right, transparent, #15803d) !important; }
+  [data-theme="moc"] .cover-divider-right { background: linear-gradient(to left, transparent, #15803d) !important; }
+  [data-theme="moc"] .cover-text-date,
+  [data-theme="moc"] .cover-text-invite { color: #14532d !important; }
+  [data-theme="moc"] .cover-btn {
+    background: linear-gradient(to bottom, #dcfce7, #bbf7d0) !important;
+    color: #14532d !important;
+    border-color: #4ade80 !important;
+  }
+  [data-theme="moc"] .cover-seal-glow { background-color: #4ade80 !important; }
+  [data-theme="moc"] .cover-seal {
+    background: linear-gradient(to bottom right, #dcfce7, #bbf7d0) !important;
+    border-color: #4ade80 !important;
+  }
+  [data-theme="moc"] .cover-seal-heart { color: #15803d !important; }
+
+  @keyframes fadeIn {
+    from {
+      opacity: 0;
+      transform: translateY(16px);
+    }
+    to {
+      opacity: 1;
+      transform: translateY(0);
+    }
+  }
+
+  @keyframes fadeInUp {
+    from {
+      opacity: 0;
+      transform: translateY(24px);
+    }
+    to {
+      opacity: 1;
+      transform: translateY(0);
+    }
+  }
+
+  @keyframes fadeInScale {
+    from {
+      opacity: 0;
+      transform: scale(0.98);
+    }
+    to {
+      opacity: 1;
+      transform: scale(1);
+    }
+  }
+}
+
+@layer components {
+  /* Viền trắng vàng - sang trọng */
+  .border-wedding {
+    border: 2px solid rgba(255, 255, 255, 0.7);
+    box-shadow: 0 0 0 1px rgba(212, 165, 116, 0.4) inset;
+  }
+  .border-wedding-gold {
+    border: 2px solid #d4a574;
+    box-shadow: 0 0 0 1px rgba(255, 255, 255, 0.2) inset;
+  }
+  .border-wedding-section {
+    border: 2px solid rgba(212, 165, 116, 0.6);
+    box-shadow: 0 0 0 1px rgba(255, 255, 255, 0.15) inset;
+  }
+  [data-theme]:not([data-theme="bordeaux"]) .border-wedding-section {
+    border-color: rgba(212, 165, 116, 0.5);
+    box-shadow: 0 1px 3px rgba(0, 0, 0, 0.08);
+  }
+
+  /* Card wedding - viền trắng vàng, shadow mềm */
+  .card-wedding {
+    border: 2px solid rgba(255, 255, 255, 0.6);
+    box-shadow: 0 0 0 1px rgba(212, 165, 116, 0.35) inset, 0 2px 8px rgba(0, 0, 0, 0.15);
+    transition: box-shadow 0.25s ease, transform 0.25s ease, border-color 0.25s ease;
+  }
+  .card-wedding:hover {
+    border-color: rgba(212, 165, 116, 0.8);
+    box-shadow: 0 0 0 1px rgba(212, 165, 116, 0.5) inset, 0 12px 28px -8px rgba(0, 0, 0, 0.2);
+    transform: translateY(-3px);
+  }
+  /* Card trên nền sáng (theme khác bordeaux) */
+  [data-theme]:not([data-theme="bordeaux"]) .card-wedding {
+    border-color: rgba(212, 165, 116, 0.6);
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.06), 0 1px 3px rgba(0, 0, 0, 0.04);
+  }
+  [data-theme]:not([data-theme="bordeaux"]) .card-wedding:hover {
+    border-color: rgba(212, 165, 116, 0.9);
+    box-shadow: 0 12px 28px -8px rgba(0, 0, 0, 0.14), 0 4px 14px -4px rgba(0, 0, 0, 0.08);
+  }
+
+  .animate-fade-in {
+    animation: fadeIn 1s cubic-bezier(0.22, 1, 0.36, 1) forwards;
+  }
+
+  .animate-fade-in-up {
+    animation: fadeInUp 1.2s cubic-bezier(0.22, 1, 0.36, 1) forwards;
+  }
+
+  .animate-fade-in-scale {
+    animation: fadeInScale 0.8s cubic-bezier(0.22, 1, 0.36, 1) forwards;
+  }
+
+  /* Hiệu ứng mở phong bì thiệp cưới */
+  .envelope-flap {
+    transform: rotateX(0deg);
+    transform-origin: center bottom;
+    transform-style: preserve-3d;
+    backface-visibility: hidden;
+  }
+  .envelope-flap-open {
+    transform: rotateX(-180deg);
+  }
+  .envelope-card {
+    transform-style: preserve-3d;
+  }
+
+  /* Scroll-based fade-in - mượt hơn */
+  [data-scroll="fade-in"] {
+    opacity: 0;
+    transform: translateY(16px);
+    transition: opacity 0.7s cubic-bezier(0.22, 1, 0.36, 1),
+      transform 0.7s cubic-bezier(0.22, 1, 0.36, 1);
+  }
+
+  [data-scroll="fade-in"].in-view {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
