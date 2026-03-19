@@ -77,10 +77,10 @@ export function FloatingActions() {
   }
 
   const btnClass =
-    'theme-floating-btn w-12 h-12 sm:w-14 sm:h-14 rounded-full bg-white/95 shadow-lg border flex items-center justify-center active:scale-95 transition-all touch-manipulation focus:outline-none focus:ring-2 focus:ring-offset-2'
+    'theme-floating-btn w-10 h-10 sm:w-11 sm:h-11 rounded-full bg-white/95 shadow-lg border flex items-center justify-center active:scale-95 transition-all touch-manipulation focus:outline-none focus:ring-2 focus:ring-offset-2'
 
   return (
-    <div className="fixed z-40 right-4 sm:right-6 bottom-[calc(1.25rem+env(safe-area-inset-bottom))] sm:bottom-6 flex flex-col gap-3">
+    <div className="fixed z-40 right-4 sm:right-6 bottom-[calc(1.25rem+env(safe-area-inset-bottom))] sm:bottom-6 flex flex-col gap-2">
       {/* Đổi màu nền */}
       <Tooltip>
           <TooltipTrigger asChild>
@@ -90,7 +90,7 @@ export function FloatingActions() {
               className={btnClass}
               aria-label="Đổi màu nền"
             >
-              <Palette className="w-5 h-5 sm:w-6 sm:h-6" />
+              <Palette className="w-4 h-4 sm:w-5 sm:h-5" />
             </button>
           </TooltipTrigger>
           <TooltipContent side="left" sideOffset={8} className="font-medium">
@@ -108,9 +108,9 @@ export function FloatingActions() {
               aria-label={isPlaying ? 'Tắt nhạc' : 'Bật nhạc'}
             >
               {isPlaying ? (
-                <Music2 className="w-5 h-5 sm:w-6 sm:h-6 animate-pulse" />
+                <Music2 className="w-4 h-4 sm:w-5 sm:h-5 animate-spin" />
               ) : (
-                <Music className="w-5 h-5 sm:w-6 sm:h-6" />
+                <Music className="w-4 h-4 sm:w-5 sm:h-5" />
               )}
             </button>
           </TooltipTrigger>
