@@ -2,27 +2,23 @@
 
 import { useEffect, useRef, useState } from 'react'
 
-export function useInView(options = {}) {
+export function useInView(options: IntersectionObserverInit = {}) {
   const ref = useRef<HTMLDivElement>(null)
   const [isInView, setIsInView] = useState(false)
 
   useEffect(() => {
+    const opts = { threshold: 0.1, ...options }
     const observer = new IntersectionObserver(([entry]) => {
-      if (entry.isIntersecting) {
+      if (entry?.isIntersecting) {
         setIsInView(true)
         observer.unobserve(entry.target)
       }
-    }, {
-      threshold: 0.1,
-      ...options,
-    })
+    }, opts)
 
-    if (ref.current) {
-      observer.observe(ref.current)
-    }
-
+    const el = ref.current
+    if (el) observer.observe(el)
     return () => observer.disconnect()
-  }, [options])
+  }, []) // options bỏ khỏi deps để tránh re-run mỗi render khi caller truyền {}
 
   return { ref, isInView }
 }

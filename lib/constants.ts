@@ -41,7 +41,7 @@ export const WEDDING = {
     venue: 'Tại gia',
   },
   hashtag: '#TienDatThiTrang2026',
-  addToCalendarUrl: `https://calendar.google.com/calendar/render?action=TEMPLATE&text=Đám+cưới+Tiến+Đạt+%26+Thị+Trang&dates=20261220T070000Z/20261220T160000Z&details=Chúc+mừng+ngày+trọng+đại&location=Nhà+thờ+Tân+Định`,
+  addToCalendarUrl: `https://calendar.google.com/calendar/render?action=TEMPLATE&text=${encodeURIComponent('Đám cưới Tiến Đạt & Thị Trang')}&dates=20261220T070000Z/20261220T160000Z&details=${encodeURIComponent('Lễ thành hôn & Bữa cơm thân mật - Trân trọng kính mời')}&location=${encodeURIComponent(FAMILY_ADDRESSES.groomFamily.address)}`,
 }
 
 /** Nội dung Hành trình yêu */

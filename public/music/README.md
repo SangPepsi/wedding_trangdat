@@ -1,7 +1,9 @@
 # Nhạc nền
 
-Thêm file nhạc vào đây:
+Thêm file nhạc vào đây và đặt tên:
 
-- **background.mp3** - Nhạc nền trang cưới (MP3 hoặc các định dạng khác)
+- **1.mp3** - Bài 1
+- **2.mp3** - Bài 2
+- **3.mp3** - Bài 3
 
-Cập nhật đường dẫn trong `lib/music.ts` nếu dùng tên file khác.
+Phát tuần tự 1 → 2 → 3 → 1 → ... Cập nhật `lib/music.ts` nếu dùng tên file khác.

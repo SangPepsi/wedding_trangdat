@@ -1,7 +1,5 @@
 'use client'
 
-import { WEDDING } from '@/lib/constants'
-
 export function WeddingFooter() {
   return (
     <footer className="py-16 sm:py-20 md:py-24 section-end" data-theme-section="end">
@@ -13,7 +11,7 @@ export function WeddingFooter() {
           &ldquo;Sự hiện diện của quý khách là niềm vinh hạnh của gia đình chúng tôi!&rdquo;
         </p>
         <p className="theme-footer-credit text-sm">
-          © 2026 Design by {WEDDING.groomShort} & {WEDDING.brideShort}
+          © 2026 Design by SangLV
         </p>
       </div>
     </footer>

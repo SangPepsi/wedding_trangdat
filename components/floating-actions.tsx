@@ -14,15 +14,28 @@ export function FloatingActions() {
   const audioRef = useRef<HTMLAudioElement | null>(null)
 
   useEffect(() => {
-    const audio = new Audio(BACKGROUND_MUSIC.src)
-    audio.loop = true
+    const playlist = BACKGROUND_MUSIC.playlist
+    if (playlist.length === 0) return
+
+    const currentIndexRef = { current: 0 }
+    const audio = new Audio(playlist[0])
     audio.volume = 0.5
     audioRef.current = audio
+
     const onPlay = () => setIsPlaying(true)
     const onPause = () => setIsPlaying(false)
+    const onEnded = () => {
+      const nextIndex = (currentIndexRef.current + 1) % playlist.length
+      currentIndexRef.current = nextIndex
+      audio.src = playlist[nextIndex]
+      audio.play().catch(() => {})
+    }
+
     audio.addEventListener('play', onPlay)
     audio.addEventListener('pause', onPause)
+    audio.addEventListener('ended', onEnded)
     audio.play().then(() => setIsPlaying(true)).catch(() => {})
+
     const onWeddingOpen = () => {
       audio.play().then(() => setIsPlaying(true)).catch(() => {})
     }
@@ -32,6 +45,7 @@ export function FloatingActions() {
       audio.pause()
       audio.removeEventListener('play', onPlay)
       audio.removeEventListener('pause', onPause)
+      audio.removeEventListener('ended', onEnded)
       audioRef.current = null
     }
   }, [])
