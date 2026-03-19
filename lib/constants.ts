@@ -33,7 +33,15 @@ export const WEDDING = {
   ceremony: {
     name: 'Lễ thành hôn',
     time: '14:00 - 15:30',
+    timeDisplay: '14:30 Chiều',
     venue: 'Tại gia',
+    dayOfWeek: 'CHỦ NHẬT',
+    day: '20',
+    month: 'THÁNG 12',
+    year: '2026',
+    lunarYear: 'Bính Ngọ',
+    lunarDate: 'Tức ngày 22 tháng 11 năm Bính Ngọ',
+    location: 'Đình làng thôn Nội Lăng, Thôn Nội Lăng, xã Tân Hưng, Tỉnh Hưng Yên',
   },
   intimateMeal: {
     name: 'Bữa cơm thân mật',

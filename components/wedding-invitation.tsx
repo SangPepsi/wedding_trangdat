@@ -7,6 +7,7 @@ import { FloatingActions } from './floating-actions'
 import { HeroSection } from './hero-section'
 import { StorySection } from './story-section'
 import { FamilySection } from './family-section'
+import { CeremonyAnnouncementSection } from './ceremony-announcement-section'
 import { ScheduleSection } from './schedule-section'
 import { GiftSection } from './gift-section'
 import { GallerySection } from './gallery-section'
@@ -31,6 +32,7 @@ export function WeddingInvitation() {
         <HeroSection />
         <StorySection />
         <FamilySection />
+        <CeremonyAnnouncementSection />
         <ScheduleSection />
         <GallerySection />
         <RSVPForm />

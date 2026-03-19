@@ -754,6 +754,56 @@
 }
 
 @layer components {
+  /* Card thông báo lễ - nền đỏ thẫm, viền vàng */
+  .ceremony-announcement-card {
+    background-color: #4a0101;
+    border: 1px solid rgba(212, 165, 116, 0.5);
+    box-shadow: 0 0 0 1px rgba(255, 255, 255, 0.05) inset;
+  }
+  .ceremony-card-subtitle { color: #fecaca; }
+  .ceremony-card-names { color: white; }
+  .ceremony-card-lunar { color: rgba(212, 165, 116, 0.9); }
+  [data-theme="red"] .ceremony-announcement-card {
+    background-color: #b91c1c;
+    border-color: rgba(248, 113, 113, 0.6);
+  }
+  [data-theme="red"] .ceremony-announcement-card .ceremony-card-subtitle { color: #fef2f2 !important; }
+  [data-theme="red"] .ceremony-announcement-card .ceremony-card-names { color: #fff !important; }
+  [data-theme="green"] .ceremony-announcement-card {
+    background-color: #15803d;
+    border-color: rgba(134, 239, 172, 0.6);
+  }
+  [data-theme="green"] .ceremony-announcement-card .ceremony-card-subtitle { color: #dcfce7 !important; }
+  [data-theme="green"] .ceremony-announcement-card .ceremony-card-names { color: #fff !important; }
+  [data-theme="pink"] .ceremony-announcement-card {
+    background-color: #be123c;
+    border-color: rgba(253, 164, 175, 0.6);
+  }
+  [data-theme="pink"] .ceremony-announcement-card .ceremony-card-subtitle { color: #fff1f2 !important; }
+  [data-theme="pink"] .ceremony-announcement-card .ceremony-card-names { color: #fff !important; }
+  [data-theme="white"] .ceremony-announcement-card {
+    background-color: #525252;
+    border-color: rgba(163, 163, 163, 0.6);
+  }
+  [data-theme="white"] .ceremony-announcement-card .ceremony-card-subtitle { color: #fafafa !important; }
+  [data-theme="white"] .ceremony-announcement-card .ceremony-card-names { color: #fff !important; }
+  [data-theme="tho"] .ceremony-announcement-card {
+    background-color: #a16207;
+    border-color: rgba(253, 230, 138, 0.6);
+  }
+  [data-theme="tho"] .ceremony-announcement-card .ceremony-card-subtitle { color: #fef3c7 !important; }
+  [data-theme="tho"] .ceremony-announcement-card .ceremony-card-names { color: #fff !important; }
+  [data-theme="moc"] .ceremony-announcement-card {
+    background-color: #15803d;
+    border-color: rgba(134, 239, 172, 0.6);
+  }
+  [data-theme="moc"] .ceremony-announcement-card .ceremony-card-subtitle { color: #dcfce7 !important; }
+  [data-theme="moc"] .ceremony-announcement-card .ceremony-card-names { color: #fff !important; }
+  [data-theme]:not([data-theme="bordeaux"]) .ceremony-announcement-card a {
+    background: rgba(255, 255, 255, 0.9) !important;
+    color: #171717 !important;
+  }
+
   /* Khung nhẹ cho các section */
   .section-frame-light {
     border: 1px solid rgba(212, 165, 116, 0.35);
