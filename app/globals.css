@@ -228,8 +228,6 @@
   [data-theme="tho"] .theme-qr-card { background-color: #fcd34d !important; }
   [data-theme="moc"] .theme-qr-card { background-color: #4ade80 !important; }
   [data-theme="bordeaux"] .theme-qr-card { background-color: #5a0d0d !important; }
-  [data-theme]:not([data-theme="bordeaux"]) .theme-qr-card h3,
-  [data-theme]:not([data-theme="bordeaux"]) .theme-qr-card p { color: #1f2937 !important; }
   [data-theme="bordeaux"] .card-wedding .text-red-900,
   [data-theme="bordeaux"] .theme-card .text-red-900 { color: #fef2f2 !important; }
   [data-theme="bordeaux"] .card-wedding .text-red-800,
@@ -284,6 +282,147 @@
   [data-theme]:not([data-theme="bordeaux"]) .theme-footer-credit {
     color: #9ca3af !important;
   }
+
+  /* Theme text colors - đồng bộ màu chữ thuận mắt theo nền */
+  [data-theme="red"] [data-theme-section] .text-red-900 { color: #7f1d1d !important; }
+  [data-theme="red"] [data-theme-section] .text-red-800 { color: #991b1b !important; }
+  [data-theme="red"] [data-theme-section] .text-red-700 { color: #b91c1c !important; }
+  [data-theme="red"] [data-theme-section] .text-red-600 { color: #dc2626 !important; }
+  [data-theme="red"] [data-theme-section] .text-red-500 { color: #b91c1c !important; }
+  [data-theme="red"] [data-theme-section] .bg-red-100 { background-color: rgba(185, 28, 28, 0.2) !important; }
+  [data-theme="red"] [data-theme-section] .add-to-calendar { background-color: #b91c1c !important; }
+  [data-theme="red"] [data-theme-section] .add-to-calendar:hover { background-color: #991b1b !important; }
+
+  [data-theme="green"] [data-theme-section] .text-red-900 { color: #14532d !important; }
+  [data-theme="green"] [data-theme-section] .text-red-800 { color: #166534 !important; }
+  [data-theme="green"] [data-theme-section] .text-red-700 { color: #15803d !important; }
+  [data-theme="green"] [data-theme-section] .text-red-600 { color: #16a34a !important; }
+  [data-theme="green"] [data-theme-section] .text-red-500 { color: #15803d !important; }
+  [data-theme="green"] [data-theme-section] .bg-red-100 { background-color: rgba(22, 101, 52, 0.2) !important; }
+  [data-theme="green"] [data-theme-section] .add-to-calendar { background-color: #15803d !important; }
+  [data-theme="green"] [data-theme-section] .add-to-calendar:hover { background-color: #166534 !important; }
+
+  [data-theme="pink"] [data-theme-section] .text-red-900 { color: #881337 !important; }
+  [data-theme="pink"] [data-theme-section] .text-red-800 { color: #9f1239 !important; }
+  [data-theme="pink"] [data-theme-section] .text-red-700 { color: #be123c !important; }
+  [data-theme="pink"] [data-theme-section] .text-red-600 { color: #e11d48 !important; }
+  [data-theme="pink"] [data-theme-section] .text-red-500 { color: #be123c !important; }
+  [data-theme="pink"] [data-theme-section] .bg-red-100 { background-color: rgba(190, 18, 60, 0.2) !important; }
+  [data-theme="pink"] [data-theme-section] .add-to-calendar { background-color: #be123c !important; }
+  [data-theme="pink"] [data-theme-section] .add-to-calendar:hover { background-color: #9f1239 !important; }
+
+  [data-theme="white"] [data-theme-section] .text-red-900 { color: #171717 !important; }
+  [data-theme="white"] [data-theme-section] .text-red-800 { color: #404040 !important; }
+  [data-theme="white"] [data-theme-section] .text-red-700 { color: #525252 !important; }
+  [data-theme="white"] [data-theme-section] .text-red-600 { color: #737373 !important; }
+  [data-theme="white"] [data-theme-section] .text-red-500 { color: #525252 !important; }
+  [data-theme="white"] [data-theme-section] .bg-red-100 { background-color: rgba(82, 82, 82, 0.15) !important; }
+  [data-theme="white"] [data-theme-section] .add-to-calendar { background-color: #525252 !important; }
+  [data-theme="white"] [data-theme-section] .add-to-calendar:hover { background-color: #404040 !important; }
+
+  [data-theme="tho"] [data-theme-section] .text-red-900 { color: #713f12 !important; }
+  [data-theme="tho"] [data-theme-section] .text-red-800 { color: #a16207 !important; }
+  [data-theme="tho"] [data-theme-section] .text-red-700 { color: #b45309 !important; }
+  [data-theme="tho"] [data-theme-section] .text-red-600 { color: #ca8a04 !important; }
+  [data-theme="tho"] [data-theme-section] .text-red-500 { color: #a16207 !important; }
+  [data-theme="tho"] [data-theme-section] .bg-red-100 { background-color: rgba(161, 98, 7, 0.25) !important; }
+  [data-theme="tho"] [data-theme-section] .add-to-calendar { background-color: #a16207 !important; }
+  [data-theme="tho"] [data-theme-section] .add-to-calendar:hover { background-color: #ca8a04 !important; }
+
+  [data-theme="moc"] [data-theme-section] .text-red-900 { color: #14532d !important; }
+  [data-theme="moc"] [data-theme-section] .text-red-800 { color: #166534 !important; }
+  [data-theme="moc"] [data-theme-section] .text-red-700 { color: #15803d !important; }
+  [data-theme="moc"] [data-theme-section] .text-red-600 { color: #16a34a !important; }
+  [data-theme="moc"] [data-theme-section] .text-red-500 { color: #15803d !important; }
+  [data-theme="moc"] [data-theme-section] .bg-red-100 { background-color: rgba(22, 101, 52, 0.2) !important; }
+  [data-theme="moc"] [data-theme-section] .add-to-calendar { background-color: #15803d !important; }
+  [data-theme="moc"] [data-theme-section] .add-to-calendar:hover { background-color: #166534 !important; }
+
+  /* Form input/textarea - đồng bộ theo theme (light themes) */
+  [data-theme="red"] .theme-card input,
+  [data-theme="red"] .theme-card textarea {
+    border-color: rgba(185, 28, 28, 0.4) !important;
+    background-color: rgba(254, 202, 202, 0.3) !important;
+    color: #7f1d1d !important;
+  }
+  [data-theme="red"] .theme-card input::placeholder,
+  [data-theme="red"] .theme-card textarea::placeholder { color: rgba(127, 29, 29, 0.6) !important; }
+  [data-theme="green"] .theme-card input,
+  [data-theme="green"] .theme-card textarea {
+    border-color: rgba(22, 101, 52, 0.4) !important;
+    background-color: rgba(187, 247, 208, 0.5) !important;
+    color: #14532d !important;
+  }
+  [data-theme="green"] .theme-card input::placeholder,
+  [data-theme="green"] .theme-card textarea::placeholder { color: rgba(20, 83, 45, 0.6) !important; }
+  [data-theme="pink"] .theme-card input,
+  [data-theme="pink"] .theme-card textarea {
+    border-color: rgba(190, 18, 60, 0.4) !important;
+    background-color: rgba(254, 205, 211, 0.5) !important;
+    color: #881337 !important;
+  }
+  [data-theme="pink"] .theme-card input::placeholder,
+  [data-theme="pink"] .theme-card textarea::placeholder { color: rgba(136, 19, 55, 0.6) !important; }
+  [data-theme="white"] .theme-card input,
+  [data-theme="white"] .theme-card textarea {
+    border-color: rgba(82, 82, 82, 0.3) !important;
+    background-color: rgba(245, 245, 245, 0.8) !important;
+    color: #171717 !important;
+  }
+  [data-theme="white"] .theme-card input::placeholder,
+  [data-theme="white"] .theme-card textarea::placeholder { color: rgba(23, 23, 23, 0.5) !important; }
+  [data-theme="tho"] .theme-card input,
+  [data-theme="tho"] .theme-card textarea {
+    border-color: rgba(161, 98, 7, 0.4) !important;
+    background-color: rgba(254, 243, 199, 0.5) !important;
+    color: #713f12 !important;
+  }
+  [data-theme="tho"] .theme-card input::placeholder,
+  [data-theme="tho"] .theme-card textarea::placeholder { color: rgba(113, 63, 18, 0.6) !important; }
+  [data-theme="moc"] .theme-card input,
+  [data-theme="moc"] .theme-card textarea {
+    border-color: rgba(22, 101, 52, 0.4) !important;
+    background-color: rgba(187, 247, 208, 0.5) !important;
+    color: #14532d !important;
+  }
+  [data-theme="moc"] .theme-card input::placeholder,
+  [data-theme="moc"] .theme-card textarea::placeholder { color: rgba(20, 83, 45, 0.6) !important; }
+
+  /* Footer text - đồng bộ theo theme */
+  [data-theme="red"] .theme-footer-title,
+  [data-theme="red"] .theme-footer-text { color: #7f1d1d !important; }
+  [data-theme="red"] .theme-footer-credit { color: #991b1b !important; }
+  [data-theme="green"] .theme-footer-title,
+  [data-theme="green"] .theme-footer-text { color: #14532d !important; }
+  [data-theme="green"] .theme-footer-credit { color: #166534 !important; }
+  [data-theme="pink"] .theme-footer-title,
+  [data-theme="pink"] .theme-footer-text { color: #881337 !important; }
+  [data-theme="pink"] .theme-footer-credit { color: #9f1239 !important; }
+  [data-theme="white"] .theme-footer-title,
+  [data-theme="white"] .theme-footer-text { color: #171717 !important; }
+  [data-theme="white"] .theme-footer-credit { color: #525252 !important; }
+  [data-theme="tho"] .theme-footer-title,
+  [data-theme="tho"] .theme-footer-text { color: #713f12 !important; }
+  [data-theme="tho"] .theme-footer-credit { color: #a16207 !important; }
+  [data-theme="moc"] .theme-footer-title,
+  [data-theme="moc"] .theme-footer-text { color: #14532d !important; }
+  [data-theme="moc"] .theme-footer-credit { color: #166534 !important; }
+
+  /* Theme QR card - chữ tương phản tốt */
+  [data-theme="red"] .theme-qr-card h3,
+  [data-theme="red"] .theme-qr-card p { color: #7f1d1d !important; }
+  [data-theme="green"] .theme-qr-card h3,
+  [data-theme="green"] .theme-qr-card p { color: #14532d !important; }
+  [data-theme="pink"] .theme-qr-card h3,
+  [data-theme="pink"] .theme-qr-card p { color: #881337 !important; }
+  [data-theme="white"] .theme-qr-card h3,
+  [data-theme="white"] .theme-qr-card p { color: #171717 !important; }
+  [data-theme="tho"] .theme-qr-card h3,
+  [data-theme="tho"] .theme-qr-card p { color: #713f12 !important; }
+  [data-theme="moc"] .theme-qr-card h3,
+  [data-theme="moc"] .theme-qr-card p { color: #14532d !important; }
+  [data-theme="bordeaux"] .theme-qr-card h3,
+  [data-theme="bordeaux"] .theme-qr-card p { color: #fef2f2 !important; }
 
   /* Theme Header - đồng bộ màu theo theme */
   [data-theme="red"] .theme-header {
@@ -464,10 +603,12 @@
 
   /* Theme Floating Actions - đồng bộ màu theo theme */
   [data-theme="red"] .theme-floating-btn {
-    border-color: #fca5a5;
+    background-color: #fca5a5 !important;
+    border-color: #f87171;
     color: #b91c1c;
   }
   [data-theme="red"] .theme-floating-btn:hover {
+    background-color: #f87171 !important;
     color: #991b1b;
   }
   [data-theme="red"] .theme-floating-btn:focus-visible {
@@ -475,10 +616,12 @@
   }
 
   [data-theme="green"] .theme-floating-btn {
+    background-color: #bbf7d0 !important;
     border-color: #86efac;
     color: #15803d;
   }
   [data-theme="green"] .theme-floating-btn:hover {
+    background-color: #86efac !important;
     color: #166534;
   }
   [data-theme="green"] .theme-floating-btn:focus-visible {
@@ -486,10 +629,12 @@
   }
 
   [data-theme="pink"] .theme-floating-btn {
+    background-color: #fecdd3 !important;
     border-color: #fda4af;
     color: #be123c;
   }
   [data-theme="pink"] .theme-floating-btn:hover {
+    background-color: #fda4af !important;
     color: #9f1239;
   }
   [data-theme="pink"] .theme-floating-btn:focus-visible {
@@ -497,10 +642,12 @@
   }
 
   [data-theme="white"] .theme-floating-btn {
+    background-color: #f5f5f5 !important;
     border-color: #d4d4d4;
     color: #525252;
   }
   [data-theme="white"] .theme-floating-btn:hover {
+    background-color: #e5e5e5 !important;
     color: #404040;
   }
   [data-theme="white"] .theme-floating-btn:focus-visible {
@@ -508,10 +655,12 @@
   }
 
   [data-theme="tho"] .theme-floating-btn {
+    background-color: #fde68a !important;
     border-color: #fcd34d;
     color: #a16207;
   }
   [data-theme="tho"] .theme-floating-btn:hover {
+    background-color: #fcd34d !important;
     color: #713f12;
   }
   [data-theme="tho"] .theme-floating-btn:focus-visible {
@@ -519,10 +668,12 @@
   }
 
   [data-theme="moc"] .theme-floating-btn {
-    border-color: #86efac;
+    background-color: #86efac !important;
+    border-color: #4ade80;
     color: #15803d;
   }
   [data-theme="moc"] .theme-floating-btn:hover {
+    background-color: #4ade80 !important;
     color: #166534;
   }
   [data-theme="moc"] .theme-floating-btn:focus-visible {
@@ -530,10 +681,12 @@
   }
 
   [data-theme="bordeaux"] .theme-floating-btn {
+    background-color: #4a0101 !important;
     border-color: rgba(212, 165, 116, 0.8);
     color: #fecaca;
   }
   [data-theme="bordeaux"] .theme-floating-btn:hover {
+    background-color: #5e0202 !important;
     color: #ffffff;
   }
   [data-theme="bordeaux"] .theme-floating-btn:focus-visible {
@@ -754,7 +907,7 @@
 }
 
 @layer components {
-  /* Card thông báo lễ - nền đỏ thẫm, viền vàng */
+  /* Card thông báo lễ - đồng bộ màu nền theo theme */
   .ceremony-announcement-card {
     background-color: #4a0101;
     border: 1px solid rgba(212, 165, 116, 0.5);
@@ -763,42 +916,86 @@
   .ceremony-card-subtitle { color: #fecaca; }
   .ceremony-card-names { color: white; }
   .ceremony-card-lunar { color: rgba(212, 165, 116, 0.9); }
+  /* Theme red - cùng màu nền #fca5a5 */
   [data-theme="red"] .ceremony-announcement-card {
-    background-color: #b91c1c;
+    background-color: #fca5a5 !important;
     border-color: rgba(248, 113, 113, 0.6);
+    box-shadow: 0 1px 3px rgba(0, 0, 0, 0.08);
   }
-  [data-theme="red"] .ceremony-announcement-card .ceremony-card-subtitle { color: #fef2f2 !important; }
-  [data-theme="red"] .ceremony-announcement-card .ceremony-card-names { color: #fff !important; }
+  [data-theme="red"] .ceremony-announcement-card .ceremony-card-subtitle { color: #7f1d1d !important; }
+  [data-theme="red"] .ceremony-announcement-card .ceremony-card-names { color: #7f1d1d !important; }
+  [data-theme="red"] .ceremony-announcement-card .ceremony-card-lunar { color: #991b1b !important; }
+  [data-theme="red"] .ceremony-announcement-card .ceremony-card-datetime { border-color: rgba(185, 28, 28, 0.4) !important; }
+  [data-theme="red"] .ceremony-announcement-card .ceremony-divider { background-color: rgba(185, 28, 28, 0.5) !important; }
+  [data-theme="red"] .ceremony-announcement-card .ceremony-accent { color: #b91c1c !important; }
+  /* Theme green - cùng màu nền #bbf7d0 */
   [data-theme="green"] .ceremony-announcement-card {
-    background-color: #15803d;
+    background-color: #bbf7d0 !important;
     border-color: rgba(134, 239, 172, 0.6);
+    box-shadow: 0 1px 3px rgba(0, 0, 0, 0.08);
   }
-  [data-theme="green"] .ceremony-announcement-card .ceremony-card-subtitle { color: #dcfce7 !important; }
-  [data-theme="green"] .ceremony-announcement-card .ceremony-card-names { color: #fff !important; }
+  [data-theme="green"] .ceremony-announcement-card .ceremony-card-subtitle { color: #14532d !important; }
+  [data-theme="green"] .ceremony-announcement-card .ceremony-card-names { color: #14532d !important; }
+  [data-theme="green"] .ceremony-announcement-card .ceremony-card-lunar { color: #166534 !important; }
+  [data-theme="green"] .ceremony-announcement-card .ceremony-card-datetime { border-color: rgba(22, 101, 52, 0.4) !important; }
+  [data-theme="green"] .ceremony-announcement-card .ceremony-divider { background-color: rgba(22, 101, 52, 0.5) !important; }
+  [data-theme="green"] .ceremony-announcement-card .ceremony-accent { color: #15803d !important; }
+  /* Theme pink - cùng màu nền #fecdd3 */
   [data-theme="pink"] .ceremony-announcement-card {
-    background-color: #be123c;
+    background-color: #fecdd3 !important;
     border-color: rgba(253, 164, 175, 0.6);
+    box-shadow: 0 1px 3px rgba(0, 0, 0, 0.08);
   }
-  [data-theme="pink"] .ceremony-announcement-card .ceremony-card-subtitle { color: #fff1f2 !important; }
-  [data-theme="pink"] .ceremony-announcement-card .ceremony-card-names { color: #fff !important; }
+  [data-theme="pink"] .ceremony-announcement-card .ceremony-card-subtitle { color: #881337 !important; }
+  [data-theme="pink"] .ceremony-announcement-card .ceremony-card-names { color: #881337 !important; }
+  [data-theme="pink"] .ceremony-announcement-card .ceremony-card-lunar { color: #9f1239 !important; }
+  [data-theme="pink"] .ceremony-announcement-card .ceremony-card-datetime { border-color: rgba(190, 18, 60, 0.4) !important; }
+  [data-theme="pink"] .ceremony-announcement-card .ceremony-divider { background-color: rgba(190, 18, 60, 0.5) !important; }
+  [data-theme="pink"] .ceremony-announcement-card .ceremony-accent { color: #be123c !important; }
+  /* Theme white - cùng màu nền #f5f5f5 */
   [data-theme="white"] .ceremony-announcement-card {
-    background-color: #525252;
+    background-color: #f5f5f5 !important;
     border-color: rgba(163, 163, 163, 0.6);
+    box-shadow: 0 1px 3px rgba(0, 0, 0, 0.08);
   }
-  [data-theme="white"] .ceremony-announcement-card .ceremony-card-subtitle { color: #fafafa !important; }
-  [data-theme="white"] .ceremony-announcement-card .ceremony-card-names { color: #fff !important; }
+  [data-theme="white"] .ceremony-announcement-card .ceremony-card-subtitle { color: #404040 !important; }
+  [data-theme="white"] .ceremony-announcement-card .ceremony-card-names { color: #171717 !important; }
+  [data-theme="white"] .ceremony-announcement-card .ceremony-card-lunar { color: #525252 !important; }
+  [data-theme="white"] .ceremony-announcement-card .ceremony-card-datetime { border-color: rgba(82, 82, 82, 0.4) !important; }
+  [data-theme="white"] .ceremony-announcement-card .ceremony-divider { background-color: rgba(82, 82, 82, 0.5) !important; }
+  [data-theme="white"] .ceremony-announcement-card .ceremony-accent { color: #525252 !important; }
+  /* Theme tho - cùng màu nền #fde68a */
   [data-theme="tho"] .ceremony-announcement-card {
-    background-color: #a16207;
+    background-color: #fde68a !important;
     border-color: rgba(253, 230, 138, 0.6);
+    box-shadow: 0 1px 3px rgba(0, 0, 0, 0.08);
   }
-  [data-theme="tho"] .ceremony-announcement-card .ceremony-card-subtitle { color: #fef3c7 !important; }
-  [data-theme="tho"] .ceremony-announcement-card .ceremony-card-names { color: #fff !important; }
+  [data-theme="tho"] .ceremony-announcement-card .ceremony-card-subtitle { color: #713f12 !important; }
+  [data-theme="tho"] .ceremony-announcement-card .ceremony-card-names { color: #713f12 !important; }
+  [data-theme="tho"] .ceremony-announcement-card .ceremony-card-lunar { color: #a16207 !important; }
+  [data-theme="tho"] .ceremony-announcement-card .ceremony-card-datetime { border-color: rgba(161, 98, 7, 0.4) !important; }
+  [data-theme="tho"] .ceremony-announcement-card .ceremony-divider { background-color: rgba(161, 98, 7, 0.5) !important; }
+  [data-theme="tho"] .ceremony-announcement-card .ceremony-accent { color: #a16207 !important; }
+  /* Theme moc - cùng màu nền #86efac */
   [data-theme="moc"] .ceremony-announcement-card {
-    background-color: #15803d;
+    background-color: #86efac !important;
     border-color: rgba(134, 239, 172, 0.6);
+    box-shadow: 0 1px 3px rgba(0, 0, 0, 0.08);
   }
-  [data-theme="moc"] .ceremony-announcement-card .ceremony-card-subtitle { color: #dcfce7 !important; }
-  [data-theme="moc"] .ceremony-announcement-card .ceremony-card-names { color: #fff !important; }
+  [data-theme="moc"] .ceremony-announcement-card .ceremony-card-subtitle { color: #14532d !important; }
+  [data-theme="moc"] .ceremony-announcement-card .ceremony-card-names { color: #14532d !important; }
+  [data-theme="moc"] .ceremony-announcement-card .ceremony-card-lunar { color: #166534 !important; }
+  [data-theme="moc"] .ceremony-announcement-card .ceremony-card-datetime { border-color: rgba(22, 101, 52, 0.4) !important; }
+  [data-theme="moc"] .ceremony-announcement-card .ceremony-divider { background-color: rgba(22, 101, 52, 0.5) !important; }
+  [data-theme="moc"] .ceremony-announcement-card .ceremony-accent { color: #15803d !important; }
+  /* Theme bordeaux - giữ nền đậm */
+  [data-theme="bordeaux"] .ceremony-announcement-card {
+    background-color: #4a0101 !important;
+    border-color: rgba(212, 165, 116, 0.5);
+  }
+  [data-theme="bordeaux"] .ceremony-announcement-card .ceremony-card-subtitle { color: #fecaca !important; }
+  [data-theme="bordeaux"] .ceremony-announcement-card .ceremony-card-names { color: #fff !important; }
+  [data-theme="bordeaux"] .ceremony-announcement-card .ceremony-card-lunar { color: rgba(212, 165, 116, 0.9) !important; }
   [data-theme]:not([data-theme="bordeaux"]) .ceremony-announcement-card a {
     background: rgba(255, 255, 255, 0.9) !important;
     color: #171717 !important;
@@ -815,6 +1012,12 @@
     border-color: rgba(212, 165, 116, 0.45);
     box-shadow: 0 1px 3px rgba(0, 0, 0, 0.06);
   }
+  [data-theme="red"] .section-frame-light { border-color: rgba(185, 28, 28, 0.35) !important; }
+  [data-theme="green"] .section-frame-light { border-color: rgba(22, 101, 52, 0.35) !important; }
+  [data-theme="pink"] .section-frame-light { border-color: rgba(190, 18, 60, 0.35) !important; }
+  [data-theme="white"] .section-frame-light { border-color: rgba(82, 82, 82, 0.3) !important; }
+  [data-theme="tho"] .section-frame-light { border-color: rgba(161, 98, 7, 0.4) !important; }
+  [data-theme="moc"] .section-frame-light { border-color: rgba(22, 101, 52, 0.35) !important; }
 
   /* Viền trắng vàng - sang trọng */
   .border-wedding {
@@ -833,6 +1036,18 @@
     border-color: rgba(212, 165, 116, 0.5);
     box-shadow: 0 1px 3px rgba(0, 0, 0, 0.08);
   }
+  [data-theme="red"] .border-wedding-section { border-color: rgba(185, 28, 28, 0.5) !important; }
+  [data-theme="green"] .border-wedding-section { border-color: rgba(22, 101, 52, 0.5) !important; }
+  [data-theme="pink"] .border-wedding-section { border-color: rgba(190, 18, 60, 0.5) !important; }
+  [data-theme="white"] .border-wedding-section { border-color: rgba(82, 82, 82, 0.4) !important; }
+  [data-theme="tho"] .border-wedding-section { border-color: rgba(161, 98, 7, 0.5) !important; }
+  [data-theme="moc"] .border-wedding-section { border-color: rgba(22, 101, 52, 0.5) !important; }
+  [data-theme="red"] .border-wedding-gold { border-color: #b91c1c !important; }
+  [data-theme="green"] .border-wedding-gold { border-color: #15803d !important; }
+  [data-theme="pink"] .border-wedding-gold { border-color: #be123c !important; }
+  [data-theme="white"] .border-wedding-gold { border-color: #525252 !important; }
+  [data-theme="tho"] .border-wedding-gold { border-color: #a16207 !important; }
+  [data-theme="moc"] .border-wedding-gold { border-color: #15803d !important; }
 
   /* Card wedding - viền trắng vàng, shadow mềm */
   .card-wedding {

@@ -8,10 +8,10 @@ export function StorySection() {
 
   return (
     <section id="cau-chuyen" className="py-16 sm:py-20 md:py-28" data-theme-section="alt">
-      <div className="max-w-3xl mx-auto px-4 sm:px-6">
+      <div className="max-w-4xl mx-auto px-4 sm:px-6">
         <div
           ref={ref}
-          className={`border-wedding-section rounded-2xl p-8 sm:p-10 md:p-12 transition-all duration-700 ease-out ${
+          className={`border-wedding-section rounded-2xl p-6 sm:p-8 md:p-10 transition-all duration-700 ease-out ${
             isInView ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-6'
           }`}
         >

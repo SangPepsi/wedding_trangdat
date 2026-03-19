@@ -89,7 +89,7 @@ export function GiftSection() {
             </p>
           </div>
 
-          <div className="grid md:grid-cols-2 gap-6 sm:gap-8 max-w-2xl mx-auto p-6 sm:p-8 theme-card rounded-2xl border-wedding-gold">
+          <div className="grid md:grid-cols-2 gap-6 sm:gap-8 p-6 sm:p-8 theme-card rounded-2xl border-wedding-gold">
             <QRCard
               qrPath={GIFT_QR.groom.qrPath}
               fullName={WEDDING.groom}

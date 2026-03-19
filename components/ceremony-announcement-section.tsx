@@ -8,11 +8,11 @@ export function CeremonyAnnouncementSection() {
   const { ref, isInView } = useInView()
 
   return (
-    <section id="thong-bao-le" className="py-12 sm:py-16 md:py-20 overflow-x-hidden" data-theme-section="main">
-      <div className="max-w-2xl mx-auto px-3 sm:px-6">
+    <section id="thong-bao-le" className="py-16 sm:py-20 md:py-28 overflow-x-hidden" data-theme-section="main">
+      <div className="max-w-4xl mx-auto px-4 sm:px-6">
         <div
           ref={ref}
-          className={`ceremony-announcement-card rounded-2xl p-5 sm:p-10 md:p-12 text-center transition-all duration-700 ease-out overflow-hidden ${
+          className={`ceremony-announcement-card rounded-2xl p-6 sm:p-8 md:p-10 text-center transition-all duration-700 ease-out overflow-hidden ${
             isInView ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-6'
           }`}
         >
@@ -22,7 +22,7 @@ export function CeremonyAnnouncementSection() {
 
           <h2 className="ceremony-card-names font-serif text-3xl sm:text-4xl md:text-5xl font-bold mb-4 flex flex-wrap items-center justify-center gap-x-2 sm:gap-x-3">
             <span>{WEDDING.groom}</span>
-            <span className="text-[#d4a574]">&</span>
+            <span className="ceremony-accent text-[#d4a574]">&</span>
             <span>{WEDDING.bride}</span>
           </h2>
 
@@ -36,8 +36,8 @@ export function CeremonyAnnouncementSection() {
             <div className="ceremony-card-subtitle text-xs sm:text-base font-medium text-center">
               {WEDDING.ceremony.timeDisplay}
             </div>
-            <div className="hidden sm:block w-px self-stretch min-h-[2.5rem] bg-[#d4a574]/50 shrink-0" />
-            <div className="sm:hidden w-full max-w-[4rem] h-px bg-[#d4a574]/40" />
+            <div className="ceremony-divider hidden sm:block w-px self-stretch min-h-[2.5rem] bg-[#d4a574]/50 shrink-0" />
+            <div className="ceremony-divider sm:hidden w-full max-w-[4rem] h-px bg-[#d4a574]/40" />
             {/* Cột ngày */}
             <div className="flex items-center justify-center gap-1 sm:gap-2 shrink-0 flex-wrap">
               <span className="ceremony-card-subtitle text-[10px] sm:text-sm uppercase tracking-wider leading-tight">
@@ -52,12 +52,12 @@ export function CeremonyAnnouncementSection() {
                 {WEDDING.ceremony.month}
               </span>
             </div>
-            <div className="hidden sm:block w-px self-stretch min-h-[2.5rem] bg-[#d4a574]/50 shrink-0" />
-            <div className="sm:hidden w-full max-w-[4rem] h-px bg-[#d4a574]/40" />
+            <div className="ceremony-divider hidden sm:block w-px self-stretch min-h-[2.5rem] bg-[#d4a574]/50 shrink-0" />
+            <div className="ceremony-divider sm:hidden w-full max-w-[4rem] h-px bg-[#d4a574]/40" />
             {/* Cột năm */}
             <div className="ceremony-card-subtitle text-xs sm:text-base text-center">
               {WEDDING.ceremony.year}
-              <span className="text-[#d4a574]/90"> / ({WEDDING.ceremony.lunarYear})</span>
+              <span className="ceremony-accent text-[#d4a574]/90"> / ({WEDDING.ceremony.lunarYear})</span>
             </div>
           </div>
 

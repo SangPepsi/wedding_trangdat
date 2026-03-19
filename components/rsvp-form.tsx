@@ -66,7 +66,7 @@ export function RSVPForm() {
 
   return (
     <section id="xac-nhan" className="py-16 sm:py-20 md:py-28" data-theme-section="alt">
-      <div className="max-w-xl mx-auto px-4 sm:px-6">
+      <div className="max-w-4xl mx-auto px-4 sm:px-6">
         <div className="section-frame-light">
           <div
             ref={ref}
