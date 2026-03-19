@@ -47,6 +47,7 @@ export const WEDDING = {
 /** Nội dung Hành trình yêu */
 export const LOVE_STORY = {
   title: 'Hành trình yêu',
+  story: 'Bắt đầu bằng một lần gặp gỡ vào tháng 5/2023. Gắn kết qua những chuyến đi của năm 2024. Hứa hẹn một đời bằng lời cầu hôn năm 2025. Và trọn vẹn hạnh phúc khi về chung một nhà vào năm 2026. Đạt và Trang, bắt đầu một chương mới.',
   timeline: [
     { date: '05-2023', event: 'Lần đầu gặp gỡ' },
     { date: '2024', event: 'Chuyến đi đầu tiên' },

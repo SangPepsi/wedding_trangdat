@@ -15,9 +15,15 @@ export function StorySection() {
             isInView ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-6'
           }`}
         >
-          <h2 className="text-2xl sm:text-3xl md:text-4xl font-serif font-bold text-red-900 mb-10 sm:mb-12 text-center">
+          <h2 className="text-2xl sm:text-3xl md:text-4xl font-serif font-bold text-red-900 mb-6 sm:mb-8 text-center">
             {LOVE_STORY.title}
           </h2>
+
+          {LOVE_STORY.story && (
+            <p className="text-base sm:text-lg text-red-800 leading-relaxed text-center mb-10 sm:mb-12 max-w-2xl mx-auto">
+              {LOVE_STORY.story}
+            </p>
+          )}
 
           {/* Timeline dọc - đường vàng, chấm vàng, nội dung xen kẽ trái-phải */}
           <div className="relative">
