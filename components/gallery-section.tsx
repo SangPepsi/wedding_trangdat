@@ -56,56 +56,52 @@ export function GallerySection() {
               }`}
             >
               <h2 className="text-2xl sm:text-3xl md:text-4xl font-serif font-bold text-red-900">
-                Khoảnh khắc đẹp
+                Album ảnh cưới
               </h2>
             </div>
 
-            {/* Grid layout: ảnh đầu lớn hơn, các ảnh sau đều nhau */}
+            {/* Grid 2x2 - chỉ hiển thị 4 ảnh, ảnh thứ 4 có overlay "+N" */}
             <div
-            className={`border-wedding-section rounded-2xl p-4 sm:p-6 md:p-8 grid grid-cols-2 md:grid-cols-4 gap-2 sm:gap-3 md:gap-4 transition-all duration-700 ease-out ${
-              isInView ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-6'
-            }`}
-          >
-            {/* Ảnh đầu - chiếm 2 cột trên desktop */}
-            <button
-              type="button"
-              onClick={() => setSelectedIndex(0)}
-              className="col-span-2 row-span-2 relative aspect-square md:aspect-auto md:min-h-[320px] rounded-xl overflow-hidden group focus:outline-none focus:ring-2 focus:ring-[#d4a574] focus:ring-offset-2 border-2 border-white/40 ring-1 ring-[#d4a574]/30"
-              style={{ transitionDelay: '0ms' }}
+              className={`border-wedding-section rounded-2xl p-4 sm:p-6 md:p-8 grid grid-cols-2 gap-2 sm:gap-3 md:gap-4 transition-all duration-700 ease-out ${
+                isInView ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-6'
+              }`}
             >
-              <Image
-                src={GALLERY_IMAGES[0].src}
-                alt={GALLERY_IMAGES[0].alt}
-                fill
-                className="object-cover transition-transform duration-500 group-hover:scale-105"
-                sizes="(max-width: 768px) 100vw, 50vw"
-                priority
-              />
-              <div className="absolute inset-0 bg-gradient-to-t from-black/40 via-transparent to-transparent opacity-0 group-hover:opacity-100 transition-opacity" />
-            </button>
+              {GALLERY_IMAGES.slice(0, 4).map((image, index) => {
+                const remainingCount = GALLERY_IMAGES.length - 4
+                const isLastVisible = index === 3 && remainingCount > 0
 
-            {/* Các ảnh còn lại */}
-            {GALLERY_IMAGES.slice(1).map((image, index) => (
-              <button
-                key={image.src}
-                type="button"
-                onClick={() => setSelectedIndex(index + 1)}
-                className={`relative aspect-square rounded-xl overflow-hidden group focus:outline-none focus:ring-2 focus:ring-[#d4a574] focus:ring-offset-2 border-2 border-white/40 ring-1 ring-[#d4a574]/30 ${
-                  isInView ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-6'
-                }`}
-                style={{ transitionDelay: `${(index + 1) * 50}ms` }}
-              >
-                <Image
-                  src={image.src}
-                  alt={image.alt}
-                  fill
-                  className="object-cover transition-transform duration-500 group-hover:scale-105"
-                  sizes="(max-width: 768px) 50vw, 25vw"
-                />
-                <div className="absolute inset-0 bg-black/0 group-hover:bg-black/20 transition-colors" />
-              </button>
-            ))}
-          </div>
+                return (
+                  <button
+                    key={image.src}
+                    type="button"
+                    onClick={() => setSelectedIndex(index)}
+                    className={`relative aspect-square rounded-xl overflow-hidden group focus:outline-none focus:ring-2 focus:ring-[#d4a574] focus:ring-offset-2 border-2 border-white/40 ring-1 ring-[#d4a574]/30 ${
+                      isInView ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-6'
+                    }`}
+                    style={{ transitionDelay: `${index * 50}ms` }}
+                  >
+                    <Image
+                      src={image.src}
+                      alt={image.alt}
+                      fill
+                      className="object-cover transition-transform duration-500 group-hover:scale-105"
+                      sizes="(max-width: 768px) 50vw, 25vw"
+                      priority={index < 2}
+                    />
+                    {isLastVisible && (
+                      <div className="absolute inset-0 bg-black/60 flex items-center justify-center">
+                        <span className="text-white text-3xl sm:text-4xl font-bold">
+                          +{remainingCount}
+                        </span>
+                      </div>
+                    )}
+                    {!isLastVisible && (
+                      <div className="absolute inset-0 bg-black/0 group-hover:bg-black/20 transition-colors" />
+                    )}
+                  </button>
+                )
+              })}
+            </div>
           </div>
         </div>
       </section>
