@@ -48,19 +48,20 @@ export function GallerySection() {
     <>
       <section id="khoanh-khac" className="py-16 sm:py-20 md:py-28" data-theme-section="main">
         <div className="max-w-6xl mx-auto px-4 sm:px-6">
-          <div
-            ref={ref}
-            className={`text-center mb-10 sm:mb-14 transition-all duration-700 ease-out ${
-              isInView ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-6'
-            }`}
-          >
-            <h2 className="text-2xl sm:text-3xl md:text-4xl font-serif font-bold text-red-900">
-              Khoảnh khắc đẹp
-            </h2>
-          </div>
+          <div className="section-frame-light">
+            <div
+              ref={ref}
+              className={`text-center mb-10 sm:mb-14 transition-all duration-700 ease-out ${
+                isInView ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-6'
+              }`}
+            >
+              <h2 className="text-2xl sm:text-3xl md:text-4xl font-serif font-bold text-red-900">
+                Khoảnh khắc đẹp
+              </h2>
+            </div>
 
-          {/* Grid layout: ảnh đầu lớn hơn, các ảnh sau đều nhau */}
-          <div
+            {/* Grid layout: ảnh đầu lớn hơn, các ảnh sau đều nhau */}
+            <div
             className={`border-wedding-section rounded-2xl p-4 sm:p-6 md:p-8 grid grid-cols-2 md:grid-cols-4 gap-2 sm:gap-3 md:gap-4 transition-all duration-700 ease-out ${
               isInView ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-6'
             }`}
@@ -104,6 +105,7 @@ export function GallerySection() {
                 <div className="absolute inset-0 bg-black/0 group-hover:bg-black/20 transition-colors" />
               </button>
             ))}
+          </div>
           </div>
         </div>
       </section>

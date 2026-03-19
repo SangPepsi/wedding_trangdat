@@ -67,19 +67,20 @@ export function RSVPForm() {
   return (
     <section id="xac-nhan" className="py-16 sm:py-20 md:py-28" data-theme-section="alt">
       <div className="max-w-xl mx-auto px-4 sm:px-6">
-        <div
-          ref={ref}
-          className={`transition-all duration-700 ease-out ${
-            isInView ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-6'
-          }`}
-        >
-          <div className="text-center mb-12">
-            <h2 className="text-2xl sm:text-3xl md:text-4xl font-serif font-bold text-red-900">
-              Xác nhận tham dự
-            </h2>
-          </div>
+        <div className="section-frame-light">
+          <div
+            ref={ref}
+            className={`transition-all duration-700 ease-out ${
+              isInView ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-6'
+            }`}
+          >
+            <div className="text-center mb-12">
+              <h2 className="text-2xl sm:text-3xl md:text-4xl font-serif font-bold text-red-900">
+                Xác nhận tham dự
+              </h2>
+            </div>
 
-          <div className="card-wedding theme-card rounded-2xl p-6 sm:p-8 md:p-10">
+            <div className="card-wedding theme-card rounded-2xl p-6 sm:p-8 md:p-10">
             {submitted ? (
               <div className="text-center py-8">
                 <div className="w-16 h-16 bg-red-100 rounded-full flex items-center justify-center mx-auto mb-4">
@@ -190,6 +191,7 @@ export function RSVPForm() {
                 </Button>
               </form>
             )}
+          </div>
           </div>
         </div>
       </div>

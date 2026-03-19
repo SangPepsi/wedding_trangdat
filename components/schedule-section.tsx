@@ -86,18 +86,19 @@ export function ScheduleSection() {
   return (
     <section id="lich-trinh" className="py-16 sm:py-20 md:py-28" data-theme-section="alt">
       <div className="max-w-4xl mx-auto px-4 sm:px-6">
-        <div
-          ref={ref}
-          className={`text-center mb-10 sm:mb-14 transition-all duration-700 ease-out ${
-            isInView ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-6'
-          }`}
-        >
-          <h2 className="text-3xl md:text-4xl font-serif font-bold text-red-900 mb-6 sm:mb-8">
-            Lịch trình
-          </h2>
-        </div>
+        <div className="section-frame-light">
+          <div
+            ref={ref}
+            className={`text-center mb-10 sm:mb-14 transition-all duration-700 ease-out ${
+              isInView ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-6'
+            }`}
+          >
+            <h2 className="text-3xl md:text-4xl font-serif font-bold text-red-900 mb-6 sm:mb-8">
+              Lịch trình
+            </h2>
+          </div>
 
-        <a
+          <a
           href={WEDDING.addToCalendarUrl}
           target="_blank"
           rel="noopener noreferrer"
@@ -125,6 +126,7 @@ export function ScheduleSection() {
             isInView={isInView}
             delay="200ms"
           />
+        </div>
         </div>
       </div>
     </section>

@@ -754,6 +754,18 @@
 }
 
 @layer components {
+  /* Khung nhẹ cho các section */
+  .section-frame-light {
+    border: 1px solid rgba(212, 165, 116, 0.35);
+    border-radius: 1.25rem;
+    padding: 1.5rem 1.5rem 2rem;
+    box-shadow: 0 0 0 1px rgba(255, 255, 255, 0.08) inset;
+  }
+  [data-theme]:not([data-theme="bordeaux"]) .section-frame-light {
+    border-color: rgba(212, 165, 116, 0.45);
+    box-shadow: 0 1px 3px rgba(0, 0, 0, 0.06);
+  }
+
   /* Viền trắng vàng - sang trọng */
   .border-wedding {
     border: 2px solid rgba(255, 255, 255, 0.7);

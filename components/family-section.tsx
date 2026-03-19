@@ -9,18 +9,19 @@ export function FamilySection() {
   return (
     <section id="gia-dinh" className="py-16 sm:py-20 md:py-28" data-theme-section="main">
       <div className="max-w-4xl mx-auto px-4 sm:px-6">
-        <div
-          ref={ref}
-          className={`text-center mb-10 sm:mb-14 transition-all duration-700 ease-out ${
-            isInView ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-6'
-          }`}
-        >
-          <h2 className="text-2xl sm:text-3xl md:text-4xl font-serif font-bold text-red-900">
-            Gia đình hai bên
-          </h2>
-        </div>
+        <div className="section-frame-light">
+          <div
+            ref={ref}
+            className={`text-center mb-10 sm:mb-14 transition-all duration-700 ease-out ${
+              isInView ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-6'
+            }`}
+          >
+            <h2 className="text-2xl sm:text-3xl md:text-4xl font-serif font-bold text-red-900">
+              Gia đình hai bên
+            </h2>
+          </div>
 
-        <div className="grid md:grid-cols-2 gap-4 sm:gap-6">
+          <div className="grid md:grid-cols-2 gap-4 sm:gap-6">
           <div
             className={`card-wedding theme-card rounded-2xl p-6 sm:p-8 transition-all duration-700 ease-out ${
               isInView ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-6'
@@ -70,6 +71,7 @@ export function FamilySection() {
               </div>
             </div>
           </div>
+        </div>
         </div>
       </div>
     </section>

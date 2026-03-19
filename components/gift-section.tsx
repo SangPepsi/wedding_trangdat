@@ -69,13 +69,14 @@ export function GiftSection() {
     <>
       <section id="hop-mung" className="py-16 sm:py-20 md:py-28 section-end" data-theme-section="end">
         <div className="max-w-4xl mx-auto px-4 sm:px-6">
-          <div
-            ref={ref}
-            className={`text-center mb-10 sm:mb-14 transition-all duration-700 ease-out ${
-              isInView ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-6'
-            }`}
-          >
-            <div className="flex justify-center mb-3">
+          <div className="section-frame-light">
+            <div
+              ref={ref}
+              className={`text-center mb-10 sm:mb-14 transition-all duration-700 ease-out ${
+                isInView ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-6'
+              }`}
+            >
+              <div className="flex justify-center mb-3">
               <div className="gift-icon-wrap w-14 h-14 rounded-full bg-red-100 flex items-center justify-center">
                 <Gift className="w-7 h-7 text-red-600" />
               </div>
@@ -107,6 +108,7 @@ export function GiftSection() {
               delay="200ms"
               onQRClick={() => setZoomedQR({ qrPath: GIFT_QR.bride.qrPath, name: GIFT_QR.bride.name, fullName: WEDDING.bride })}
             />
+          </div>
           </div>
         </div>
       </section>
