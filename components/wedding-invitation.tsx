@@ -26,7 +26,7 @@ export function WeddingInvitation() {
   return (
     <>
       {!isOpened && <InvitationCover onOpen={() => setIsOpened(true)} />}
-      <main className="min-h-screen theme-bg">
+      <main className="min-h-screen theme-bg overflow-x-hidden">
         <WeddingHeader />
         <FloatingActions />
         <HeroSection />

@@ -8,15 +8,15 @@ export function CeremonyAnnouncementSection() {
   const { ref, isInView } = useInView()
 
   return (
-    <section id="thong-bao-le" className="py-12 sm:py-16 md:py-20" data-theme-section="main">
-      <div className="max-w-2xl mx-auto px-4 sm:px-6">
+    <section id="thong-bao-le" className="py-12 sm:py-16 md:py-20 overflow-x-hidden" data-theme-section="main">
+      <div className="max-w-2xl mx-auto px-3 sm:px-6">
         <div
           ref={ref}
-          className={`ceremony-announcement-card rounded-2xl p-8 sm:p-10 md:p-12 text-center transition-all duration-700 ease-out ${
+          className={`ceremony-announcement-card rounded-2xl p-5 sm:p-10 md:p-12 text-center transition-all duration-700 ease-out overflow-hidden ${
             isInView ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-6'
           }`}
         >
-          <p className="ceremony-card-subtitle text-[9px] sm:text-[10px] uppercase tracking-[0.15em] sm:tracking-[0.28em] font-light mb-4 whitespace-nowrap text-center">
+          <p className="ceremony-card-subtitle text-[9px] sm:text-[10px] uppercase tracking-[0.15em] sm:tracking-[0.28em] font-light mb-4 whitespace-nowrap text-center overflow-hidden max-w-full">
             {ANNOUNCEMENT}
           </p>
 
@@ -30,30 +30,32 @@ export function CeremonyAnnouncementSection() {
             Lễ Thành Hôn được cử hành tại tư gia
           </p>
 
-          {/* 3 cột: Giờ | Ngày | Năm - căn giữa thẳng hàng */}
-          <div className="ceremony-card-datetime flex items-center justify-center gap-4 sm:gap-8 py-5 mb-2 border-y border-[#d4a574]/40">
+          {/* 3 cột: Giờ | Ngày | Năm - mobile: xếp dọc, desktop: ngang */}
+          <div className="ceremony-card-datetime flex flex-col sm:flex-row items-center justify-center gap-2 sm:gap-8 py-4 sm:py-5 mb-2 border-y border-[#d4a574]/40">
             {/* Cột giờ */}
-            <div className="ceremony-card-subtitle text-sm sm:text-base font-medium text-center min-w-[4rem]">
+            <div className="ceremony-card-subtitle text-xs sm:text-base font-medium text-center">
               {WEDDING.ceremony.timeDisplay}
             </div>
-            <div className="w-px self-stretch min-h-[2.5rem] bg-[#d4a574]/50 shrink-0" />
+            <div className="hidden sm:block w-px self-stretch min-h-[2.5rem] bg-[#d4a574]/50 shrink-0" />
+            <div className="sm:hidden w-full max-w-[4rem] h-px bg-[#d4a574]/40" />
             {/* Cột ngày */}
-            <div className="flex items-center justify-center gap-1.5 sm:gap-2 shrink-0">
-              <span className="ceremony-card-subtitle text-xs sm:text-sm uppercase tracking-wider leading-tight">
+            <div className="flex items-center justify-center gap-1 sm:gap-2 shrink-0 flex-wrap">
+              <span className="ceremony-card-subtitle text-[10px] sm:text-sm uppercase tracking-wider leading-tight">
                 {WEDDING.ceremony.dayOfWeek}
               </span>
-              <span className="ceremony-card-names text-xl sm:text-2xl font-bold">/</span>
-              <span className="ceremony-card-names text-3xl sm:text-4xl font-bold tabular-nums">
+              <span className="ceremony-card-names text-lg sm:text-2xl font-bold">/</span>
+              <span className="ceremony-card-names text-2xl sm:text-4xl font-bold tabular-nums">
                 {WEDDING.ceremony.day}
               </span>
-              <span className="ceremony-card-names text-xl sm:text-2xl font-bold">/</span>
-              <span className="ceremony-card-subtitle text-xs sm:text-sm uppercase tracking-wider leading-tight">
+              <span className="ceremony-card-names text-lg sm:text-2xl font-bold">/</span>
+              <span className="ceremony-card-subtitle text-[10px] sm:text-sm uppercase tracking-wider leading-tight">
                 {WEDDING.ceremony.month}
               </span>
             </div>
-            <div className="w-px self-stretch min-h-[2.5rem] bg-[#d4a574]/50 shrink-0" />
+            <div className="hidden sm:block w-px self-stretch min-h-[2.5rem] bg-[#d4a574]/50 shrink-0" />
+            <div className="sm:hidden w-full max-w-[4rem] h-px bg-[#d4a574]/40" />
             {/* Cột năm */}
-            <div className="ceremony-card-subtitle text-sm sm:text-base text-center min-w-[5rem]">
+            <div className="ceremony-card-subtitle text-xs sm:text-base text-center">
               {WEDDING.ceremony.year}
               <span className="text-[#d4a574]/90"> / ({WEDDING.ceremony.lunarYear})</span>
             </div>
@@ -63,11 +65,11 @@ export function CeremonyAnnouncementSection() {
             ({WEDDING.ceremony.lunarDate})
           </p>
 
-          <p className="ceremony-card-names text-sm sm:text-base font-semibold mb-8 leading-relaxed">
+          <p className="ceremony-card-names text-sm sm:text-base font-semibold mb-8 leading-relaxed px-1 break-words">
             Tại: {WEDDING.ceremony.location}
           </p>
 
-          <div className="flex flex-wrap justify-center gap-3 sm:gap-4">
+          <div className="flex flex-wrap justify-center gap-2 sm:gap-4">
             <a
               href={FAMILY_ADDRESSES.groomFamily.mapsUrl}
               target="_blank"

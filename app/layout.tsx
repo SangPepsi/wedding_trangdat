@@ -45,7 +45,7 @@ export default function RootLayout({
 }>) {
   return (
     <html lang="vi" className={`${geist.variable} ${greatVibes.variable}`} data-theme="bordeaux">
-      <body className="font-sans antialiased text-red-900 theme-bg">
+      <body className="font-sans antialiased text-red-900 theme-bg overflow-x-hidden">
         {children}
         <Analytics />
       </body>
