@@ -11,7 +11,7 @@ const SITE_URL = process.env.NEXT_PUBLIC_SITE_URL || 'https://tien-dat-thi-trang
 export const metadata: Metadata = {
   metadataBase: new URL(SITE_URL),
   title: 'Tiến Đạt & Huyền Trang - Thiệp Cưới',
-  description: 'Thiệp cưới Tiến Đạt & Huyền Trang - 20 tháng 12, 2026. Trân trọng kính mời quý khách đến dự ngày trọng đại của chúng tôi.',
+  description: 'Thiệp cưới Đào Tiến Đạt & Nguyễn Thị Huyền Trang - 20 tháng 12, 2026. Trân trọng kính mời quý khách đến dự ngày trọng đại của chúng tôi.',
   icons: {
     icon: '/icon.svg',
     apple: '/icon.svg',
@@ -20,14 +20,14 @@ export const metadata: Metadata = {
     type: 'website',
     locale: 'vi_VN',
     title: 'Tiến Đạt & Huyền Trang - Thiệp Cưới',
-    description: 'Thiệp cưới Tiến Đạt & Huyền Trang - 20 tháng 12, 2026. Trân trọng kính mời quý khách đến dự ngày trọng đại của chúng tôi.',
+    description: 'Thiệp cưới Đào Tiến Đạt & Nguyễn Thị Huyền Trang - 20 tháng 12, 2026. Trân trọng kính mời quý khách đến dự ngày trọng đại của chúng tôi.',
     images: ['/gallery/1.jpg', '/icon.svg'],
-    siteName: 'Thiệp Cưới Tiến Đạt & Huyền Trang',
+    siteName: 'Thiệp Cưới Đào Tiến Đạt & Nguyễn Thị Huyền Trang',
   },
   twitter: {
     card: 'summary_large_image',
     title: 'Tiến Đạt & Huyền Trang - Thiệp Cưới',
-    description: 'Thiệp cưới Tiến Đạt & Huyền Trang - 20 tháng 12, 2026. Trân trọng kính mời quý khách đến dự ngày trọng đại của chúng tôi.',
+    description: 'Thiệp cưới Đào Tiến Đạt & Nguyễn Thị Huyền Trang - 20 tháng 12, 2026. Trân trọng kính mời quý khách đến dự ngày trọng đại của chúng tôi.',
     images: ['/gallery/1.jpg'],
   },
 }

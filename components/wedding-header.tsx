@@ -1,7 +1,7 @@
 'use client'
 
 import { useState, useEffect, useRef } from 'react'
-import { Menu, X, Heart } from 'lucide-react'
+import { Menu, X } from 'lucide-react'
 import { WEDDING } from '@/lib/constants'
 
 const NAV_LINKS = [
@@ -34,10 +34,15 @@ export function WeddingHeader() {
   return (
     <header ref={menuRef} className="theme-header fixed top-0 left-0 right-0 z-50 backdrop-blur-xl border-b shadow-sm safe-area-inset-top">
       <div className="max-w-4xl mx-auto px-4 sm:px-6 h-14 sm:h-16 flex items-center justify-between">
-        <a href="#" className="theme-header-brand font-serif text-lg sm:text-xl md:text-2xl font-semibold tracking-wide truncate max-w-[60vw] sm:max-w-none flex items-center flex-nowrap gap-x-1.5">
-          <span className="whitespace-nowrap">{WEDDING.groomShort}</span>
-          <Heart className="w-4 h-4 opacity-80 fill-current shrink-0" aria-hidden />
-          <span className="whitespace-nowrap">{WEDDING.brideShort}</span>
+        <a
+          href="#"
+          className="theme-header-brand font-serif text-lg sm:text-xl md:text-2xl font-semibold tracking-wide truncate max-w-[60vw] sm:max-w-none flex items-center flex-nowrap gap-x-1.5"
+        >
+          <span className="whitespace-nowrap">{WEDDING.groomBrand}</span>
+          <span className="text-[0.85em] leading-none" aria-hidden>
+            ❤️
+          </span>
+          <span className="whitespace-nowrap">{WEDDING.brideBrand}</span>
         </a>
 
         {/* Desktop nav */}

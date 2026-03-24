@@ -23,10 +23,13 @@ export const FAMILY_ADDRESSES = {
 }
 
 export const WEDDING = {
-  groom: 'Tiến Đạt',
-  bride: 'Thị Trang',
-  groomShort: 'Đạt',
-  brideShort: 'Trang',
+  groom: 'Đào Tiến Đạt',
+  bride: 'Nguyễn Thị Huyền Trang',
+  groomShort: 'Tiến Đạt',
+  brideShort: 'Huyền Trang',
+  /** Tên ngắn trên thanh menu (header) */
+  groomBrand: 'Đạt',
+  brideBrand: 'Trang',
   date: '20 tháng 12, 2026',
   dateShort: '20/12/2026',
   dateISO: '2026-12-20',
@@ -48,14 +51,14 @@ export const WEDDING = {
     time: '17:00 - 18:00',
     venue: 'Tại gia',
   },
-  hashtag: '#TienDatThiTrang2026',
-  addToCalendarUrl: `https://calendar.google.com/calendar/render?action=TEMPLATE&text=${encodeURIComponent('Đám cưới Tiến Đạt & Thị Trang')}&dates=20261220T070000Z/20261220T160000Z&details=${encodeURIComponent('Lễ thành hôn & Bữa cơm thân mật - Trân trọng kính mời')}&location=${encodeURIComponent(FAMILY_ADDRESSES.groomFamily.address)}`,
+  hashtag: '#TienDatHuyenTrang2026',
+  addToCalendarUrl: `https://calendar.google.com/calendar/render?action=TEMPLATE&text=${encodeURIComponent('Đám cưới Đào Tiến Đạt & Nguyễn Thị Huyền Trang')}&dates=20261220T070000Z/20261220T160000Z&details=${encodeURIComponent('Lễ thành hôn & Bữa cơm thân mật - Trân trọng kính mời')}&location=${encodeURIComponent(FAMILY_ADDRESSES.groomFamily.address)}`,
 }
 
 /** Nội dung Hành trình yêu */
 export const LOVE_STORY = {
   title: 'Hành trình yêu',
-  story: 'Bắt đầu bằng một lần gặp gỡ vào tháng 5/2023. Gắn kết qua những chuyến đi của năm 2024. Hứa hẹn một đời bằng lời cầu hôn năm 2025. Và trọn vẹn hạnh phúc khi về chung một nhà vào năm 2026. Đạt và Trang, bắt đầu một chương mới.',
+  story: 'Bắt đầu bằng một lần gặp gỡ vào tháng 5/2023. Gắn kết qua những chuyến đi của năm 2024. Hứa hẹn một đời bằng lời cầu hôn năm 2025. Và trọn vẹn hạnh phúc khi về chung một nhà vào năm 2026. Tiến Đạt và Huyền Trang, bắt đầu một chương mới.',
   timeline: [
     { date: '05-2023', event: 'Lần đầu gặp gỡ' },
     { date: '2024', event: 'Chuyến đi đầu tiên' },

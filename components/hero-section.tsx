@@ -32,9 +32,9 @@ export function HeroSection() {
             Chúng tôi sắp kết hôn
           </p>
           <h1 className="text-2xl sm:text-4xl md:text-5xl lg:text-6xl xl:text-7xl font-serif font-bold text-white tracking-wide leading-tight mb-3 sm:mb-4 px-2 drop-shadow-lg flex flex-nowrap items-center justify-center gap-x-2 sm:gap-x-4 md:gap-x-5">
-            <span className="whitespace-nowrap">{WEDDING.groom}</span>
+            <span className="whitespace-nowrap">{WEDDING.groomShort}</span>
             <Heart className="w-5 h-5 sm:w-7 sm:h-7 md:w-8 md:h-8 lg:w-9 lg:h-9 text-red-200 fill-current shrink-0" aria-hidden />
-            <span className="whitespace-nowrap">{WEDDING.bride}</span>
+            <span className="whitespace-nowrap">{WEDDING.brideShort}</span>
           </h1>
           <p className="text-base sm:text-lg md:text-xl text-red-100 mb-1 sm:mb-2">{WEDDING.date}</p>
           <p className="text-sm sm:text-base text-red-200/90 mb-8 sm:mb-12 px-2">

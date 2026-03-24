@@ -21,9 +21,9 @@ export function CeremonyAnnouncementSection() {
           </p>
 
           <h2 className="ceremony-card-names font-serif text-3xl sm:text-4xl md:text-5xl font-bold mb-4 flex flex-wrap items-center justify-center gap-x-2 sm:gap-x-3">
-            <span>{WEDDING.groom}</span>
+            <span>{WEDDING.groomShort}</span>
             <span className="ceremony-accent text-[#d4a574]">&</span>
-            <span>{WEDDING.bride}</span>
+            <span>{WEDDING.brideShort}</span>
           </h2>
 
           <p className="ceremony-card-subtitle text-sm sm:text-base font-serif mb-6 opacity-95">
