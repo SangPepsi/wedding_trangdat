@@ -2,14 +2,7 @@
 
 import { useCallback, useEffect, useState } from 'react'
 import { Heart, MessageCircleHeart, Send } from 'lucide-react'
-import {
-  GUESTBOOK_LIMITS,
-  fetchGuestbook,
-  isGuestbookEnabled,
-  isGuestbookVisible,
-  postGuestbook,
-  type GuestbookEntry,
-} from '@/lib/guestbook'
+import { GUESTBOOK_LIMITS, fetchGuestbook, postGuestbook, type GuestbookEntry } from '@/lib/guestbook'
 import { useGuestName } from '@/hooks/use-guest-name'
 import { Reveal } from './reveal'
 import { SectionHeading } from './section-heading'
@@ -49,7 +42,8 @@ function WishCard({ entry, isNew }: { entry: GuestbookEntry; isNew: boolean }) {
   )
 }
 
-export function GuestbookSection() {
+/** enabled: server đã có biến kết nối Upstash Redis */
+export function GuestbookSection({ enabled: isGuestbookEnabled }: { enabled: boolean }) {
   const [entries, setEntries] = useState<GuestbookEntry[]>([])
   const [loadState, setLoadState] = useState<'loading' | 'ready' | 'error'>('loading')
   const guestName = useGuestName()
@@ -86,7 +80,7 @@ export function GuestbookSection() {
     return () => {
       cancelled = true
     }
-  }, [])
+  }, [isGuestbookEnabled])
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault()
@@ -97,20 +91,21 @@ export function GuestbookSection() {
     setSubmitState('sending')
     setErrorText('')
     try {
-      await postGuestbook({ name: trimmedName, message: trimmedMessage, website })
-      const createdAt = new Date().toISOString()
-      setEntries((prev) => [{ name: trimmedName, message: trimmedMessage, createdAt }, ...prev])
-      setNewKey(createdAt)
+      const saved = await postGuestbook({ name: trimmedName, message: trimmedMessage, website })
+      const entry = saved ?? { name: trimmedName, message: trimmedMessage, createdAt: new Date().toISOString() }
+      setEntries((prev) => [entry, ...prev])
+      setNewKey(entry.createdAt)
       setLoadState('ready')
       setMessage('')
       setSubmitState('sent')
-    } catch {
+    } catch (err) {
       setSubmitState('error')
-      setErrorText('Chưa gửi được lời chúc. Vui lòng thử lại sau ít phút.')
+      const reason = err instanceof Error && /nhanh|nhập/.test(err.message) ? err.message : ''
+      setErrorText(reason || 'Chưa gửi được lời chúc. Vui lòng thử lại sau ít phút.')
     }
   }
 
-  if (!isGuestbookVisible) return null
+  if (!isGuestbookEnabled && process.env.NODE_ENV !== 'development') return null
 
   return (
     <section id="loi-chuc" className="py-16 sm:py-20 md:py-28 scroll-mt-16">
@@ -125,9 +120,8 @@ export function GuestbookSection() {
 
           {!isGuestbookEnabled && (
             <div className="error-wedding mb-6 text-sm leading-relaxed" role="note">
-              <strong>Chưa kết nối Google Sheets</strong> (chỉ hiện khi chạy dev). Làm theo hướng dẫn trong{' '}
-              <code>scripts/guestbook-apps-script.gs</code> rồi thêm <code>NEXT_PUBLIC_GUESTBOOK_URL</code> vào{' '}
-              <code>.env.local</code> và khởi động lại server.
+              <strong>Chưa kết nối Upstash Redis</strong> (chỉ hiện khi chạy dev). Thêm <code>KV_REST_API_URL</code> và{' '}
+              <code>KV_REST_API_TOKEN</code> vào <code>.env.local</code> (xem README) rồi khởi động lại server.
             </div>
           )}
 
@@ -255,7 +249,7 @@ export function GuestbookSection() {
                   {entries.length > 0 && (
                     <ul className="wish-scroll space-y-4 max-h-[36rem] overflow-y-auto pr-1 -mr-1">
                       {entries.map((entry, i) => (
-                        <WishCard key={`${entry.createdAt}-${i}`} entry={entry} isNew={entry.createdAt === newKey} />
+                        <WishCard key={entry.id ?? `${entry.createdAt}-${i}`} entry={entry} isNew={entry.createdAt === newKey} />
                       ))}
                     </ul>
                   )}

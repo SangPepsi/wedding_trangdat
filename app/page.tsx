@@ -13,14 +13,17 @@ import { GiftSection } from '@/components/gift-section'
 import { WeddingFooter } from '@/components/wedding-footer'
 import { PetalLayer } from '@/components/petal-layer'
 import { CardSpotlight } from '@/components/card-spotlight'
+import { isGuestbookConfigured } from '@/lib/guestbook-store'
 
 export default function Page() {
+  const showGuestbook = isGuestbookConfigured || process.env.NODE_ENV === 'development'
   return (
     <>
       <InvitationCover />
+      <div className="paper-grain" aria-hidden />
       <PetalLayer />
       <CardSpotlight />
-      <WeddingHeader />
+      <WeddingHeader showGuestbook={showGuestbook} />
       <main className="relative z-[1] min-h-screen overflow-x-hidden">
         <HeroSection />
         <StorySection />
@@ -29,7 +32,7 @@ export default function Page() {
         <ScheduleSection />
         <GallerySection />
         <RSVPForm />
-        <GuestbookSection />
+        <GuestbookSection enabled={isGuestbookConfigured} />
         <GiftSection />
       </main>
       <WeddingFooter />

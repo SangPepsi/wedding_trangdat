@@ -103,7 +103,7 @@ export function GallerySection() {
               Album ảnh cưới
             </SectionHeading>
 
-            <Reveal variant="zoom">
+            <Reveal variant="mask">
               <div
                 ref={stageRef}
                 role="region"

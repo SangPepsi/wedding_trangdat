@@ -16,7 +16,7 @@ export function SectionHeading({ children, description, icon }: SectionHeadingPr
           </div>
         </div>
       )}
-      <h2 className="text-4xl md:text-5xl font-serif font-bold text-w-strong">{children}</h2>
+      <h2 className="heading-title text-4xl md:text-5xl font-serif font-bold text-w-strong">{children}</h2>
       <div className="heading-ornament mt-4" aria-hidden>
         <span className="heading-line heading-line-left" />
         <svg viewBox="0 0 24 24" className="heading-heart">

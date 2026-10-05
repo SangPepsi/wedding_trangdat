@@ -2,7 +2,7 @@
 
 import { useInView } from '@/hooks/use-in-view'
 
-export type RevealVariant = 'up' | 'left' | 'right' | 'zoom'
+export type RevealVariant = 'up' | 'left' | 'right' | 'zoom' | 'mask'
 
 interface RevealProps {
   children: React.ReactNode

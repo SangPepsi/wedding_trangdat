@@ -49,6 +49,29 @@ export function fireGiftBurst(x: number, y: number) {
   })
 }
 
+const GOLD = ['#fff8e6', '#fef3c7', '#f5d78e', '#e8c88a', '#d4a574', '#c9a227']
+
+/** Lúc hai cánh cửa thiệp mở: lấp lánh sao vàng bung từ giữa, rồi pháo giấy hai bên */
+export function fireOpeningCelebration() {
+  const sparkle = (particleCount: number, startVelocity: number, scalar: number) =>
+    confetti({
+      origin: { x: 0.5, y: 0.45 },
+      spread: 360,
+      startVelocity,
+      colors: GOLD,
+      shapes: ['star'],
+      scalar,
+      ticks: 220,
+      gravity: 0.55,
+      particleCount,
+      zIndex: 120,
+      disableForReducedMotion: true,
+    })
+  sparkle(70, 32, 1.1)
+  setTimeout(() => sparkle(40, 20, 0.8), 150)
+  setTimeout(fireWeddingConfetti, 250)
+}
+
 export function fireWeddingConfetti() {
   for (const { delay, left, right, count } of BURSTS) {
     setTimeout(() => {

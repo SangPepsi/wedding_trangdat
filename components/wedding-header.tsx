@@ -3,7 +3,6 @@
 import { useState, useEffect, useRef } from 'react'
 import { Heart, Menu, X } from 'lucide-react'
 import { WEDDING } from '@/lib/constants'
-import { isGuestbookVisible } from '@/lib/guestbook'
 
 const NAV_LINKS = [
   { href: '#cau-chuyen', label: 'Câu chuyện' },
@@ -11,7 +10,7 @@ const NAV_LINKS = [
   { href: '#lich-trinh', label: 'Lịch trình' },
   { href: '#khoanh-khac', label: 'Khoảnh khắc' },
   { href: '#xac-nhan', label: 'Xác nhận' },
-  ...(isGuestbookVisible ? [{ href: '#loi-chuc', label: 'Lời chúc' }] : []),
+  { href: '#loi-chuc', label: 'Lời chúc' },
   { href: '#hop-mung', label: 'Hộp mừng' },
 ]
 
@@ -46,7 +45,8 @@ function useActiveSection() {
   return active
 }
 
-export function WeddingHeader() {
+export function WeddingHeader({ showGuestbook }: { showGuestbook: boolean }) {
+  const links = showGuestbook ? NAV_LINKS : NAV_LINKS.filter((l) => l.href !== '#loi-chuc')
   const [open, setOpen] = useState(false)
   const activeHref = useActiveSection()
   const headerRef = useRef<HTMLElement>(null)
@@ -88,7 +88,7 @@ export function WeddingHeader() {
         </a>
 
         <nav className="hidden md:flex items-center gap-6" aria-label="Điều hướng chính">
-          {NAV_LINKS.map((link) => (
+          {links.map((link) => (
             <a
               key={link.href}
               href={link.href}
@@ -122,7 +122,7 @@ export function WeddingHeader() {
           className="theme-header-mobile md:hidden absolute top-full left-0 right-0 border-b py-2 px-4 shadow-lg max-h-[70vh] overflow-y-auto"
         >
           <div className="flex flex-col">
-            {NAV_LINKS.map((link) => (
+            {links.map((link) => (
               <a
                 key={link.href}
                 href={link.href}

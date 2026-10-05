@@ -48,6 +48,18 @@ https://your-domain.vercel.app/?to=Anh%20Minh%20%26%20Ch%E1%BB%8B%20Lan
 
 Thiệp sẽ hiện "Trân trọng kính mời Anh Minh & Chị Lan", đồng thời tên được điền sẵn vào form xác nhận và sổ lưu bút. Có thể gõ tiếng Việt có dấu trực tiếp vào thanh địa chỉ, trình duyệt tự mã hóa.
 
+## Sổ lưu bút
+
+Lời chúc lưu trên Upstash Redis (miễn phí), cài ngay trong Vercel:
+
+1. Vercel → project → **Storage** → **Create Database** → chọn **Upstash** (Redis) → tạo và **Connect** vào project. Vercel tự thêm `KV_REST_API_URL`, `KV_REST_API_TOKEN`.
+2. Settings → Environment Variables → thêm `GUESTBOOK_ADMIN_PASSWORD` (mật khẩu tự đặt).
+3. Redeploy.
+
+Xoá lời chúc: mở `https://<tên-miền>/quan-ly-loi-chuc`, nhập mật khẩu, bấm **Xoá**.
+
+Chạy trên máy: copy 3 biến trên vào `.env.local` rồi khởi động lại `npm run dev`. Khi đó máy và web dùng chung một kho lời chúc.
+
 ## Thêm bộ màu mới
 
 1. Thêm một khối `[data-theme='ten-moi'] { ... }` trong `app/globals.css` với 9 biến gốc (xem các theme sáng có sẵn).
