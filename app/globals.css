@@ -1,119 +1,226 @@
 @import 'tailwindcss';
 @import 'tw-animate-css';
 
-@custom-variant dark (&:is(.dark *));
+/*
+ * Mỗi theme chỉ khai báo bảng màu gốc; mọi màu khác được suy ra bên dưới.
+ * Thêm theme mới: thêm một khối [data-theme="..."] và một mục trong lib/themes.ts.
+ */
 
-:root {
-  --background: oklch(0.96 0.01 70);
-  --foreground: oklch(0.2 0 0);
-  --card: oklch(0.98 0 0);
-  --card-foreground: oklch(0.2 0 0);
-  --popover: oklch(0.98 0 0);
-  --popover-foreground: oklch(0.2 0 0);
-  --primary: oklch(0.6 0.18 60);
-  --primary-foreground: oklch(1 0 0);
-  --secondary: oklch(0.92 0.01 70);
-  --secondary-foreground: oklch(0.2 0 0);
-  --muted: oklch(0.85 0.01 70);
-  --muted-foreground: oklch(0.45 0 0);
-  --accent: oklch(0.6 0.18 60);
-  --accent-foreground: oklch(1 0 0);
-  --destructive: oklch(0.577 0.245 27.325);
-  --destructive-foreground: oklch(0.577 0.245 27.325);
-  --border: oklch(0.88 0.01 70);
-  --input: oklch(0.92 0.01 70);
-  --ring: oklch(0.6 0.18 60);
-  --chart-1: oklch(0.6 0.18 60);
-  --chart-2: oklch(0.5 0.15 45);
-  --chart-3: oklch(0.7 0.12 80);
-  --chart-4: oklch(0.45 0.1 40);
-  --chart-5: oklch(0.65 0.14 65);
+/* Theme mặc định: Đỏ rượu vang (bordeaux) - nền tối nên khai báo đầy đủ */
+:root,
+[data-theme='bordeaux'] {
+  --w-bg: #420a10;
+  --w-card: #52121a;
+  --w-qr: #52121a;
+  --w-frame: rgb(255 255 255 / 0.025);
+  --w-glow: rgb(212 165 116 / 0.12);
+  --w-spot: rgb(232 200 138 / 0.14);
+  --w-tint: rgb(212 165 116 / 0.2);
+  --w-strong: #fdf2f0;
+  --w-text: #f6dcd8;
+  --w-soft: #f0c0b8;
+  --w-muted: #e3a59c;
+  --w-label: #e88c80;
+  --w-line: rgb(212 165 116 / 0.38);
+  --w-line-strong: #d4a574;
+  --w-btn: #a61b29;
+  --w-btn-hover: #c0263a;
+  --w-input-bg: rgb(82 14 22 / 0.6);
+  --w-input-border: rgb(212 165 116 / 0.45);
+
+  --w-header-bg: rgb(66 10 16 / 0.95);
+  --w-header-border: rgb(212 165 116 / 0.5);
+  --w-header-text: #fdf2f0;
+  --w-header-hover: rgb(110 22 32 / 0.8);
+  --w-header-mobile-bg: #420a10;
+
+  --w-float-bg: #420a10;
+  --w-float-hover: #561219;
+  --w-float-border: rgb(212 165 116 / 0.75);
+  --w-float-text: #f0c0b8;
+
+  --w-cover-from: #5a1018;
+  --w-cover-to: #420a10;
+  --w-cover-text: #ffffff;
+  --w-cover-sub: #f0c0b8;
+  --w-cover-accent: #d4a574;
+  --w-cover-date: #e8c88a;
+  --w-cover-btn-from: #e8c88a;
+  --w-cover-btn-to: #d4a574;
+  --w-cover-btn-border: rgb(245 230 200 / 0.5);
+  --w-cover-btn-text: #420a10;
+  --w-seal-to: #b8860b;
+  --w-seal-border: #f5e6c8;
+  --w-seal-heart: #5a1018;
+
+  --w-cer-bg: #420a10;
+  --w-cer-names: #ffffff;
+  --w-cer-sub: #f0c0b8;
+  --w-cer-lunar: rgb(212 165 116 / 0.9);
+  --w-cer-accent: #d4a574;
+  --w-cer-btn-bg: rgb(232 200 138 / 0.9);
+  --w-cer-btn-text: #420a10;
+
+  /* Token cho các component shadcn (Dialog, Tooltip) */
+  --background: #ffffff;
+  --foreground: #1c1917;
+  --border: #e7e5e4;
+  --ring: #d4a574;
+  --accent: #f5f5f4;
+  --muted-foreground: #57534e;
   --radius: 0.5rem;
-  --sidebar: oklch(0.96 0.01 70);
-  --sidebar-foreground: oklch(0.2 0 0);
-  --sidebar-primary: oklch(0.6 0.18 60);
-  --sidebar-primary-foreground: oklch(1 0 0);
-  --sidebar-accent: oklch(0.6 0.18 60);
-  --sidebar-accent-foreground: oklch(1 0 0);
-  --sidebar-border: oklch(0.88 0.01 70);
-  --sidebar-ring: oklch(0.6 0.18 60);
 }
 
-.dark {
-  --background: oklch(0.145 0 0);
-  --foreground: oklch(0.985 0 0);
-  --card: oklch(0.145 0 0);
-  --card-foreground: oklch(0.985 0 0);
-  --popover: oklch(0.145 0 0);
-  --popover-foreground: oklch(0.985 0 0);
-  --primary: oklch(0.985 0 0);
-  --primary-foreground: oklch(0.205 0 0);
-  --secondary: oklch(0.269 0 0);
-  --secondary-foreground: oklch(0.985 0 0);
-  --muted: oklch(0.269 0 0);
-  --muted-foreground: oklch(0.708 0 0);
-  --accent: oklch(0.269 0 0);
-  --accent-foreground: oklch(0.985 0 0);
-  --destructive: oklch(0.396 0.141 25.723);
-  --destructive-foreground: oklch(0.637 0.237 25.331);
-  --border: oklch(0.269 0 0);
-  --input: oklch(0.269 0 0);
-  --ring: oklch(0.439 0 0);
-  --chart-1: oklch(0.488 0.243 264.376);
-  --chart-2: oklch(0.696 0.17 162.48);
-  --chart-3: oklch(0.769 0.188 70.08);
-  --chart-4: oklch(0.627 0.265 303.9);
-  --chart-5: oklch(0.645 0.246 16.439);
-  --sidebar: oklch(0.205 0 0);
-  --sidebar-foreground: oklch(0.985 0 0);
-  --sidebar-primary: oklch(0.488 0.243 264.376);
-  --sidebar-primary-foreground: oklch(0.985 0 0);
-  --sidebar-accent: oklch(0.269 0 0);
-  --sidebar-accent-foreground: oklch(0.985 0 0);
-  --sidebar-border: oklch(0.269 0 0);
-  --sidebar-ring: oklch(0.439 0 0);
+/* Theme nền sáng - tông pastel dịu mắt, chỉ khai báo bảng màu gốc */
+[data-theme='red'] {
+  --w-bg: #f8e5e2;
+  --w-qr: #efc9c3;
+  --w-light-1: #fffaf9;
+  --w-light-2: #fcefed;
+  --w-strong: #5e1a1f;
+  --w-text: #6e2a2e;
+  --w-soft: #9b2c32;
+  --w-muted: #8a4d4f;
+  --w-rgb: 155 44 50;
+}
+[data-theme='green'] {
+  --w-bg: #e9eee2;
+  --w-qr: #cfdbc2;
+  --w-light-1: #fbfcf8;
+  --w-light-2: #f2f5ed;
+  --w-strong: #2b3a1e;
+  --w-text: #3a4a2c;
+  --w-soft: #5b7a3a;
+  --w-muted: #63735a;
+  --w-rgb: 91 122 58;
+}
+[data-theme='pink'] {
+  --w-bg: #fae8ec;
+  --w-qr: #f2c9d3;
+  --w-light-1: #fffafb;
+  --w-light-2: #fdf1f4;
+  --w-strong: #64213a;
+  --w-text: #74324a;
+  --w-soft: #a53d5f;
+  --w-muted: #8c5a6a;
+  --w-rgb: 165 61 95;
+}
+[data-theme='white'] {
+  --w-bg: #f8f5ef;
+  --w-qr: #e9e1d3;
+  --w-light-1: #fffefb;
+  --w-light-2: #fbf9f4;
+  --w-strong: #2b2520;
+  --w-text: #3d3530;
+  --w-soft: #8a6a3b;
+  --w-muted: #6e655c;
+  --w-rgb: 138 106 59;
+}
+[data-theme='tho'] {
+  --w-bg: #f5ead6;
+  --w-qr: #e6d1aa;
+  --w-light-1: #fffcf6;
+  --w-light-2: #faf3e6;
+  --w-strong: #45290f;
+  --w-text: #573a1d;
+  --w-soft: #8f5b22;
+  --w-muted: #7a5c3d;
+  --w-rgb: 143 91 34;
+}
+[data-theme='moc'] {
+  --w-bg: #e1efe9;
+  --w-qr: #bcdccf;
+  --w-light-1: #f9fcfb;
+  --w-light-2: #eef6f2;
+  --w-strong: #10382c;
+  --w-text: #1f4a3d;
+  --w-soft: #2a7560;
+  --w-muted: #4f7568;
+  --w-rgb: 42 117 96;
+}
+
+/* Màu suy ra cho mọi theme nền sáng */
+[data-theme]:not([data-theme='bordeaux']) {
+  --w-card: color-mix(in srgb, var(--w-light-1) 70%, var(--w-bg));
+  --w-frame: color-mix(in srgb, var(--w-light-1) 40%, transparent);
+  --w-glow: color-mix(in srgb, var(--w-light-1) 75%, transparent);
+  --w-spot: rgb(var(--w-rgb) / 0.09);
+  --w-tint: rgb(var(--w-rgb) / 0.15);
+  --w-label: var(--w-muted);
+  --w-line: rgb(var(--w-rgb) / 0.35);
+  --w-line-strong: var(--w-soft);
+  --w-btn: var(--w-soft);
+  --w-btn-hover: var(--w-strong);
+  --w-input-bg: rgb(255 255 255 / 0.5);
+  --w-input-border: rgb(var(--w-rgb) / 0.4);
+
+  --w-header-bg: color-mix(in srgb, var(--w-bg) 95%, transparent);
+  --w-header-border: var(--w-qr);
+  --w-header-text: var(--w-strong);
+  --w-header-hover: var(--w-light-2);
+  --w-header-mobile-bg: var(--w-light-2);
+
+  --w-float-bg: var(--w-bg);
+  --w-float-hover: var(--w-qr);
+  --w-float-border: var(--w-qr);
+  --w-float-text: var(--w-soft);
+
+  --w-cover-from: var(--w-bg);
+  --w-cover-to: var(--w-qr);
+  --w-cover-text: var(--w-strong);
+  --w-cover-sub: var(--w-strong);
+  --w-cover-accent: var(--w-soft);
+  --w-cover-date: var(--w-strong);
+  --w-cover-btn-from: var(--w-light-1);
+  --w-cover-btn-to: var(--w-light-2);
+  --w-cover-btn-border: var(--w-qr);
+  --w-cover-btn-text: var(--w-strong);
+  --w-seal-to: var(--w-light-2);
+  --w-seal-border: var(--w-qr);
+  --w-seal-heart: var(--w-soft);
+
+  --w-cer-bg: var(--w-bg);
+  --w-cer-names: var(--w-strong);
+  --w-cer-sub: var(--w-strong);
+  --w-cer-lunar: var(--w-text);
+  --w-cer-accent: var(--w-soft);
+  --w-cer-btn-bg: rgb(255 255 255 / 0.9);
+  --w-cer-btn-text: #171717;
 }
 
 @theme inline {
-  --font-sans: var(--font-geist), ui-sans-serif, system-ui, sans-serif;
+  --font-sans: var(--font-body), ui-sans-serif, system-ui, sans-serif;
   --font-serif: var(--font-script), ui-serif, Georgia, serif;
   --font-mono: ui-monospace, monospace;
+
+  --color-w-bg: var(--w-bg);
+  --color-w-card: var(--w-card);
+  --color-w-qr: var(--w-qr);
+  --color-w-tint: var(--w-tint);
+  --color-w-strong: var(--w-strong);
+  --color-w-text: var(--w-text);
+  --color-w-soft: var(--w-soft);
+  --color-w-muted: var(--w-muted);
+  --color-w-label: var(--w-label);
+  --color-w-line: var(--w-line);
+  --color-w-line-strong: var(--w-line-strong);
+  --color-w-btn: var(--w-btn);
+  --color-w-btn-hover: var(--w-btn-hover);
+  --color-w-input-bg: var(--w-input-bg);
+  --color-w-input-border: var(--w-input-border);
+  --color-w-gold: #d4a574;
+  --color-w-gold-light: #e8c88a;
+
   --color-background: var(--background);
   --color-foreground: var(--foreground);
-  --color-card: var(--card);
-  --color-card-foreground: var(--card-foreground);
-  --color-popover: var(--popover);
-  --color-popover-foreground: var(--popover-foreground);
-  --color-primary: var(--primary);
-  --color-primary-foreground: var(--primary-foreground);
-  --color-secondary: var(--secondary);
-  --color-secondary-foreground: var(--secondary-foreground);
-  --color-muted: var(--muted);
-  --color-muted-foreground: var(--muted-foreground);
-  --color-accent: var(--accent);
-  --color-accent-foreground: var(--accent-foreground);
-  --color-destructive: var(--destructive);
-  --color-destructive-foreground: var(--destructive-foreground);
   --color-border: var(--border);
-  --color-input: var(--input);
   --color-ring: var(--ring);
-  --color-chart-1: var(--chart-1);
-  --color-chart-2: var(--chart-2);
-  --color-chart-3: var(--chart-3);
-  --color-chart-4: var(--chart-4);
-  --color-chart-5: var(--chart-5);
+  --color-accent: var(--accent);
+  --color-muted-foreground: var(--muted-foreground);
   --radius-sm: calc(var(--radius) - 4px);
   --radius-md: calc(var(--radius) - 2px);
   --radius-lg: var(--radius);
   --radius-xl: calc(var(--radius) + 4px);
-  --color-sidebar: var(--sidebar);
-  --color-sidebar-foreground: var(--sidebar-foreground);
-  --color-sidebar-primary: var(--sidebar-primary);
-  --color-sidebar-primary-foreground: var(--sidebar-primary-foreground);
-  --color-sidebar-accent: var(--sidebar-accent);
-  --color-sidebar-accent-foreground: var(--sidebar-accent-foreground);
-  --color-sidebar-border: var(--sidebar-border);
-  --color-sidebar-ring: var(--sidebar-ring);
 }
 
 @layer base {
@@ -124,965 +231,1036 @@
     scroll-behavior: smooth;
   }
   body {
-    @apply bg-red-50 text-red-900;
+    background: radial-gradient(ellipse 120% 50% at 50% 0%, var(--w-glow), transparent 70%) var(--w-bg);
+    color: var(--w-text);
   }
-  /* Safe area cho mobile (notch, home indicator) */
-  .safe-area-inset-top {
-    padding-top: env(safe-area-inset-top);
-  }
+}
 
-  /* Theme màu nền - đồng bộ 1 màu toàn trang */
-  [data-theme="red"] .theme-bg,
-  [data-theme="red"] [data-theme-section],
-  [data-theme="red"] .section-end,
-  [data-theme="red"] .theme-cover,
-  [data-theme="red"] .card-wedding,
-  [data-theme="red"] .theme-card,
-  [data-theme="red"] .border-wedding-section {
-    background-color: #fca5a5 !important;
-  }
-  [data-theme="green"] .theme-bg,
-  [data-theme="green"] [data-theme-section],
-  [data-theme="green"] .section-end,
-  [data-theme="green"] .theme-cover,
-  [data-theme="green"] .card-wedding,
-  [data-theme="green"] .theme-card,
-  [data-theme="green"] .border-wedding-section {
-    background-color: #bbf7d0 !important;
-  }
-  [data-theme="pink"] .theme-bg,
-  [data-theme="pink"] [data-theme-section],
-  [data-theme="pink"] .section-end,
-  [data-theme="pink"] .theme-cover,
-  [data-theme="pink"] .card-wedding,
-  [data-theme="pink"] .theme-card,
-  [data-theme="pink"] .border-wedding-section {
-    background-color: #fecdd3 !important;
-  }
-  [data-theme="white"] .theme-bg,
-  [data-theme="white"] [data-theme-section],
-  [data-theme="white"] .section-end,
-  [data-theme="white"] .theme-cover,
-  [data-theme="white"] .card-wedding,
-  [data-theme="white"] .theme-card,
-  [data-theme="white"] .border-wedding-section {
-    background-color: #f5f5f5 !important;
-  }
-  [data-theme="tho"] .theme-bg,
-  [data-theme="tho"] [data-theme-section],
-  [data-theme="tho"] .section-end,
-  [data-theme="tho"] .theme-cover,
-  [data-theme="tho"] .card-wedding,
-  [data-theme="tho"] .theme-card,
-  [data-theme="tho"] .border-wedding-section {
-    background-color: #fde68a !important;
-  }
-  [data-theme="moc"] .theme-bg,
-  [data-theme="moc"] [data-theme-section],
-  [data-theme="moc"] .section-end,
-  [data-theme="moc"] .theme-cover,
-  [data-theme="moc"] .card-wedding,
-  [data-theme="moc"] .theme-card,
-  [data-theme="moc"] .border-wedding-section {
-    background-color: #86efac !important;
-  }
-  /* Đỏ thẫm #4a0101 - mặc định, đồng bộ toàn trang */
-  [data-theme="bordeaux"] .theme-bg,
-  [data-theme="bordeaux"] [data-theme-section],
-  [data-theme="bordeaux"] .section-end,
-  [data-theme="bordeaux"] .theme-cover,
-  [data-theme="bordeaux"] .border-wedding-section {
-    background-color: #4a0101 !important;
-  }
-  [data-theme="bordeaux"] .card-wedding,
-  [data-theme="bordeaux"] .theme-card {
-    background-color: #5a0d0d !important;
-  }
-  [data-theme="bordeaux"] .theme-bg,
-  [data-theme="bordeaux"] [data-theme-section] {
-    color: #fecaca;
-  }
-  [data-theme="bordeaux"] [data-theme-section] .text-red-900 { color: #fef2f2 !important; }
-  [data-theme="bordeaux"] [data-theme-section] .text-red-800 { color: #fee2e2 !important; }
-  [data-theme="bordeaux"] [data-theme-section] .text-red-700 { color: #fecaca !important; }
-  [data-theme="bordeaux"] [data-theme-section] .text-red-600 { color: #fca5a5 !important; }
-  [data-theme="bordeaux"] [data-theme-section] .text-red-500 { color: #f87171 !important; }
-  [data-theme="bordeaux"] [data-theme-section="end"] .text-red-600 { color: #fca5a5 !important; }
-  [data-theme="bordeaux"] [data-theme-section="end"] .text-red-900 { color: #fef2f2 !important; }
-  [data-theme="bordeaux"] [data-theme-section="end"] .gift-icon-wrap {
-    background-color: rgba(212, 165, 116, 0.4) !important;
-  }
-  [data-theme="bordeaux"] [data-theme-section="end"] .gift-icon-wrap .text-red-600 {
-    color: #5e0202 !important;
-  }
-  /* Card màu đồng bộ theme bordeaux */
-  [data-theme="bordeaux"] .card-wedding,
-  [data-theme="bordeaux"] .theme-card {
-    background-color: #5a0d0d !important;
-  }
-  /* QR card đồng bộ theme */
-  [data-theme="red"] .theme-qr-card { background-color: #f87171 !important; }
-  [data-theme="green"] .theme-qr-card { background-color: #86efac !important; }
-  [data-theme="pink"] .theme-qr-card { background-color: #fda4af !important; }
-  [data-theme="white"] .theme-qr-card { background-color: #e5e5e5 !important; }
-  [data-theme="tho"] .theme-qr-card { background-color: #fcd34d !important; }
-  [data-theme="moc"] .theme-qr-card { background-color: #4ade80 !important; }
-  [data-theme="bordeaux"] .theme-qr-card { background-color: #5a0d0d !important; }
-  [data-theme="bordeaux"] .card-wedding .text-red-900,
-  [data-theme="bordeaux"] .theme-card .text-red-900 { color: #fef2f2 !important; }
-  [data-theme="bordeaux"] .card-wedding .text-red-800,
-  [data-theme="bordeaux"] .theme-card .text-red-800 { color: #fee2e2 !important; }
-  [data-theme="bordeaux"] .card-wedding .text-red-700,
-  [data-theme="bordeaux"] .theme-card .text-red-700 { color: #fecaca !important; }
-  [data-theme="bordeaux"] .card-wedding .text-red-600,
-  [data-theme="bordeaux"] .theme-card .text-red-600 { color: #fca5a5 !important; }
-  [data-theme="bordeaux"] .card-wedding .text-red-500,
-  [data-theme="bordeaux"] .theme-card .text-red-500 { color: #f87171 !important; }
-  [data-theme="bordeaux"] .card-wedding .bg-red-100,
-  [data-theme="bordeaux"] .theme-card .bg-red-100 { background-color: rgba(212, 165, 116, 0.25) !important; }
-  [data-theme="bordeaux"] .theme-card input,
-  [data-theme="bordeaux"] .theme-card textarea {
-    background-color: rgba(94, 2, 2, 0.6) !important;
-    border-color: rgba(212, 165, 116, 0.5) !important;
-    color: #fef2f2 !important;
-  }
-  [data-theme="bordeaux"] .theme-card input::placeholder,
-  [data-theme="bordeaux"] .theme-card textarea::placeholder {
-    color: rgba(254, 202, 202, 0.6) !important;
-  }
-  [data-theme="bordeaux"] .theme-card label,
-  [data-theme="bordeaux"] .theme-card [class*="FieldLegend"],
-  [data-theme="bordeaux"] .theme-card .text-red-800 { color: #fee2e2 !important; }
-  [data-theme="bordeaux"] .theme-card .text-red-600.text-sm { color: #fca5a5 !important; }
-  [data-theme="bordeaux"] .add-to-calendar {
-    background-color: #b91c1c !important;
-  }
-  [data-theme="bordeaux"] .add-to-calendar:hover {
-    background-color: #dc2626 !important;
-  }
-  [data-theme="bordeaux"] .theme-footer-inner {
-    border-color: rgba(212, 165, 116, 0.7);
-    box-shadow: 0 0 0 1px rgba(255, 255, 255, 0.15) inset;
-  }
-  [data-theme="bordeaux"] .theme-footer-title {
-    color: #fef2f2 !important;
-  }
-  [data-theme="bordeaux"] .theme-footer-text {
-    color: #fecaca !important;
-  }
-  [data-theme="bordeaux"] .theme-footer-credit {
-    color: rgba(254, 202, 202, 0.7) !important;
-  }
-  [data-theme]:not([data-theme="bordeaux"]) .theme-footer-title {
-    color: #5a0d0d !important;
-  }
-  [data-theme]:not([data-theme="bordeaux"]) .theme-footer-text {
-    color: #5a0d0d !important;
-  }
-  [data-theme]:not([data-theme="bordeaux"]) .theme-footer-credit {
-    color: #9ca3af !important;
-  }
+/* Đổi theme: màu mới lan ra theo vòng tròn từ nút bấm (xem hooks/use-wedding-theme.ts) */
+::view-transition-old(root),
+::view-transition-new(root) {
+  animation: none;
+  mix-blend-mode: normal;
+}
 
-  /* Theme text colors - đồng bộ màu chữ thuận mắt theo nền */
-  [data-theme="red"] [data-theme-section] .text-red-900 { color: #7f1d1d !important; }
-  [data-theme="red"] [data-theme-section] .text-red-800 { color: #991b1b !important; }
-  [data-theme="red"] [data-theme-section] .text-red-700 { color: #b91c1c !important; }
-  [data-theme="red"] [data-theme-section] .text-red-600 { color: #dc2626 !important; }
-  [data-theme="red"] [data-theme-section] .text-red-500 { color: #b91c1c !important; }
-  [data-theme="red"] [data-theme-section] .bg-red-100 { background-color: rgba(185, 28, 28, 0.2) !important; }
-  [data-theme="red"] [data-theme-section] .add-to-calendar { background-color: #b91c1c !important; }
-  [data-theme="red"] [data-theme-section] .add-to-calendar:hover { background-color: #991b1b !important; }
-
-  [data-theme="green"] [data-theme-section] .text-red-900 { color: #14532d !important; }
-  [data-theme="green"] [data-theme-section] .text-red-800 { color: #166534 !important; }
-  [data-theme="green"] [data-theme-section] .text-red-700 { color: #15803d !important; }
-  [data-theme="green"] [data-theme-section] .text-red-600 { color: #16a34a !important; }
-  [data-theme="green"] [data-theme-section] .text-red-500 { color: #15803d !important; }
-  [data-theme="green"] [data-theme-section] .bg-red-100 { background-color: rgba(22, 101, 52, 0.2) !important; }
-  [data-theme="green"] [data-theme-section] .add-to-calendar { background-color: #15803d !important; }
-  [data-theme="green"] [data-theme-section] .add-to-calendar:hover { background-color: #166534 !important; }
-
-  [data-theme="pink"] [data-theme-section] .text-red-900 { color: #881337 !important; }
-  [data-theme="pink"] [data-theme-section] .text-red-800 { color: #9f1239 !important; }
-  [data-theme="pink"] [data-theme-section] .text-red-700 { color: #be123c !important; }
-  [data-theme="pink"] [data-theme-section] .text-red-600 { color: #e11d48 !important; }
-  [data-theme="pink"] [data-theme-section] .text-red-500 { color: #be123c !important; }
-  [data-theme="pink"] [data-theme-section] .bg-red-100 { background-color: rgba(190, 18, 60, 0.2) !important; }
-  [data-theme="pink"] [data-theme-section] .add-to-calendar { background-color: #be123c !important; }
-  [data-theme="pink"] [data-theme-section] .add-to-calendar:hover { background-color: #9f1239 !important; }
-
-  [data-theme="white"] [data-theme-section] .text-red-900 { color: #171717 !important; }
-  [data-theme="white"] [data-theme-section] .text-red-800 { color: #404040 !important; }
-  [data-theme="white"] [data-theme-section] .text-red-700 { color: #525252 !important; }
-  [data-theme="white"] [data-theme-section] .text-red-600 { color: #737373 !important; }
-  [data-theme="white"] [data-theme-section] .text-red-500 { color: #525252 !important; }
-  [data-theme="white"] [data-theme-section] .bg-red-100 { background-color: rgba(82, 82, 82, 0.15) !important; }
-  [data-theme="white"] [data-theme-section] .add-to-calendar { background-color: #525252 !important; }
-  [data-theme="white"] [data-theme-section] .add-to-calendar:hover { background-color: #404040 !important; }
-
-  [data-theme="tho"] [data-theme-section] .text-red-900 { color: #713f12 !important; }
-  [data-theme="tho"] [data-theme-section] .text-red-800 { color: #a16207 !important; }
-  [data-theme="tho"] [data-theme-section] .text-red-700 { color: #b45309 !important; }
-  [data-theme="tho"] [data-theme-section] .text-red-600 { color: #ca8a04 !important; }
-  [data-theme="tho"] [data-theme-section] .text-red-500 { color: #a16207 !important; }
-  [data-theme="tho"] [data-theme-section] .bg-red-100 { background-color: rgba(161, 98, 7, 0.25) !important; }
-  [data-theme="tho"] [data-theme-section] .add-to-calendar { background-color: #a16207 !important; }
-  [data-theme="tho"] [data-theme-section] .add-to-calendar:hover { background-color: #ca8a04 !important; }
-
-  [data-theme="moc"] [data-theme-section] .text-red-900 { color: #14532d !important; }
-  [data-theme="moc"] [data-theme-section] .text-red-800 { color: #166534 !important; }
-  [data-theme="moc"] [data-theme-section] .text-red-700 { color: #15803d !important; }
-  [data-theme="moc"] [data-theme-section] .text-red-600 { color: #16a34a !important; }
-  [data-theme="moc"] [data-theme-section] .text-red-500 { color: #15803d !important; }
-  [data-theme="moc"] [data-theme-section] .bg-red-100 { background-color: rgba(22, 101, 52, 0.2) !important; }
-  [data-theme="moc"] [data-theme-section] .add-to-calendar { background-color: #15803d !important; }
-  [data-theme="moc"] [data-theme-section] .add-to-calendar:hover { background-color: #166534 !important; }
-
-  /* Form input/textarea - đồng bộ theo theme (light themes) */
-  [data-theme="red"] .theme-card input,
-  [data-theme="red"] .theme-card textarea {
-    border-color: rgba(185, 28, 28, 0.4) !important;
-    background-color: rgba(254, 202, 202, 0.3) !important;
-    color: #7f1d1d !important;
+@layer components {
+  /* Khung và thẻ */
+  /* Khung chung của mọi phần - giữ cùng độ rộng, viền, bo góc và khoảng đệm */
+  .section-frame {
+    background-color: var(--w-frame);
+    border: 1px solid var(--w-line);
+    border-radius: 1.25rem;
+    padding: 1.5rem;
+    box-shadow: 0 1px 3px rgb(0 0 0 / 0.06);
   }
-  [data-theme="red"] .theme-card input::placeholder,
-  [data-theme="red"] .theme-card textarea::placeholder { color: rgba(127, 29, 29, 0.6) !important; }
-  [data-theme="green"] .theme-card input,
-  [data-theme="green"] .theme-card textarea {
-    border-color: rgba(22, 101, 52, 0.4) !important;
-    background-color: rgba(187, 247, 208, 0.5) !important;
-    color: #14532d !important;
+  @media (min-width: 640px) {
+    .section-frame {
+      padding: 2rem;
+    }
   }
-  [data-theme="green"] .theme-card input::placeholder,
-  [data-theme="green"] .theme-card textarea::placeholder { color: rgba(20, 83, 45, 0.6) !important; }
-  [data-theme="pink"] .theme-card input,
-  [data-theme="pink"] .theme-card textarea {
-    border-color: rgba(190, 18, 60, 0.4) !important;
-    background-color: rgba(254, 205, 211, 0.5) !important;
-    color: #881337 !important;
+  @media (min-width: 768px) {
+    .section-frame {
+      padding: 2.5rem;
+    }
   }
-  [data-theme="pink"] .theme-card input::placeholder,
-  [data-theme="pink"] .theme-card textarea::placeholder { color: rgba(136, 19, 55, 0.6) !important; }
-  [data-theme="white"] .theme-card input,
-  [data-theme="white"] .theme-card textarea {
-    border-color: rgba(82, 82, 82, 0.3) !important;
-    background-color: rgba(245, 245, 245, 0.8) !important;
-    color: #171717 !important;
+  .card-wedding {
+    background-color: var(--w-card);
+    border: 2px solid var(--w-line);
+    box-shadow: 0 2px 8px rgb(0 0 0 / 0.08);
+    transition: box-shadow 0.25s ease, transform 0.25s ease, border-color 0.25s ease;
   }
-  [data-theme="white"] .theme-card input::placeholder,
-  [data-theme="white"] .theme-card textarea::placeholder { color: rgba(23, 23, 23, 0.5) !important; }
-  [data-theme="tho"] .theme-card input,
-  [data-theme="tho"] .theme-card textarea {
-    border-color: rgba(161, 98, 7, 0.4) !important;
-    background-color: rgba(254, 243, 199, 0.5) !important;
-    color: #713f12 !important;
+  .card-wedding:hover {
+    border-color: var(--w-line-strong);
+    box-shadow: 0 12px 28px -8px rgb(0 0 0 / 0.18);
+    transform: translateY(-3px);
   }
-  [data-theme="tho"] .theme-card input::placeholder,
-  [data-theme="tho"] .theme-card textarea::placeholder { color: rgba(113, 63, 18, 0.6) !important; }
-  [data-theme="moc"] .theme-card input,
-  [data-theme="moc"] .theme-card textarea {
-    border-color: rgba(22, 101, 52, 0.4) !important;
-    background-color: rgba(187, 247, 208, 0.5) !important;
-    color: #14532d !important;
+  .field-wedding {
+    width: 100%;
+    border: 1px solid var(--w-input-border);
+    background-color: var(--w-input-bg);
+    color: var(--w-strong);
+    border-radius: 0.75rem;
+    padding: 0.75rem 1rem;
+    font-size: 1rem;
+    outline: none;
+    transition: box-shadow 0.2s ease, border-color 0.2s ease;
   }
-  [data-theme="moc"] .theme-card input::placeholder,
-  [data-theme="moc"] .theme-card textarea::placeholder { color: rgba(20, 83, 45, 0.6) !important; }
-
-  /* Footer text - đồng bộ theo theme */
-  [data-theme="red"] .theme-footer-title,
-  [data-theme="red"] .theme-footer-text { color: #7f1d1d !important; }
-  [data-theme="red"] .theme-footer-credit { color: #991b1b !important; }
-  [data-theme="green"] .theme-footer-title,
-  [data-theme="green"] .theme-footer-text { color: #14532d !important; }
-  [data-theme="green"] .theme-footer-credit { color: #166534 !important; }
-  [data-theme="pink"] .theme-footer-title,
-  [data-theme="pink"] .theme-footer-text { color: #881337 !important; }
-  [data-theme="pink"] .theme-footer-credit { color: #9f1239 !important; }
-  [data-theme="white"] .theme-footer-title,
-  [data-theme="white"] .theme-footer-text { color: #171717 !important; }
-  [data-theme="white"] .theme-footer-credit { color: #525252 !important; }
-  [data-theme="tho"] .theme-footer-title,
-  [data-theme="tho"] .theme-footer-text { color: #713f12 !important; }
-  [data-theme="tho"] .theme-footer-credit { color: #a16207 !important; }
-  [data-theme="moc"] .theme-footer-title,
-  [data-theme="moc"] .theme-footer-text { color: #14532d !important; }
-  [data-theme="moc"] .theme-footer-credit { color: #166534 !important; }
-
-  /* Theme QR card - chữ tương phản tốt */
-  [data-theme="red"] .theme-qr-card h3,
-  [data-theme="red"] .theme-qr-card p { color: #7f1d1d !important; }
-  [data-theme="green"] .theme-qr-card h3,
-  [data-theme="green"] .theme-qr-card p { color: #14532d !important; }
-  [data-theme="pink"] .theme-qr-card h3,
-  [data-theme="pink"] .theme-qr-card p { color: #881337 !important; }
-  [data-theme="white"] .theme-qr-card h3,
-  [data-theme="white"] .theme-qr-card p { color: #171717 !important; }
-  [data-theme="tho"] .theme-qr-card h3,
-  [data-theme="tho"] .theme-qr-card p { color: #713f12 !important; }
-  [data-theme="moc"] .theme-qr-card h3,
-  [data-theme="moc"] .theme-qr-card p { color: #14532d !important; }
-  [data-theme="bordeaux"] .theme-qr-card h3,
-  [data-theme="bordeaux"] .theme-qr-card p { color: #fef2f2 !important; }
-
-  /* Theme Header - đồng bộ màu theo theme */
-  [data-theme="red"] .theme-header {
-    background-color: rgba(252, 165, 165, 0.95);
-    border-color: rgba(248, 113, 113, 0.8);
+  .field-wedding::placeholder {
+    color: var(--w-muted);
+    opacity: 0.7;
   }
-  [data-theme="red"] .theme-header-brand,
-  [data-theme="red"] .theme-header-link {
-    color: #7f1d1d;
+  .field-wedding option {
+    color: #1c1917;
+    background-color: #ffffff;
   }
-  [data-theme="red"] .theme-header-link:hover {
-    color: #991b1b;
+  .field-wedding:focus-visible {
+    border-color: var(--w-line-strong);
+    box-shadow: 0 0 0 3px var(--w-tint);
   }
-  [data-theme="red"] .theme-header-menu-btn {
+  .field-wedding[aria-invalid='true'] {
+    border-color: #dc2626;
+  }
+  /* Nền trắng để thông báo lỗi đọc được trên mọi theme */
+  .error-wedding {
+    border-radius: 0.5rem;
+    background-color: rgb(255 255 255 / 0.92);
     color: #b91c1c;
-  }
-  [data-theme="red"] .theme-header-menu-btn:hover {
-    background-color: rgba(254, 202, 202, 0.8);
-  }
-  [data-theme="red"] .theme-header-mobile {
-    background-color: #fecaca;
-    border-color: #fca5a5;
-  }
-  [data-theme="red"] .theme-header-mobile-link:hover {
-    background-color: #fca5a5;
+    padding: 0.5rem 0.75rem;
+    font-size: 0.875rem;
+    font-weight: 500;
   }
 
-  [data-theme="green"] .theme-header {
-    background-color: rgba(187, 247, 208, 0.95);
-    border-color: rgba(134, 239, 172, 0.8);
-  }
-  [data-theme="green"] .theme-header-brand,
-  [data-theme="green"] .theme-header-link {
-    color: #14532d;
-  }
-  [data-theme="green"] .theme-header-link:hover {
-    color: #166534;
-  }
-  [data-theme="green"] .theme-header-menu-btn {
-    color: #15803d;
-  }
-  [data-theme="green"] .theme-header-menu-btn:hover {
-    background-color: rgba(187, 247, 208, 0.8);
-  }
-  [data-theme="green"] .theme-header-mobile {
-    background-color: #bbf7d0;
-    border-color: #86efac;
-  }
-  [data-theme="green"] .theme-header-mobile-link:hover {
-    background-color: #86efac;
-  }
-
-  [data-theme="pink"] .theme-header {
-    background-color: rgba(254, 205, 211, 0.95);
-    border-color: rgba(253, 164, 175, 0.8);
-  }
-  [data-theme="pink"] .theme-header-brand,
-  [data-theme="pink"] .theme-header-link {
-    color: #881337;
-  }
-  [data-theme="pink"] .theme-header-link:hover {
-    color: #9f1239;
-  }
-  [data-theme="pink"] .theme-header-menu-btn {
-    color: #be123c;
-  }
-  [data-theme="pink"] .theme-header-menu-btn:hover {
-    background-color: rgba(254, 205, 211, 0.8);
-  }
-  [data-theme="pink"] .theme-header-mobile {
-    background-color: #fecdd3;
-    border-color: #fda4af;
-  }
-  [data-theme="pink"] .theme-header-mobile-link:hover {
-    background-color: #fda4af;
-  }
-
-  [data-theme="white"] .theme-header {
-    background-color: rgba(245, 245, 245, 0.95);
-    border-color: rgba(229, 229, 229, 0.8);
-  }
-  [data-theme="white"] .theme-header-brand,
-  [data-theme="white"] .theme-header-link {
-    color: #171717;
-  }
-  [data-theme="white"] .theme-header-link:hover {
-    color: #404040;
-  }
-  [data-theme="white"] .theme-header-menu-btn {
-    color: #525252;
-  }
-  [data-theme="white"] .theme-header-menu-btn:hover {
-    background-color: rgba(229, 229, 229, 0.8);
-  }
-  [data-theme="white"] .theme-header-mobile {
-    background-color: #f5f5f5;
-    border-color: #e5e5e5;
-  }
-  [data-theme="white"] .theme-header-mobile-link:hover {
-    background-color: #e5e5e5;
-  }
-
-  [data-theme="tho"] .theme-header {
-    background: linear-gradient(135deg, rgba(253, 230, 138, 0.95) 0%, rgba(212, 165, 116, 0.95) 100%);
-    border-color: rgba(202, 138, 4, 0.6);
-  }
-  [data-theme="tho"] .theme-header-brand,
-  [data-theme="tho"] .theme-header-link {
-    color: #713f12;
-  }
-  [data-theme="tho"] .theme-header-link:hover {
-    color: #a16207;
-  }
-  [data-theme="tho"] .theme-header-menu-btn {
-    color: #a16207;
-  }
-  [data-theme="tho"] .theme-header-menu-btn:hover {
-    background-color: rgba(253, 230, 138, 0.8);
-  }
-  [data-theme="tho"] .theme-header-mobile {
-    background: linear-gradient(180deg, #fde68a 0%, #fcd34d 100%);
-    border-color: #ca8a04;
-  }
-  [data-theme="tho"] .theme-header-mobile-link:hover {
-    background-color: #fcd34d;
-  }
-
-  [data-theme="moc"] .theme-header {
-    background: linear-gradient(135deg, rgba(187, 247, 208, 0.95) 0%, rgba(74, 222, 128, 0.95) 100%);
-    border-color: rgba(34, 197, 94, 0.6);
-  }
-  [data-theme="moc"] .theme-header-brand,
-  [data-theme="moc"] .theme-header-link {
-    color: #14532d;
-  }
-  [data-theme="moc"] .theme-header-link:hover {
-    color: #166534;
-  }
-  [data-theme="moc"] .theme-header-menu-btn {
-    color: #15803d;
-  }
-  [data-theme="moc"] .theme-header-menu-btn:hover {
-    background-color: rgba(187, 247, 208, 0.8);
-  }
-  [data-theme="moc"] .theme-header-mobile {
-    background: linear-gradient(180deg, #bbf7d0 0%, #86efac 100%);
-    border-color: #22c55e;
-  }
-  [data-theme="moc"] .theme-header-mobile-link:hover {
-    background-color: #86efac;
-  }
-
-  [data-theme="bordeaux"] .theme-header {
-    background-color: rgba(74, 1, 1, 0.95);
-    border-color: rgba(212, 165, 116, 0.6);
-    border-bottom-width: 2px;
-  }
-  [data-theme="bordeaux"] .theme-header-brand,
-  [data-theme="bordeaux"] .theme-header-link {
-    color: #fef2f2;
-  }
-  [data-theme="bordeaux"] .theme-header-link:hover {
-    color: #ffffff;
-  }
-  [data-theme="bordeaux"] .theme-header-menu-btn {
-    color: #fecaca;
-  }
-  [data-theme="bordeaux"] .theme-header-menu-btn:hover {
-    background-color: rgba(122, 3, 3, 0.8);
-  }
-  [data-theme="bordeaux"] .theme-header-mobile {
-    background-color: #4a0101;
-    border-color: rgba(212, 165, 116, 0.5);
-  }
-  [data-theme="bordeaux"] .theme-header-mobile-link:hover {
-    background-color: #5e0202;
-  }
-
-  /* Theme Floating Actions - đồng bộ màu theo theme */
-  [data-theme="red"] .theme-floating-btn {
-    background-color: #fca5a5 !important;
-    border-color: #f87171;
-    color: #b91c1c;
-  }
-  [data-theme="red"] .theme-floating-btn:hover {
-    background-color: #f87171 !important;
-    color: #991b1b;
-  }
-  [data-theme="red"] .theme-floating-btn:focus-visible {
-    box-shadow: 0 0 0 2px white, 0 0 0 4px #dc2626;
-  }
-
-  [data-theme="green"] .theme-floating-btn {
-    background-color: #bbf7d0 !important;
-    border-color: #86efac;
-    color: #15803d;
-  }
-  [data-theme="green"] .theme-floating-btn:hover {
-    background-color: #86efac !important;
-    color: #166534;
-  }
-  [data-theme="green"] .theme-floating-btn:focus-visible {
-    box-shadow: 0 0 0 2px white, 0 0 0 4px #22c55e;
-  }
-
-  [data-theme="pink"] .theme-floating-btn {
-    background-color: #fecdd3 !important;
-    border-color: #fda4af;
-    color: #be123c;
-  }
-  [data-theme="pink"] .theme-floating-btn:hover {
-    background-color: #fda4af !important;
-    color: #9f1239;
-  }
-  [data-theme="pink"] .theme-floating-btn:focus-visible {
-    box-shadow: 0 0 0 2px white, 0 0 0 4px #f43f5e;
-  }
-
-  [data-theme="white"] .theme-floating-btn {
-    background-color: #f5f5f5 !important;
-    border-color: #d4d4d4;
-    color: #525252;
-  }
-  [data-theme="white"] .theme-floating-btn:hover {
-    background-color: #e5e5e5 !important;
-    color: #404040;
-  }
-  [data-theme="white"] .theme-floating-btn:focus-visible {
-    box-shadow: 0 0 0 2px white, 0 0 0 4px #737373;
-  }
-
-  [data-theme="tho"] .theme-floating-btn {
-    background-color: #fde68a !important;
-    border-color: #fcd34d;
-    color: #a16207;
-  }
-  [data-theme="tho"] .theme-floating-btn:hover {
-    background-color: #fcd34d !important;
-    color: #713f12;
-  }
-  [data-theme="tho"] .theme-floating-btn:focus-visible {
-    box-shadow: 0 0 0 2px white, 0 0 0 4px #ca8a04;
-  }
-
-  [data-theme="moc"] .theme-floating-btn {
-    background-color: #86efac !important;
-    border-color: #4ade80;
-    color: #15803d;
-  }
-  [data-theme="moc"] .theme-floating-btn:hover {
-    background-color: #4ade80 !important;
-    color: #166534;
-  }
-  [data-theme="moc"] .theme-floating-btn:focus-visible {
-    box-shadow: 0 0 0 2px white, 0 0 0 4px #22c55e;
-  }
-
-  [data-theme="bordeaux"] .theme-floating-btn {
-    background-color: #4a0101 !important;
-    border-color: rgba(212, 165, 116, 0.8);
-    color: #fecaca;
-  }
-  [data-theme="bordeaux"] .theme-floating-btn:hover {
-    background-color: #5e0202 !important;
-    color: #ffffff;
-  }
-  [data-theme="bordeaux"] .theme-floating-btn:focus-visible {
-    box-shadow: 0 0 0 2px #5e0202, 0 0 0 4px #fecaca;
-  }
-
-  /* Thiệp cover - mặc định bordeaux */
-  .cover-border-inner { background-color: #4a0101; }
-  .cover-flap { background: linear-gradient(to bottom, #5e0202, #4a0101); }
-  .cover-content { background: linear-gradient(to bottom, #5e0202, #4a0101); }
-  .cover-text-announcement { color: #fecaca; }
-  .cover-text-names { color: white; }
-  .cover-icon-heart { color: #d4a574; }
-  .cover-divider-line { background-color: #d4a574; }
-  .cover-divider-left { background: linear-gradient(to right, transparent, #d4a574) !important; }
-  .cover-divider-right { background: linear-gradient(to left, transparent, #d4a574) !important; }
-  .cover-divider-dot { background-color: #d4a574; }
-  .cover-text-date { color: #e8c88a; }
-  .cover-text-invite { color: rgba(212, 165, 116, 0.95); }
-  .cover-btn {
-    background: linear-gradient(to bottom, #e8c88a, #d4a574);
-    color: #4a0101;
-    border-color: rgba(245, 230, 200, 0.5);
-  }
-  .cover-btn:hover:not(:disabled) {
-    background: linear-gradient(to bottom, #f0d9a0, #e0b580);
-    box-shadow: 0 6px 24px rgba(212, 165, 116, 0.4);
-  }
-  .cover-seal-glow { background-color: #d4a574; }
-  .cover-seal {
-    background: linear-gradient(to bottom right, #e8c88a, #d4a574, #b8860b);
-    border-color: #f5e6c8;
-  }
-  .cover-seal-heart { color: #5e0202; }
-
-  /* Thiệp cover - theme red */
-  [data-theme="red"] .cover-border-inner { background-color: #f87171 !important; }
-  [data-theme="red"] .cover-flap { background: linear-gradient(to bottom, #fca5a5, #f87171) !important; }
-  [data-theme="red"] .cover-content { background: linear-gradient(to bottom, #fca5a5, #f87171) !important; }
-  [data-theme="red"] .cover-text-announcement,
-  [data-theme="red"] .cover-text-names { color: #7f1d1d !important; }
-  [data-theme="red"] .cover-icon-heart { color: #b91c1c !important; }
-  [data-theme="red"] .cover-divider-line,
-  [data-theme="red"] .cover-divider-dot { background-color: #b91c1c !important; }
-  [data-theme="red"] .cover-divider-left { background: linear-gradient(to right, transparent, #b91c1c) !important; }
-  [data-theme="red"] .cover-divider-right { background: linear-gradient(to left, transparent, #b91c1c) !important; }
-  [data-theme="red"] .cover-text-date,
-  [data-theme="red"] .cover-text-invite { color: #7f1d1d !important; }
-  [data-theme="red"] .cover-btn {
-    background: linear-gradient(to bottom, #fef2f2, #fecaca) !important;
-    color: #7f1d1d !important;
-    border-color: #fca5a5 !important;
-  }
-  [data-theme="red"] .cover-seal-glow { background-color: #fca5a5 !important; }
-  [data-theme="red"] .cover-seal {
-    background: linear-gradient(to bottom right, #fef2f2, #fecaca) !important;
-    border-color: #fca5a5 !important;
-  }
-  [data-theme="red"] .cover-seal-heart { color: #b91c1c !important; }
-
-  /* Thiệp cover - theme green */
-  [data-theme="green"] .cover-border-inner { background-color: #86efac !important; }
-  [data-theme="green"] .cover-flap { background: linear-gradient(to bottom, #bbf7d0, #86efac) !important; }
-  [data-theme="green"] .cover-content { background: linear-gradient(to bottom, #bbf7d0, #86efac) !important; }
-  [data-theme="green"] .cover-text-announcement,
-  [data-theme="green"] .cover-text-names { color: #14532d !important; }
-  [data-theme="green"] .cover-icon-heart { color: #15803d !important; }
-  [data-theme="green"] .cover-divider-line,
-  [data-theme="green"] .cover-divider-dot { background-color: #15803d !important; }
-  [data-theme="green"] .cover-divider-left { background: linear-gradient(to right, transparent, #15803d) !important; }
-  [data-theme="green"] .cover-divider-right { background: linear-gradient(to left, transparent, #15803d) !important; }
-  [data-theme="green"] .cover-text-date,
-  [data-theme="green"] .cover-text-invite { color: #14532d !important; }
-  [data-theme="green"] .cover-btn {
-    background: linear-gradient(to bottom, #dcfce7, #bbf7d0) !important;
-    color: #14532d !important;
-    border-color: #86efac !important;
-  }
-  [data-theme="green"] .cover-seal-glow { background-color: #86efac !important; }
-  [data-theme="green"] .cover-seal {
-    background: linear-gradient(to bottom right, #dcfce7, #bbf7d0) !important;
-    border-color: #86efac !important;
-  }
-  [data-theme="green"] .cover-seal-heart { color: #15803d !important; }
-
-  /* Thiệp cover - theme pink */
-  [data-theme="pink"] .cover-border-inner { background-color: #fda4af !important; }
-  [data-theme="pink"] .cover-flap { background: linear-gradient(to bottom, #fecdd3, #fda4af) !important; }
-  [data-theme="pink"] .cover-content { background: linear-gradient(to bottom, #fecdd3, #fda4af) !important; }
-  [data-theme="pink"] .cover-text-announcement,
-  [data-theme="pink"] .cover-text-names { color: #881337 !important; }
-  [data-theme="pink"] .cover-icon-heart { color: #be123c !important; }
-  [data-theme="pink"] .cover-divider-line,
-  [data-theme="pink"] .cover-divider-dot { background-color: #be123c !important; }
-  [data-theme="pink"] .cover-divider-left { background: linear-gradient(to right, transparent, #be123c) !important; }
-  [data-theme="pink"] .cover-divider-right { background: linear-gradient(to left, transparent, #be123c) !important; }
-  [data-theme="pink"] .cover-text-date,
-  [data-theme="pink"] .cover-text-invite { color: #881337 !important; }
-  [data-theme="pink"] .cover-btn {
-    background: linear-gradient(to bottom, #fff1f2, #fecdd3) !important;
-    color: #881337 !important;
-    border-color: #fda4af !important;
-  }
-  [data-theme="pink"] .cover-seal-glow { background-color: #fda4af !important; }
-  [data-theme="pink"] .cover-seal {
-    background: linear-gradient(to bottom right, #fff1f2, #fecdd3) !important;
-    border-color: #fda4af !important;
-  }
-  [data-theme="pink"] .cover-seal-heart { color: #be123c !important; }
-
-  /* Thiệp cover - theme white */
-  [data-theme="white"] .cover-border-inner { background-color: #e5e5e5 !important; }
-  [data-theme="white"] .cover-flap { background: linear-gradient(to bottom, #f5f5f5, #e5e5e5) !important; }
-  [data-theme="white"] .cover-content { background: linear-gradient(to bottom, #f5f5f5, #e5e5e5) !important; }
-  [data-theme="white"] .cover-text-announcement,
-  [data-theme="white"] .cover-text-names { color: #171717 !important; }
-  [data-theme="white"] .cover-icon-heart { color: #525252 !important; }
-  [data-theme="white"] .cover-divider-line,
-  [data-theme="white"] .cover-divider-dot { background-color: #737373 !important; }
-  [data-theme="white"] .cover-divider-left { background: linear-gradient(to right, transparent, #737373) !important; }
-  [data-theme="white"] .cover-divider-right { background: linear-gradient(to left, transparent, #737373) !important; }
-  [data-theme="white"] .cover-text-date,
-  [data-theme="white"] .cover-text-invite { color: #404040 !important; }
-  [data-theme="white"] .cover-btn {
-    background: linear-gradient(to bottom, #fafafa, #f5f5f5) !important;
-    color: #171717 !important;
-    border-color: #d4d4d4 !important;
-  }
-  [data-theme="white"] .cover-seal-glow { background-color: #e5e5e5 !important; }
-  [data-theme="white"] .cover-seal {
-    background: linear-gradient(to bottom right, #fafafa, #f5f5f5) !important;
-    border-color: #d4d4d4 !important;
-  }
-  [data-theme="white"] .cover-seal-heart { color: #525252 !important; }
-
-  /* Thiệp cover - theme tho */
-  [data-theme="tho"] .cover-border-inner { background-color: #fcd34d !important; }
-  [data-theme="tho"] .cover-flap { background: linear-gradient(to bottom, #fde68a, #fcd34d) !important; }
-  [data-theme="tho"] .cover-content { background: linear-gradient(to bottom, #fde68a, #fcd34d) !important; }
-  [data-theme="tho"] .cover-text-announcement,
-  [data-theme="tho"] .cover-text-names { color: #713f12 !important; }
-  [data-theme="tho"] .cover-icon-heart { color: #a16207 !important; }
-  [data-theme="tho"] .cover-divider-line,
-  [data-theme="tho"] .cover-divider-dot { background-color: #a16207 !important; }
-  [data-theme="tho"] .cover-divider-left { background: linear-gradient(to right, transparent, #a16207) !important; }
-  [data-theme="tho"] .cover-divider-right { background: linear-gradient(to left, transparent, #a16207) !important; }
-  [data-theme="tho"] .cover-text-date,
-  [data-theme="tho"] .cover-text-invite { color: #713f12 !important; }
-  [data-theme="tho"] .cover-btn {
-    background: linear-gradient(to bottom, #fef3c7, #fde68a) !important;
-    color: #713f12 !important;
-    border-color: #fcd34d !important;
-  }
-  [data-theme="tho"] .cover-seal-glow { background-color: #fcd34d !important; }
-  [data-theme="tho"] .cover-seal {
-    background: linear-gradient(to bottom right, #fef3c7, #fde68a) !important;
-    border-color: #fcd34d !important;
-  }
-  [data-theme="tho"] .cover-seal-heart { color: #a16207 !important; }
-
-  /* Thiệp cover - theme moc */
-  [data-theme="moc"] .cover-border-inner { background-color: #4ade80 !important; }
-  [data-theme="moc"] .cover-flap { background: linear-gradient(to bottom, #86efac, #4ade80) !important; }
-  [data-theme="moc"] .cover-content { background: linear-gradient(to bottom, #86efac, #4ade80) !important; }
-  [data-theme="moc"] .cover-text-announcement,
-  [data-theme="moc"] .cover-text-names { color: #14532d !important; }
-  [data-theme="moc"] .cover-icon-heart { color: #15803d !important; }
-  [data-theme="moc"] .cover-divider-line,
-  [data-theme="moc"] .cover-divider-dot { background-color: #15803d !important; }
-  [data-theme="moc"] .cover-divider-left { background: linear-gradient(to right, transparent, #15803d) !important; }
-  [data-theme="moc"] .cover-divider-right { background: linear-gradient(to left, transparent, #15803d) !important; }
-  [data-theme="moc"] .cover-text-date,
-  [data-theme="moc"] .cover-text-invite { color: #14532d !important; }
-  [data-theme="moc"] .cover-btn {
-    background: linear-gradient(to bottom, #dcfce7, #bbf7d0) !important;
-    color: #14532d !important;
-    border-color: #4ade80 !important;
-  }
-  [data-theme="moc"] .cover-seal-glow { background-color: #4ade80 !important; }
-  [data-theme="moc"] .cover-seal {
-    background: linear-gradient(to bottom right, #dcfce7, #bbf7d0) !important;
-    border-color: #4ade80 !important;
-  }
-  [data-theme="moc"] .cover-seal-heart { color: #15803d !important; }
-
-  @keyframes fadeIn {
+  /* Sổ lưu bút */
+  .guestbook-panel {
+    background-color: var(--w-card);
+    border: 1px solid var(--w-line);
+    border-radius: 1.25rem;
+    box-shadow: 0 2px 8px rgb(0 0 0 / 0.08);
+  }
+  .wish-card {
+    position: relative;
+    overflow: hidden;
+    background-color: var(--w-card);
+    border: 1px solid var(--w-line);
+    border-radius: 1rem;
+    padding: 1.25rem 1.25rem 1rem 1.5rem;
+  }
+  .wish-card::before {
+    content: '';
+    position: absolute;
+    inset: 0 auto 0 0;
+    width: 3px;
+    background: linear-gradient(to bottom, var(--color-w-gold-light), var(--color-w-gold));
+  }
+  .wish-quote {
+    position: absolute;
+    top: -0.75rem;
+    right: 0.75rem;
+    font-family: Georgia, serif;
+    font-size: 5rem;
+    line-height: 1;
+    color: var(--color-w-gold);
+    opacity: 0.18;
+    pointer-events: none;
+  }
+  .wish-avatar {
+    background: linear-gradient(135deg, var(--color-w-gold-light), var(--color-w-gold));
+    color: #fff;
+    text-shadow: 0 1px 1px rgb(0 0 0 / 0.2);
+  }
+  .wish-new {
+    animation: wish-in 0.6s ease-out;
+  }
+  @keyframes wish-in {
     from {
       opacity: 0;
-      transform: translateY(16px);
-    }
-    to {
-      opacity: 1;
-      transform: translateY(0);
+      transform: translateY(-8px);
     }
   }
+  .wish-scroll {
+    scrollbar-width: thin;
+    scrollbar-color: var(--w-line-strong) transparent;
+  }
 
-  @keyframes fadeInUp {
+  /* Album ảnh */
+  .gallery-stage {
+    overflow: hidden;
+    border-radius: 1.25rem;
+    background-color: #0c0a09;
+    box-shadow:
+      0 0 0 1px rgb(212 165 116 / 0.35),
+      0 30px 60px -25px rgb(0 0 0 / 0.55);
+  }
+  .gallery-stage:focus-visible {
+    outline: 2px solid var(--color-w-gold);
+    outline-offset: 4px;
+  }
+  .gallery-layer {
+    position: absolute;
+    inset: 0;
+    opacity: 0;
+    transition: opacity 1.4s cubic-bezier(0.4, 0, 0.2, 1);
+    pointer-events: none;
+  }
+  .gallery-layer.is-active {
+    opacity: 1;
+  }
+  /* Hiệu ứng Ken Burns: ảnh đang hiện phóng chậm, ảnh vừa rời đi chỉ trả về kích thước gốc sau khi đã mờ hẳn */
+  .gallery-kenburns {
+    position: absolute;
+    inset: 0;
+    transform: scale(1);
+    transition: transform 0s linear 1.4s;
+  }
+  .kb-left {
+    transform-origin: 30% 40%;
+  }
+  .kb-right {
+    transform-origin: 70% 60%;
+  }
+  .gallery-layer.is-active .gallery-kenburns {
+    transform: scale(1.12);
+    transition: transform 7s ease-out;
+  }
+  .gallery-vignette {
+    position: absolute;
+    inset: 0;
+    pointer-events: none;
+    background:
+      linear-gradient(to top, rgb(0 0 0 / 0.7) 0%, rgb(0 0 0 / 0.15) 40%, transparent 60%),
+      linear-gradient(to bottom, rgb(0 0 0 / 0.35), transparent 22%);
+  }
+  .gallery-caption {
+    animation: gallery-caption-in 0.9s cubic-bezier(0.2, 0.7, 0.2, 1) both;
+  }
+  @keyframes gallery-caption-in {
     from {
       opacity: 0;
-      transform: translateY(24px);
-    }
-    to {
-      opacity: 1;
-      transform: translateY(0);
+      transform: translateY(12px);
     }
   }
-
-  @keyframes fadeInScale {
+  .gallery-progress-track {
+    position: relative;
+    flex: 1;
+    height: 2px;
+    overflow: hidden;
+    border-radius: 9999px;
+    background-color: rgb(255 255 255 / 0.3);
+  }
+  .gallery-progress-done,
+  .gallery-progress-fill {
+    position: absolute;
+    inset: 0;
+    border-radius: inherit;
+    background-color: #fff;
+  }
+  .gallery-progress-fill {
+    transform-origin: left;
+    animation-name: gallery-progress;
+    animation-duration: var(--slide-duration, 5s);
+    animation-timing-function: linear;
+    animation-fill-mode: forwards;
+  }
+  .gallery-progress-fill.is-static {
+    animation: none;
+    opacity: 0.85;
+  }
+  @keyframes gallery-progress {
+    from {
+      transform: scaleX(0);
+    }
+    to {
+      transform: scaleX(1);
+    }
+  }
+  .gallery-icon-btn {
+    width: 2.5rem;
+    height: 2.5rem;
+    border-radius: 9999px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    color: #fff;
+    background-color: rgb(0 0 0 / 0.3);
+    border: 1px solid rgb(255 255 255 / 0.25);
+    backdrop-filter: blur(8px);
+    transition: background-color 0.2s ease;
+  }
+  .gallery-icon-btn:hover {
+    background-color: rgb(0 0 0 / 0.5);
+  }
+  .gallery-icon-btn:focus-visible {
+    outline: 2px solid rgb(255 255 255 / 0.7);
+    outline-offset: 2px;
+  }
+  .gallery-thumb {
+    position: relative;
+    flex-shrink: 0;
+    width: 4.5rem;
+    height: 3.25rem;
+    overflow: hidden;
+    border-radius: 0.6rem;
+    opacity: 0.5;
+    filter: saturate(0.6);
+    transition: opacity 0.4s ease, filter 0.4s ease, box-shadow 0.4s ease;
+  }
+  .gallery-thumb:hover {
+    opacity: 0.85;
+  }
+  .gallery-thumb.is-active {
+    opacity: 1;
+    filter: none;
+    box-shadow: 0 0 0 2px var(--color-w-gold);
+  }
+  .gallery-thumb:focus-visible {
+    outline: 2px solid var(--color-w-gold);
+    outline-offset: 2px;
+  }
+  .gallery-thumb:first-child {
+    margin-left: auto;
+  }
+  .gallery-thumb:last-child {
+    margin-right: auto;
+  }
+  @media (min-width: 640px) {
+    .gallery-thumb {
+      width: 6.5rem;
+      height: 4.25rem;
+    }
+  }
+  .gallery-nav {
+    position: absolute;
+    top: 50%;
+    transform: translateY(-50%);
+    width: 2.75rem;
+    height: 2.75rem;
+    border-radius: 9999px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    color: #fff;
+    background-color: rgb(0 0 0 / 0.25);
+    border: 1px solid rgb(255 255 255 / 0.25);
+    backdrop-filter: blur(8px);
+    transition: background-color 0.2s ease, opacity 0.3s ease;
+    touch-action: manipulation;
+  }
+  .gallery-nav:hover {
+    background-color: rgb(255 255 255 / 0.25);
+  }
+  .gallery-nav:focus-visible {
+    outline: 2px solid rgb(255 255 255 / 0.6);
+  }
+  .gallery-lightbox-slide {
+    animation: gallery-fade 0.5s ease-out;
+  }
+  @keyframes gallery-fade {
     from {
       opacity: 0;
       transform: scale(0.98);
     }
-    to {
-      opacity: 1;
-      transform: scale(1);
+  }
+  .gallery-strip {
+    scrollbar-width: none;
+  }
+  .gallery-strip::-webkit-scrollbar {
+    display: none;
+  }
+
+  /* Thiệp đôi ở ảnh bìa - trang ảnh + trang giấy ngà viền vàng, giữ nguyên màu trên mọi theme */
+  .invite-fold {
+    overflow: hidden;
+    border-radius: 1.25rem;
+    border: 1px solid rgb(176 132 64 / 0.55);
+    background-color: #fffaf0;
+    box-shadow:
+      0 2px 6px rgb(0 0 0 / 0.08),
+      0 30px 60px -30px rgb(0 0 0 / 0.5);
+  }
+  .invite-photo {
+    background: linear-gradient(200deg, #fffaf0, #f6ead3);
+  }
+  /* Ô ảnh: ảnh tự lấp đầy hoặc hiện trọn (xem components/hero-photo.tsx) */
+  .invite-photo-window {
+    position: relative;
+    overflow: hidden;
+    border-radius: 0.35rem;
+    background-color: #2a1a14;
+    box-shadow:
+      0 0 0 1px rgb(176 132 64 / 0.55),
+      0 10px 24px -12px rgb(60 30 10 / 0.55);
+  }
+  .invite-photo-window::after {
+    content: '';
+    position: absolute;
+    inset: 0.5rem;
+    border: 1px solid rgb(255 255 255 / 0.55);
+    border-radius: 0.2rem;
+    pointer-events: none;
+  }
+  .invite-photo-backdrop {
+    object-fit: cover;
+    filter: blur(22px) brightness(0.75) saturate(1.1);
+    scale: 1.15;
+  }
+  .invite-paper {
+    position: relative;
+    background: linear-gradient(160deg, #fffaf0, #f6ead3);
+  }
+  /* Nếp gấp giữa hai trang: ngang trên mobile, dọc trên desktop */
+  .invite-paper::before {
+    content: '';
+    position: absolute;
+    inset: 0 0 auto 0;
+    height: 18px;
+    background: linear-gradient(to bottom, rgb(0 0 0 / 0.14), transparent);
+    pointer-events: none;
+  }
+  @media (min-width: 768px) {
+    .invite-paper::before {
+      inset: 0 auto 0 0;
+      width: 22px;
+      height: auto;
+      background: linear-gradient(to right, rgb(0 0 0 / 0.16), transparent);
+    }
+    .invite-photo::after {
+      content: '';
+      position: absolute;
+      inset: 0 0 0 auto;
+      width: 22px;
+      background: linear-gradient(to left, rgb(0 0 0 / 0.12), transparent);
+      pointer-events: none;
     }
   }
-}
-
-@layer components {
-  /* Card thông báo lễ - đồng bộ màu nền theo theme */
-  .ceremony-announcement-card {
-    background-color: #4a0101;
-    border: 1px solid rgba(212, 165, 116, 0.5);
-    box-shadow: 0 0 0 1px rgba(255, 255, 255, 0.05) inset;
+  .invite-card-inner {
+    position: relative;
+    border: 1px solid rgb(176 132 64 / 0.6);
+    border-radius: 0.55rem;
+    outline: 1px solid rgb(176 132 64 / 0.28);
+    outline-offset: -7px;
+    background-image: radial-gradient(rgb(176 132 64 / 0.07) 1px, transparent 1px);
+    background-size: 14px 14px;
   }
-  .ceremony-card-subtitle { color: #fecaca; }
-  .ceremony-card-names { color: white; }
-  .ceremony-card-lunar { color: rgba(212, 165, 116, 0.9); }
-  /* Theme red - cùng màu nền #fca5a5 */
-  [data-theme="red"] .ceremony-announcement-card {
-    background-color: #fca5a5 !important;
-    border-color: rgba(248, 113, 113, 0.6);
-    box-shadow: 0 1px 3px rgba(0, 0, 0, 0.08);
+  .invite-corner {
+    width: 3.25rem;
+    height: 3.25rem;
+    color: #b08440;
+    pointer-events: none;
   }
-  [data-theme="red"] .ceremony-announcement-card .ceremony-card-subtitle { color: #7f1d1d !important; }
-  [data-theme="red"] .ceremony-announcement-card .ceremony-card-names { color: #7f1d1d !important; }
-  [data-theme="red"] .ceremony-announcement-card .ceremony-card-lunar { color: #991b1b !important; }
-  [data-theme="red"] .ceremony-announcement-card .ceremony-card-datetime { border-color: rgba(185, 28, 28, 0.4) !important; }
-  [data-theme="red"] .ceremony-announcement-card .ceremony-divider { background-color: rgba(185, 28, 28, 0.5) !important; }
-  [data-theme="red"] .ceremony-announcement-card .ceremony-accent { color: #b91c1c !important; }
-  /* Theme green - cùng màu nền #bbf7d0 */
-  [data-theme="green"] .ceremony-announcement-card {
-    background-color: #bbf7d0 !important;
-    border-color: rgba(134, 239, 172, 0.6);
-    box-shadow: 0 1px 3px rgba(0, 0, 0, 0.08);
+  @media (min-width: 640px) {
+    .invite-corner {
+      width: 4.25rem;
+      height: 4.25rem;
+    }
   }
-  [data-theme="green"] .ceremony-announcement-card .ceremony-card-subtitle { color: #14532d !important; }
-  [data-theme="green"] .ceremony-announcement-card .ceremony-card-names { color: #14532d !important; }
-  [data-theme="green"] .ceremony-announcement-card .ceremony-card-lunar { color: #166534 !important; }
-  [data-theme="green"] .ceremony-announcement-card .ceremony-card-datetime { border-color: rgba(22, 101, 52, 0.4) !important; }
-  [data-theme="green"] .ceremony-announcement-card .ceremony-divider { background-color: rgba(22, 101, 52, 0.5) !important; }
-  [data-theme="green"] .ceremony-announcement-card .ceremony-accent { color: #15803d !important; }
-  /* Theme pink - cùng màu nền #fecdd3 */
-  [data-theme="pink"] .ceremony-announcement-card {
-    background-color: #fecdd3 !important;
-    border-color: rgba(253, 164, 175, 0.6);
-    box-shadow: 0 1px 3px rgba(0, 0, 0, 0.08);
+  .invite-hy {
+    color: #b91c1c;
+    font-size: 1.6rem;
+    font-weight: 700;
+    line-height: 1;
   }
-  [data-theme="pink"] .ceremony-announcement-card .ceremony-card-subtitle { color: #881337 !important; }
-  [data-theme="pink"] .ceremony-announcement-card .ceremony-card-names { color: #881337 !important; }
-  [data-theme="pink"] .ceremony-announcement-card .ceremony-card-lunar { color: #9f1239 !important; }
-  [data-theme="pink"] .ceremony-announcement-card .ceremony-card-datetime { border-color: rgba(190, 18, 60, 0.4) !important; }
-  [data-theme="pink"] .ceremony-announcement-card .ceremony-divider { background-color: rgba(190, 18, 60, 0.5) !important; }
-  [data-theme="pink"] .ceremony-announcement-card .ceremony-accent { color: #be123c !important; }
-  /* Theme white - cùng màu nền #f5f5f5 */
-  [data-theme="white"] .ceremony-announcement-card {
-    background-color: #f5f5f5 !important;
-    border-color: rgba(163, 163, 163, 0.6);
-    box-shadow: 0 1px 3px rgba(0, 0, 0, 0.08);
+  .invite-kicker {
+    font-size: 0.7rem;
+    letter-spacing: 0.35em;
+    text-transform: uppercase;
+    color: #8a6a3b;
   }
-  [data-theme="white"] .ceremony-announcement-card .ceremony-card-subtitle { color: #404040 !important; }
-  [data-theme="white"] .ceremony-announcement-card .ceremony-card-names { color: #171717 !important; }
-  [data-theme="white"] .ceremony-announcement-card .ceremony-card-lunar { color: #525252 !important; }
-  [data-theme="white"] .ceremony-announcement-card .ceremony-card-datetime { border-color: rgba(82, 82, 82, 0.4) !important; }
-  [data-theme="white"] .ceremony-announcement-card .ceremony-divider { background-color: rgba(82, 82, 82, 0.5) !important; }
-  [data-theme="white"] .ceremony-announcement-card .ceremony-accent { color: #525252 !important; }
-  /* Theme tho - cùng màu nền #fde68a */
-  [data-theme="tho"] .ceremony-announcement-card {
-    background-color: #fde68a !important;
-    border-color: rgba(253, 230, 138, 0.6);
-    box-shadow: 0 1px 3px rgba(0, 0, 0, 0.08);
+  .invite-arch {
+    overflow: hidden;
+    border-radius: 9999px 9999px 0.75rem 0.75rem;
+    box-shadow:
+      0 0 0 4px #fffaf0,
+      0 0 0 5px #b08440,
+      0 14px 28px -12px rgb(0 0 0 / 0.45);
   }
-  [data-theme="tho"] .ceremony-announcement-card .ceremony-card-subtitle { color: #713f12 !important; }
-  [data-theme="tho"] .ceremony-announcement-card .ceremony-card-names { color: #713f12 !important; }
-  [data-theme="tho"] .ceremony-announcement-card .ceremony-card-lunar { color: #a16207 !important; }
-  [data-theme="tho"] .ceremony-announcement-card .ceremony-card-datetime { border-color: rgba(161, 98, 7, 0.4) !important; }
-  [data-theme="tho"] .ceremony-announcement-card .ceremony-divider { background-color: rgba(161, 98, 7, 0.5) !important; }
-  [data-theme="tho"] .ceremony-announcement-card .ceremony-accent { color: #a16207 !important; }
-  /* Theme moc - cùng màu nền #86efac */
-  [data-theme="moc"] .ceremony-announcement-card {
-    background-color: #86efac !important;
-    border-color: rgba(134, 239, 172, 0.6);
-    box-shadow: 0 1px 3px rgba(0, 0, 0, 0.08);
+  .invite-names,
+  .invite-date {
+    color: #5a1a1c;
   }
-  [data-theme="moc"] .ceremony-announcement-card .ceremony-card-subtitle { color: #14532d !important; }
-  [data-theme="moc"] .ceremony-announcement-card .ceremony-card-names { color: #14532d !important; }
-  [data-theme="moc"] .ceremony-announcement-card .ceremony-card-lunar { color: #166534 !important; }
-  [data-theme="moc"] .ceremony-announcement-card .ceremony-card-datetime { border-color: rgba(22, 101, 52, 0.4) !important; }
-  [data-theme="moc"] .ceremony-announcement-card .ceremony-divider { background-color: rgba(22, 101, 52, 0.5) !important; }
-  [data-theme="moc"] .ceremony-announcement-card .ceremony-accent { color: #15803d !important; }
-  /* Theme bordeaux - giữ nền đậm */
-  [data-theme="bordeaux"] .ceremony-announcement-card {
-    background-color: #4a0101 !important;
-    border-color: rgba(212, 165, 116, 0.5);
+  .invite-amp {
+    color: #b08440;
   }
-  [data-theme="bordeaux"] .ceremony-announcement-card .ceremony-card-subtitle { color: #fecaca !important; }
-  [data-theme="bordeaux"] .ceremony-announcement-card .ceremony-card-names { color: #fff !important; }
-  [data-theme="bordeaux"] .ceremony-announcement-card .ceremony-card-lunar { color: rgba(212, 165, 116, 0.9) !important; }
-  [data-theme]:not([data-theme="bordeaux"]) .ceremony-announcement-card a {
-    background: rgba(255, 255, 255, 0.9) !important;
-    color: #171717 !important;
+  .invite-muted {
+    color: #7a6450;
+  }
+  .invite-rule {
+    height: 1px;
+    background: linear-gradient(to right, transparent, #b08440);
+  }
+  .invite-rule:last-child {
+    background: linear-gradient(to left, transparent, #b08440);
+  }
+  .invite-date-day {
+    color: #7f1d1d;
+    border-inline: 1px solid rgb(176 132 64 / 0.6);
+  }
+  .invite-count-box {
+    border: 1px solid rgb(176 132 64 / 0.55);
+    border-radius: 0.6rem;
+    background-color: rgb(255 255 255 / 0.65);
+    color: #5a1a1c;
+    box-shadow: inset 0 0 0 3px #fffaf0, inset 0 0 0 4px rgb(176 132 64 / 0.18);
+  }
+  .hero-card-in {
+    animation: hero-card-in 1.1s cubic-bezier(0.2, 0.8, 0.2, 1) 0.2s both;
+  }
+  @keyframes hero-card-in {
+    from {
+      opacity: 0;
+      translate: 0 24px;
+    }
   }
 
-  /* Khung nhẹ cho các section */
-  .section-frame-light {
-    border: 1px solid rgba(212, 165, 116, 0.35);
+  /* Phong bì mừng cưới - giữ màu đỏ vàng truyền thống trên mọi theme */
+  .gift-env {
+    position: relative;
+    display: block;
+    width: 100%;
+    max-width: 20rem;
+    aspect-ratio: 16 / 11;
+    border-radius: 0.9rem;
+    perspective: 1200px;
+    cursor: pointer;
+    animation: gift-float 3.2s ease-in-out infinite;
+  }
+  .gift-env:hover {
+    animation-play-state: paused;
+  }
+  .gift-env:focus-visible {
+    outline: 2px solid var(--color-w-gold);
+    outline-offset: 6px;
+  }
+  .gift-env.is-open {
+    animation: none;
+    cursor: default;
+  }
+  .gift-env-back {
+    position: absolute;
+    inset: 0;
+    border-radius: inherit;
+    background: linear-gradient(160deg, #991b1b, #7f1d1d);
+    box-shadow: 0 24px 40px -20px rgb(0 0 0 / 0.65);
+    transition: box-shadow 0.3s ease;
+  }
+  .gift-env:hover .gift-env-back {
+    box-shadow: 0 30px 50px -18px rgb(0 0 0 / 0.7);
+  }
+  .gift-env-letter {
+    position: absolute;
+    inset: 7% 7% 8%;
+    z-index: 1;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    padding-top: 7%;
+    border-radius: 0.5rem;
+    background: linear-gradient(#fffdf7, #fbefd9);
+    color: #b91c1c;
+    box-shadow: 0 2px 8px rgb(0 0 0 / 0.2);
+    transition: transform 0.75s cubic-bezier(0.2, 0.8, 0.2, 1) 0.35s;
+  }
+  .gift-env-letter-mark {
+    font-size: 1.6rem;
+    font-weight: 700;
+    line-height: 1;
+  }
+  .gift-env-letter-text {
+    margin-top: 0.35rem;
+    font-size: 0.6rem;
+    letter-spacing: 0.25em;
+    text-transform: uppercase;
+    color: #92400e;
+  }
+  .gift-env.is-open .gift-env-letter {
+    transform: translateY(-58%);
+  }
+  .gift-env-pocket {
+    position: absolute;
+    inset: 0;
+    z-index: 2;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: flex-end;
+    padding-bottom: 7%;
+    border-radius: inherit;
+    background: linear-gradient(170deg, #dc2626, #b91c1c 55%, #991b1b);
+    clip-path: polygon(0 0, 50% 48%, 100% 0, 100% 100%, 0 100%);
+    color: #fcd34d;
+  }
+  .gift-env-pocket::after {
+    content: '';
+    position: absolute;
+    inset: 0.45rem;
+    border: 1px solid rgb(252 211 77 / 0.45);
+    border-radius: 0.6rem;
+    pointer-events: none;
+  }
+  .gift-env-title {
+    font-family: var(--font-script), cursive;
+    font-size: 2rem;
+    line-height: 1;
+    text-shadow: 0 2px 4px rgb(0 0 0 / 0.3);
+  }
+  .gift-env-name {
+    margin-top: 0.4rem;
+    font-size: 0.65rem;
+    font-weight: 600;
+    letter-spacing: 0.25em;
+    text-transform: uppercase;
+    color: #fde68a;
+  }
+  .gift-env-flap {
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    height: 50%;
+    z-index: 3;
+    border-radius: 0.9rem 0.9rem 0 0;
+    background: linear-gradient(180deg, #b91c1c, #8f1717);
+    clip-path: polygon(0 0, 100% 0, 50% 100%);
+    transform-origin: top;
+    /* Nắp lật qua 90° thì chuyển xuống dưới tấm thiệp để thiệp trượt ra phía trước */
+    transition:
+      transform 0.6s cubic-bezier(0.4, 0, 0.2, 1),
+      z-index 0s linear 0.3s;
+  }
+  .gift-env.is-open .gift-env-flap {
+    transform: rotateX(180deg);
+    z-index: 0;
+  }
+  .gift-env-seal {
+    position: absolute;
+    left: 50%;
+    top: 48%;
+    z-index: 4;
+    translate: -50% -50%;
+    width: 3rem;
+    height: 3rem;
+    display: grid;
+    place-items: center;
+    border-radius: 9999px;
+    background: radial-gradient(circle at 35% 30%, #fde68a, #d4a574 60%, #a16207);
+    color: #7f1d1d;
+    font-size: 1.45rem;
+    font-weight: 700;
+    box-shadow:
+      0 4px 10px rgb(0 0 0 / 0.35),
+      inset 0 0 0 2px rgb(255 255 255 / 0.35);
+    animation: gift-pulse 2.2s ease-out infinite;
+    transition:
+      opacity 0.3s ease,
+      scale 0.3s ease;
+  }
+  .gift-env.is-open .gift-env-seal {
+    opacity: 0;
+    scale: 0.5;
+    animation: none;
+  }
+  .gift-hint-icon {
+    animation: gift-tap 1.6s ease-in-out infinite;
+  }
+  .gift-reveal {
+    animation: gift-reveal 0.7s cubic-bezier(0.2, 0.8, 0.2, 1) both;
+  }
+  @keyframes gift-float {
+    0%,
+    100% {
+      transform: translateY(0) rotate(0deg);
+    }
+    50% {
+      transform: translateY(-6px) rotate(-0.6deg);
+    }
+  }
+  @keyframes gift-pulse {
+    0% {
+      box-shadow:
+        0 4px 10px rgb(0 0 0 / 0.35),
+        inset 0 0 0 2px rgb(255 255 255 / 0.35),
+        0 0 0 0 rgb(252 211 77 / 0.55);
+    }
+    70%,
+    100% {
+      box-shadow:
+        0 4px 10px rgb(0 0 0 / 0.35),
+        inset 0 0 0 2px rgb(255 255 255 / 0.35),
+        0 0 0 14px rgb(252 211 77 / 0);
+    }
+  }
+  @keyframes gift-tap {
+    0%,
+    100% {
+      transform: translateY(0);
+    }
+    50% {
+      transform: translateY(-3px) rotate(-8deg);
+    }
+  }
+  @keyframes gift-reveal {
+    from {
+      opacity: 0;
+      transform: translateY(28px) scale(0.92);
+    }
+  }
+
+  /* Header */
+  .theme-header {
+    background-color: var(--w-header-bg);
+    border-color: var(--w-header-border);
+    color: var(--w-header-text);
+  }
+  .theme-header-btn:hover {
+    background-color: var(--w-header-hover);
+  }
+  .theme-header-mobile {
+    background-color: var(--w-header-mobile-bg);
+    border-color: var(--w-header-border);
+  }
+
+  /* Nút nổi (nhạc, đổi màu) */
+  .theme-floating-btn {
+    background-color: var(--w-float-bg);
+    border-color: var(--w-float-border);
+    color: var(--w-float-text);
+  }
+  .theme-floating-btn:hover {
+    background-color: var(--w-float-hover);
+  }
+  .theme-floating-btn:focus-visible {
+    box-shadow: 0 0 0 2px var(--w-float-bg), 0 0 0 4px var(--w-float-text);
+  }
+  .theme-toast {
+    position: absolute;
+    right: calc(100% + 0.75rem);
+    top: 0.375rem;
+    white-space: nowrap;
+    padding: 0.375rem 0.875rem;
+    border-radius: 999px;
+    font-size: 0.8125rem;
+    font-weight: 500;
+    background-color: var(--w-float-bg);
+    color: var(--w-float-text);
+    border: 1px solid var(--w-float-border);
+    box-shadow: 0 6px 16px -6px rgb(0 0 0 / 0.3);
+    pointer-events: none;
+    animation: theme-toast 1.8s ease forwards;
+  }
+  @keyframes theme-toast {
+    0% {
+      opacity: 0;
+      transform: translateX(6px);
+    }
+    12%,
+    75% {
+      opacity: 1;
+      transform: none;
+    }
+    100% {
+      opacity: 0;
+    }
+  }
+
+  /* Hiện dần khi cuộn: mờ nhòe -> rõ nét. Gộp cả transition hover của .card-wedding
+     vì cùng thuộc tính transition; độ trễ chỉ áp cho phần hiện dần */
+  .reveal {
+    opacity: 0;
+    filter: blur(8px);
+    transition:
+      opacity 0.9s cubic-bezier(0.2, 0.7, 0.2, 1) var(--reveal-delay, 0ms),
+      translate 0.9s cubic-bezier(0.2, 0.7, 0.2, 1) var(--reveal-delay, 0ms),
+      scale 0.9s cubic-bezier(0.2, 0.7, 0.2, 1) var(--reveal-delay, 0ms),
+      filter 0.9s cubic-bezier(0.2, 0.7, 0.2, 1) var(--reveal-delay, 0ms),
+      box-shadow 0.25s ease,
+      transform 0.25s ease,
+      border-color 0.25s ease;
+  }
+  .reveal-up {
+    translate: 0 28px;
+  }
+  .reveal-left {
+    translate: -36px 0;
+  }
+  .reveal-right {
+    translate: 36px 0;
+  }
+  .reveal-zoom {
+    scale: 0.94;
+  }
+  .reveal.is-visible {
+    opacity: 1;
+    translate: none;
+    scale: none;
+    filter: none;
+  }
+
+  /* Đường kẻ vàng + trái tim dưới tiêu đề mỗi phần */
+  .heading-ornament {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 0.6rem;
+    color: var(--w-line-strong);
+  }
+  .heading-line {
+    height: 1px;
+    width: 3.5rem;
+    scale: 0 1;
+    transition: scale 1s cubic-bezier(0.2, 0.7, 0.2, 1) calc(var(--reveal-delay, 0ms) + 0.35s);
+  }
+  .heading-line-left {
+    background: linear-gradient(to right, transparent, currentColor);
+    transform-origin: right;
+  }
+  .heading-line-right {
+    background: linear-gradient(to left, transparent, currentColor);
+    transform-origin: left;
+  }
+  .heading-heart {
+    width: 0.8rem;
+    height: 0.8rem;
+    fill: currentColor;
+    opacity: 0;
+    scale: 0.4;
+    transition:
+      opacity 0.5s ease calc(var(--reveal-delay, 0ms) + 0.2s),
+      scale 0.6s cubic-bezier(0.3, 1.6, 0.5, 1) calc(var(--reveal-delay, 0ms) + 0.2s);
+  }
+  .reveal.is-visible .heading-line {
+    scale: 1 1;
+  }
+  .reveal.is-visible .heading-heart {
+    opacity: 1;
+    scale: 1;
+  }
+
+  /* Cánh hoa rơi phía sau nội dung */
+  .petal-layer {
+    position: fixed;
+    inset: 0;
+    width: 100%;
+    height: 100%;
+    pointer-events: none;
+    z-index: 0;
+    opacity: 0.85;
+  }
+
+  /* Thiệp bìa nghiêng 3D + vệt sáng theo chuột */
+  .tilt-card {
+    position: relative;
     border-radius: 1.25rem;
-    padding: 1.5rem 1.5rem 2rem;
-    box-shadow: 0 0 0 1px rgba(255, 255, 255, 0.08) inset;
+    transform: perspective(1400px) rotateX(var(--tilt-x, 0deg)) rotateY(var(--tilt-y, 0deg));
+    transition: transform 0.6s cubic-bezier(0.2, 0.7, 0.2, 1);
   }
-  [data-theme]:not([data-theme="bordeaux"]) .section-frame-light {
-    border-color: rgba(212, 165, 116, 0.45);
-    box-shadow: 0 1px 3px rgba(0, 0, 0, 0.06);
+  .tilt-card[data-tilting='true'] {
+    transition-duration: 0.15s;
   }
-  [data-theme="red"] .section-frame-light { border-color: rgba(185, 28, 28, 0.35) !important; }
-  [data-theme="green"] .section-frame-light { border-color: rgba(22, 101, 52, 0.35) !important; }
-  [data-theme="pink"] .section-frame-light { border-color: rgba(190, 18, 60, 0.35) !important; }
-  [data-theme="white"] .section-frame-light { border-color: rgba(82, 82, 82, 0.3) !important; }
-  [data-theme="tho"] .section-frame-light { border-color: rgba(161, 98, 7, 0.4) !important; }
-  [data-theme="moc"] .section-frame-light { border-color: rgba(22, 101, 52, 0.35) !important; }
+  .tilt-glare {
+    position: absolute;
+    inset: 0;
+    border-radius: inherit;
+    pointer-events: none;
+    background: radial-gradient(circle at var(--glare-x, 50%) var(--glare-y, 50%), rgb(255 255 255 / 0.2), transparent 45%);
+    opacity: 0;
+    transition: opacity 0.4s ease;
+  }
+  .tilt-card[data-tilting='true'] .tilt-glare {
+    opacity: 1;
+  }
 
-  /* Viền trắng vàng - sang trọng */
-  .border-wedding {
-    border: 2px solid rgba(255, 255, 255, 0.7);
-    box-shadow: 0 0 0 1px rgba(212, 165, 116, 0.4) inset;
+  /* Tên cô dâu chú rể: vệt ánh kim lướt qua định kỳ */
+  .invite-shimmer {
+    padding-block: 0.12em;
+    background: linear-gradient(110deg, #5a1a1c 0%, #5a1a1c 42%, #c99b52 50%, #5a1a1c 58%, #5a1a1c 100%);
+    background-size: 250% 100%;
+    background-position: 0 0;
+    -webkit-background-clip: text;
+    background-clip: text;
+    color: transparent;
+    animation: invite-shimmer 7s ease-in-out 1.8s infinite;
   }
-  .border-wedding-gold {
-    border: 2px solid #d4a574;
-    box-shadow: 0 0 0 1px rgba(255, 255, 255, 0.2) inset;
+  @keyframes invite-shimmer {
+    0% {
+      background-position: 100% 0;
+    }
+    35%,
+    100% {
+      background-position: 0 0;
+    }
   }
-  .border-wedding-section {
-    border: 2px solid rgba(212, 165, 116, 0.6);
-    box-shadow: 0 0 0 1px rgba(255, 255, 255, 0.15) inset;
-  }
-  [data-theme]:not([data-theme="bordeaux"]) .border-wedding-section {
-    border-color: rgba(212, 165, 116, 0.5);
-    box-shadow: 0 1px 3px rgba(0, 0, 0, 0.08);
-  }
-  [data-theme="red"] .border-wedding-section { border-color: rgba(185, 28, 28, 0.5) !important; }
-  [data-theme="green"] .border-wedding-section { border-color: rgba(22, 101, 52, 0.5) !important; }
-  [data-theme="pink"] .border-wedding-section { border-color: rgba(190, 18, 60, 0.5) !important; }
-  [data-theme="white"] .border-wedding-section { border-color: rgba(82, 82, 82, 0.4) !important; }
-  [data-theme="tho"] .border-wedding-section { border-color: rgba(161, 98, 7, 0.5) !important; }
-  [data-theme="moc"] .border-wedding-section { border-color: rgba(22, 101, 52, 0.5) !important; }
-  [data-theme="red"] .border-wedding-gold { border-color: #b91c1c !important; }
-  [data-theme="green"] .border-wedding-gold { border-color: #15803d !important; }
-  [data-theme="pink"] .border-wedding-gold { border-color: #be123c !important; }
-  [data-theme="white"] .border-wedding-gold { border-color: #525252 !important; }
-  [data-theme="tho"] .border-wedding-gold { border-color: #a16207 !important; }
-  [data-theme="moc"] .border-wedding-gold { border-color: #15803d !important; }
 
-  /* Card wedding - viền trắng vàng, shadow mềm */
+  /* Bộ đếm ngược: số mới trượt xuống */
+  .count-tick {
+    display: inline-block;
+    animation: count-tick 0.45s cubic-bezier(0.2, 0.8, 0.2, 1);
+  }
+  @keyframes count-tick {
+    from {
+      opacity: 0;
+      translate: 0 -45%;
+      filter: blur(2px);
+    }
+  }
+
+  /* Thanh tiến trình cuộn trang dưới header */
+  .scroll-progress {
+    display: none;
+    position: absolute;
+    left: 0;
+    right: 0;
+    bottom: -1px;
+    height: 2px;
+    background: linear-gradient(90deg, #e8c88a, #d4a574, #b08440);
+    transform-origin: left;
+    scale: 0 1;
+    pointer-events: none;
+  }
+  @supports (animation-timeline: scroll()) {
+    .scroll-progress {
+      display: block;
+      animation: scroll-progress linear both;
+      animation-timeline: scroll(root block);
+    }
+  }
+  @keyframes scroll-progress {
+    to {
+      scale: 1 1;
+    }
+  }
+
+  /* Menu: gạch chân vàng khi hover và ở mục đang xem */
+  .nav-link {
+    position: relative;
+    padding-block: 0.25rem;
+    opacity: 0.85;
+    transition: opacity 0.2s ease;
+  }
+  .nav-link::after {
+    content: '';
+    position: absolute;
+    left: 0;
+    right: 0;
+    bottom: -2px;
+    height: 1.5px;
+    border-radius: 1px;
+    background-color: var(--w-line-strong);
+    scale: 0 1;
+    transition: scale 0.35s cubic-bezier(0.2, 0.7, 0.2, 1);
+  }
+  .nav-link:hover,
+  .nav-link[aria-current] {
+    opacity: 1;
+  }
+  .nav-link:hover::after,
+  .nav-link[aria-current]::after {
+    scale: 1 1;
+  }
+  .mobile-nav-link[aria-current] {
+    background-color: var(--w-header-hover);
+  }
+
+  /* Thẻ: quầng sáng theo con trỏ (vị trí do components/card-spotlight.tsx cập nhật) */
   .card-wedding {
-    border: 2px solid rgba(255, 255, 255, 0.6);
-    box-shadow: 0 0 0 1px rgba(212, 165, 116, 0.35) inset, 0 2px 8px rgba(0, 0, 0, 0.15);
-    transition: box-shadow 0.25s ease, transform 0.25s ease, border-color 0.25s ease;
+    position: relative;
   }
-  .card-wedding:hover {
-    border-color: rgba(212, 165, 116, 0.8);
-    box-shadow: 0 0 0 1px rgba(212, 165, 116, 0.5) inset, 0 12px 28px -8px rgba(0, 0, 0, 0.2);
-    transform: translateY(-3px);
+  .card-wedding::after {
+    content: '';
+    position: absolute;
+    inset: 0;
+    border-radius: inherit;
+    pointer-events: none;
+    background: radial-gradient(280px circle at var(--spot-x, 50%) var(--spot-y, 50%), var(--w-spot), transparent 70%);
+    opacity: 0;
+    transition: opacity 0.35s ease;
   }
-  /* Card trên nền sáng (theme khác bordeaux) */
-  [data-theme]:not([data-theme="bordeaux"]) .card-wedding {
-    border-color: rgba(212, 165, 116, 0.6);
-    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.06), 0 1px 3px rgba(0, 0, 0, 0.04);
-  }
-  [data-theme]:not([data-theme="bordeaux"]) .card-wedding:hover {
-    border-color: rgba(212, 165, 116, 0.9);
-    box-shadow: 0 12px 28px -8px rgba(0, 0, 0, 0.14), 0 4px 14px -4px rgba(0, 0, 0, 0.08);
+  .card-wedding:hover::after {
+    opacity: 1;
   }
 
-  .animate-fade-in {
-    animation: fadeIn 1s cubic-bezier(0.22, 1, 0.36, 1) forwards;
+  /* Nút chính: vệt sáng lướt qua khi hover */
+  .btn-shine {
+    position: relative;
+    overflow: hidden;
+    isolation: isolate;
+  }
+  .btn-shine::after {
+    content: '';
+    position: absolute;
+    inset: 0;
+    pointer-events: none;
+    background: linear-gradient(115deg, transparent 30%, rgb(255 255 255 / 0.35) 50%, transparent 70%);
+    translate: -120% 0;
+  }
+  .btn-shine:hover::after {
+    translate: 120% 0;
+    transition: translate 0.8s ease;
   }
 
-  .animate-fade-in-up {
-    animation: fadeInUp 1.2s cubic-bezier(0.22, 1, 0.36, 1) forwards;
+  /* Thiệp bìa */
+  .cover-backdrop {
+    background-color: var(--w-bg);
+  }
+  .cover-surface {
+    background: linear-gradient(to bottom, var(--w-cover-from), var(--w-cover-to));
+  }
+  .cover-inner-border {
+    background-color: var(--w-cover-to);
+  }
+  .cover-text {
+    color: var(--w-cover-text);
+  }
+  .cover-sub {
+    color: var(--w-cover-sub);
+  }
+  .cover-date {
+    color: var(--w-cover-date);
+  }
+  .cover-accent {
+    color: var(--w-cover-accent);
+  }
+  .cover-accent-bg {
+    background-color: var(--w-cover-accent);
+  }
+  .cover-line-left {
+    background: linear-gradient(to right, transparent, var(--w-cover-accent));
+  }
+  .cover-line-right {
+    background: linear-gradient(to left, transparent, var(--w-cover-accent));
+  }
+  .cover-btn {
+    background: linear-gradient(to bottom, var(--w-cover-btn-from), var(--w-cover-btn-to));
+    color: var(--w-cover-btn-text);
+    border-color: var(--w-cover-btn-border);
+  }
+  .cover-btn:hover:not(:disabled) {
+    filter: brightness(1.05);
+    box-shadow: 0 6px 24px rgb(212 165 116 / 0.4);
+  }
+  .cover-seal {
+    background: linear-gradient(to bottom right, var(--w-cover-btn-from), var(--w-cover-btn-to), var(--w-seal-to));
+    border-color: var(--w-seal-border);
+    color: var(--w-seal-heart);
+  }
+  .cover-seal-glow {
+    background-color: var(--w-cover-btn-to);
   }
 
-  .animate-fade-in-scale {
-    animation: fadeInScale 0.8s cubic-bezier(0.22, 1, 0.36, 1) forwards;
+  /* Thẻ báo hỷ */
+  .ceremony-card {
+    background-color: var(--w-cer-bg);
+    border: 1px solid var(--w-line);
+    box-shadow: 0 1px 3px rgb(0 0 0 / 0.08);
+  }
+  .ceremony-names {
+    color: var(--w-cer-names);
+  }
+  .ceremony-sub {
+    color: var(--w-cer-sub);
+  }
+  .ceremony-lunar {
+    color: var(--w-cer-lunar);
+  }
+  .ceremony-accent {
+    color: var(--w-cer-accent);
+  }
+  .ceremony-line {
+    border-color: var(--w-line);
+  }
+  .ceremony-divider {
+    background-color: var(--w-line);
+  }
+  .ceremony-btn {
+    background-color: var(--w-cer-btn-bg);
+    color: var(--w-cer-btn-text);
+  }
+  .ceremony-btn:hover {
+    filter: brightness(1.05);
   }
 
-  /* Hiệu ứng mở phong bì thiệp cưới */
+  /* Hiệu ứng mở phong bì */
+  .envelope-card {
+    transform-style: preserve-3d;
+  }
   .envelope-flap {
     transform: rotateX(0deg);
     transform-origin: center bottom;
@@ -1092,20 +1270,62 @@
   .envelope-flap-open {
     transform: rotateX(-180deg);
   }
-  .envelope-card {
-    transform-style: preserve-3d;
-  }
 
-  /* Scroll-based fade-in - mượt hơn */
-  [data-scroll="fade-in"] {
-    opacity: 0;
-    transform: translateY(16px);
-    transition: opacity 0.7s cubic-bezier(0.22, 1, 0.36, 1),
-      transform 0.7s cubic-bezier(0.22, 1, 0.36, 1);
+  /* Biểu tượng sóng nhạc khi đang phát */
+  .music-bars {
+    display: flex;
+    align-items: flex-end;
+    gap: 2px;
+    height: 1rem;
   }
+  .music-bars span {
+    width: 3px;
+    height: 100%;
+    border-radius: 1px;
+    background-color: currentColor;
+    transform-origin: bottom;
+    animation: music-bar 0.9s ease-in-out infinite;
+  }
+  .music-bars span:nth-child(2) {
+    animation-delay: -0.3s;
+  }
+  .music-bars span:nth-child(3) {
+    animation-delay: -0.6s;
+  }
+}
 
-  [data-scroll="fade-in"].in-view {
-    opacity: 1;
-    transform: translateY(0);
+@keyframes music-bar {
+  0%,
+  100% {
+    transform: scaleY(0.3);
+  }
+  50% {
+    transform: scaleY(1);
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  html {
+    scroll-behavior: auto;
+  }
+  *,
+  *::before,
+  *::after {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+    transition-delay: 0ms !important;
+  }
+  /* Gắn với vị trí cuộn chứ không phải thời gian nên không cần tắt */
+  .scroll-progress {
+    animation-duration: auto !important;
+  }
+  /* Nhãn tên theme tự ẩn bằng animation nên phải giữ thời lượng mới đọc kịp */
+  .theme-toast {
+    animation-duration: 1.8s !important;
+  }
+  /* Thanh tiến trình quyết định thời điểm chuyển ảnh nên phải giữ đúng thời lượng */
+  .gallery-progress-fill {
+    animation-duration: var(--slide-duration, 5s) !important;
   }
 }

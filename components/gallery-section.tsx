@@ -1,162 +1,261 @@
 'use client'
 
-import { useState, useCallback, useEffect } from 'react'
+import { useCallback, useEffect, useRef, useState, useSyncExternalStore } from 'react'
 import Image from 'next/image'
-import { useInView } from '@/hooks/use-in-view'
+import { ChevronLeft, ChevronRight, Images, Maximize2, Pause, Play } from 'lucide-react'
 import { GALLERY_IMAGES } from '@/lib/gallery'
-import { Dialog, DialogContent, DialogTitle } from '@/components/ui/dialog'
-import { ChevronLeft, ChevronRight } from 'lucide-react'
+import { WEDDING } from '@/lib/constants'
+import { GalleryLightbox } from './gallery-lightbox'
+import { SlideProgress } from './gallery-progress'
+import { Reveal } from './reveal'
+import { SectionHeading } from './section-heading'
+
+const SLIDE_INTERVAL = 5000
+const REDUCED_MOTION = '(prefers-reduced-motion: reduce)'
+
+function subscribeVisibility(callback: () => void) {
+  document.addEventListener('visibilitychange', callback)
+  return () => document.removeEventListener('visibilitychange', callback)
+}
+
+function subscribeReducedMotion(callback: () => void) {
+  const mql = window.matchMedia(REDUCED_MOTION)
+  mql.addEventListener('change', callback)
+  return () => mql.removeEventListener('change', callback)
+}
+
+const pad = (n: number) => String(n).padStart(2, '0')
 
 export function GallerySection() {
-  const { ref, isInView } = useInView()
-  const [selectedIndex, setSelectedIndex] = useState<number | null>(null)
+  const images = GALLERY_IMAGES
+  const total = images.length
+  const [active, setActive] = useState(0)
+  const [userPlaying, setUserPlaying] = useState<boolean | null>(null)
+  const [hovered, setHovered] = useState(false)
+  const [inView, setInView] = useState(false)
+  const [lightboxIndex, setLightboxIndex] = useState<number | null>(null)
+  const stageRef = useRef<HTMLDivElement>(null)
+  const stripRef = useRef<HTMLDivElement>(null)
+  const touchStartX = useRef<number | null>(null)
 
-  const goPrev = useCallback(() => {
-    setSelectedIndex((i) =>
-      i === null ? null : i === 0 ? GALLERY_IMAGES.length - 1 : i - 1
-    )
-  }, [])
+  const pageVisible = useSyncExternalStore(subscribeVisibility, () => !document.hidden, () => true)
+  const reducedMotion = useSyncExternalStore(
+    subscribeReducedMotion,
+    () => window.matchMedia(REDUCED_MOTION).matches,
+    () => false,
+  )
 
-  const goNext = useCallback(() => {
-    setSelectedIndex((i) =>
-      i === null ? null : (i + 1) % GALLERY_IMAGES.length
-    )
+  // Người dùng chọn giảm chuyển động thì mặc định không tự chạy, vẫn bật được bằng nút Play
+  const playing = total > 1 && (userPlaying ?? !reducedMotion)
+  const running = playing && !hovered && inView && pageVisible && lightboxIndex === null
+
+  const goTo = useCallback((i: number) => setActive(((i % total) + total) % total), [total])
+  const goNext = useCallback(() => setActive((i) => (i + 1) % total), [total])
+  const goPrev = useCallback(() => setActive((i) => (i - 1 + total) % total), [total])
+
+  useEffect(() => {
+    const el = stageRef.current
+    if (!el) return
+    const observer = new IntersectionObserver(([entry]) => setInView(Boolean(entry?.isIntersecting)), {
+      threshold: 0.35,
+    })
+    observer.observe(el)
+    return () => observer.disconnect()
   }, [])
 
   useEffect(() => {
-    if (selectedIndex === null) return
-    const onKeyDown = (e: KeyboardEvent) => {
-      if (e.key === 'ArrowLeft') goPrev()
-      if (e.key === 'ArrowRight') goNext()
-      if (e.key === 'Escape') setSelectedIndex(null)
-    }
-    window.addEventListener('keydown', onKeyDown)
-    return () => window.removeEventListener('keydown', onKeyDown)
-  }, [selectedIndex, goPrev, goNext])
+    const strip = stripRef.current
+    const thumb = strip?.querySelector<HTMLElement>(`[data-index="${active}"]`)
+    if (!strip || !thumb) return
+    strip.scrollTo({ left: thumb.offsetLeft - strip.clientWidth / 2 + thumb.clientWidth / 2, behavior: 'smooth' })
+  }, [active])
 
-  // Swipe trên mobile
-  const [touchStart, setTouchStart] = useState<number | null>(null)
-  const onTouchStart = (e: React.TouchEvent) => setTouchStart(e.touches[0].clientX)
-  const onTouchEnd = (e: React.TouchEvent) => {
-    if (touchStart === null) return
-    const diff = touchStart - e.changedTouches[0].clientX
-    if (Math.abs(diff) > 50) diff > 0 ? goNext() : goPrev()
-    setTouchStart(null)
+  const onTouchStart = (e: React.TouchEvent) => {
+    touchStartX.current = e.touches[0].clientX
   }
+  const onTouchEnd = (e: React.TouchEvent) => {
+    if (touchStartX.current === null) return
+    const diff = touchStartX.current - e.changedTouches[0].clientX
+    if (Math.abs(diff) > 50) {
+      if (diff > 0) goNext()
+      else goPrev()
+    }
+    touchStartX.current = null
+  }
+
+  const onStageKeyDown = (e: React.KeyboardEvent) => {
+    if (e.key === 'ArrowLeft') goPrev()
+    if (e.key === 'ArrowRight') goNext()
+  }
+
+  if (total === 0) return null
+  const current = images[active]
 
   return (
     <>
-      <section id="khoanh-khac" className="py-16 sm:py-20 md:py-28" data-theme-section="main">
+      <section id="khoanh-khac" className="py-16 sm:py-20 md:py-28 scroll-mt-16">
         <div className="max-w-4xl mx-auto px-4 sm:px-6">
-          <div className="section-frame-light">
-            <div
-              ref={ref}
-              className={`text-center mb-10 sm:mb-14 transition-all duration-700 ease-out ${
-                isInView ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-6'
-              }`}
+          <div className="section-frame">
+            <SectionHeading
+              icon={<Images className="w-7 h-7" aria-hidden />}
+              description="Những khoảnh khắc đẹp nhất trên hành trình của chúng mình"
             >
-              <h2 className="text-2xl sm:text-3xl md:text-4xl font-serif font-bold text-red-900">
-                Album ảnh cưới
-              </h2>
-            </div>
+              Album ảnh cưới
+            </SectionHeading>
 
-            {/* Grid 2x2 - chỉ hiển thị 4 ảnh, ảnh thứ 4 có overlay "+N" */}
-            <div
-              className={`border-wedding-section rounded-2xl p-4 sm:p-6 md:p-8 grid grid-cols-2 gap-2 sm:gap-3 md:gap-4 transition-all duration-700 ease-out ${
-                isInView ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-6'
-              }`}
-            >
-              {GALLERY_IMAGES.slice(0, 4).map((image, index) => {
-                const remainingCount = GALLERY_IMAGES.length - 4
-                const isLastVisible = index === 3 && remainingCount > 0
-
-                return (
-                  <button
-                    key={image.src}
-                    type="button"
-                    onClick={() => setSelectedIndex(index)}
-                    className={`relative aspect-square rounded-xl overflow-hidden group focus:outline-none focus:ring-2 focus:ring-[#d4a574] focus:ring-offset-2 border-2 border-white/40 ring-1 ring-[#d4a574]/30 ${
-                      isInView ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-6'
-                    }`}
-                    style={{ transitionDelay: `${index * 50}ms` }}
+            <Reveal variant="zoom">
+              <div
+                ref={stageRef}
+                role="region"
+                aria-roledescription="carousel"
+                aria-label="Trình chiếu ảnh cưới"
+                tabIndex={0}
+                onKeyDown={onStageKeyDown}
+                onPointerEnter={(e) => e.pointerType === 'mouse' && setHovered(true)}
+                onPointerLeave={(e) => e.pointerType === 'mouse' && setHovered(false)}
+                onTouchStart={onTouchStart}
+                onTouchEnd={onTouchEnd}
+                className="gallery-stage group/stage relative aspect-[4/5] sm:aspect-[16/10] select-none touch-pan-y"
+              >
+                {images.map((image, i) => (
+                  <div
+                    key={image.src + i}
+                    className={`gallery-layer ${i === active ? 'is-active' : ''}`}
+                    aria-hidden={i !== active}
                   >
-                    <Image
-                      src={image.src}
-                      alt={image.alt}
-                      fill
-                      className="object-cover transition-transform duration-500 group-hover:scale-105"
-                      sizes="(max-width: 768px) 50vw, 25vw"
-                      priority={index < 2}
-                    />
-                    {isLastVisible && (
-                      <div className="absolute inset-0 bg-black/60 flex items-center justify-center">
-                        <span className="text-white text-3xl sm:text-4xl font-bold">
-                          +{remainingCount}
-                        </span>
-                      </div>
-                    )}
-                    {!isLastVisible && (
-                      <div className="absolute inset-0 bg-black/0 group-hover:bg-black/20 transition-colors" />
-                    )}
+                    <div className={`gallery-kenburns ${i % 2 ? 'kb-right' : 'kb-left'}`}>
+                      <Image
+                        src={image.src}
+                        alt={image.alt}
+                        fill
+                        priority={i === 0}
+                        className="object-cover"
+                        sizes="(max-width: 1024px) 100vw, 960px"
+                      />
+                    </div>
+                  </div>
+                ))}
+
+                <div className="gallery-vignette" aria-hidden />
+
+                <button
+                  type="button"
+                  onClick={() => setLightboxIndex(active)}
+                  className="absolute inset-0 z-[1] cursor-zoom-in focus:outline-none"
+                  aria-label={`Phóng to ảnh ${active + 1}`}
+                />
+
+                <div className="absolute top-3 right-3 sm:top-4 sm:right-4 z-[2] flex gap-2">
+                  {total > 1 && (
+                    <button
+                      type="button"
+                      onClick={() => setUserPlaying(!playing)}
+                      className="gallery-icon-btn"
+                      aria-label={playing ? 'Dừng tự chuyển ảnh' : 'Tự chuyển ảnh'}
+                      aria-pressed={playing}
+                    >
+                      {playing ? <Pause className="w-4 h-4" aria-hidden /> : <Play className="w-4 h-4" aria-hidden />}
+                    </button>
+                  )}
+                  <button
+                    type="button"
+                    onClick={() => setLightboxIndex(active)}
+                    className="gallery-icon-btn"
+                    aria-label="Xem toàn màn hình"
+                  >
+                    <Maximize2 className="w-4 h-4" aria-hidden />
                   </button>
-                )
-              })}
-            </div>
+                </div>
+
+                {total > 1 && (
+                  <>
+                    <button
+                      type="button"
+                      onClick={goPrev}
+                      className="gallery-nav z-[2] left-3 sm:left-5 sm:opacity-0 sm:group-hover/stage:opacity-100 sm:focus-visible:opacity-100"
+                      aria-label="Ảnh trước"
+                    >
+                      <ChevronLeft className="w-6 h-6" aria-hidden />
+                    </button>
+                    <button
+                      type="button"
+                      onClick={goNext}
+                      className="gallery-nav z-[2] right-3 sm:right-5 sm:opacity-0 sm:group-hover/stage:opacity-100 sm:focus-visible:opacity-100"
+                      aria-label="Ảnh sau"
+                    >
+                      <ChevronRight className="w-6 h-6" aria-hidden />
+                    </button>
+                  </>
+                )}
+
+                <div className="absolute inset-x-0 bottom-0 z-[2] px-5 sm:px-8 pb-5 sm:pb-7 pointer-events-none text-white">
+                  <div className="flex items-end justify-between gap-4">
+                    <div key={active} className="gallery-caption min-w-0">
+                      <p className="text-[0.65rem] sm:text-xs uppercase tracking-[0.3em] text-white/75 mb-1 whitespace-nowrap">
+                        {WEDDING.groomBrand} &amp; {WEDDING.brideBrand}
+                        <span className="hidden sm:inline"> · {WEDDING.dateShort}</span>
+                      </p>
+                      <p className="font-serif text-[1.65rem] sm:text-5xl leading-tight drop-shadow-lg line-clamp-2">
+                        {current.caption ?? 'Khoảnh khắc yêu thương'}
+                      </p>
+                    </div>
+                    <p className="shrink-0 tabular-nums tracking-[0.2em] text-sm sm:text-base" aria-live="polite">
+                      <span className="text-lg sm:text-2xl font-semibold">{pad(active + 1)}</span>
+                      <span className="text-white/60"> / {pad(total)}</span>
+                    </p>
+                  </div>
+
+                  {total > 1 && (
+                    <div className="mt-4 flex gap-1.5" aria-hidden>
+                      {images.map((image, i) => (
+                        <span key={image.src + i} className="gallery-progress-track">
+                          {i < active && <span className="gallery-progress-done" />}
+                          {i === active && (
+                            <SlideProgress
+                              slideKey={active}
+                              duration={SLIDE_INTERVAL}
+                              running={running}
+                              onDone={goNext}
+                              className={playing ? '' : 'is-static'}
+                            />
+                          )}
+                        </span>
+                      ))}
+                    </div>
+                  )}
+                </div>
+              </div>
+            </Reveal>
+
+            {total > 1 && (
+              <Reveal delay={150}>
+                <div ref={stripRef} className="gallery-strip mt-4 flex gap-2 sm:gap-3 overflow-x-auto py-1 px-1">
+                  {images.map((image, i) => (
+                    <button
+                      key={image.src + i}
+                      type="button"
+                      data-index={i}
+                      onClick={() => goTo(i)}
+                      className={`gallery-thumb ${i === active ? 'is-active' : ''}`}
+                      aria-label={`Xem ảnh ${i + 1}`}
+                      aria-current={i === active}
+                    >
+                      <Image src={image.src} alt="" fill className="object-cover" sizes="112px" />
+                    </button>
+                  ))}
+                </div>
+              </Reveal>
+            )}
           </div>
         </div>
       </section>
 
-      <Dialog open={selectedIndex !== null} onOpenChange={() => setSelectedIndex(null)}>
-        <DialogContent className="max-w-[95vw] sm:max-w-4xl w-full p-0 overflow-hidden border-0 bg-black rounded-lg gap-0 [&_[data-slot=dialog-close]]:text-white [&_[data-slot=dialog-close]]:bg-white/20 [&_[data-slot=dialog-close]]:hover:bg-white/30 [&_[data-slot=dialog-close]]:top-2 [&_[data-slot=dialog-close]]:right-2">
-          <DialogTitle className="sr-only">
-            {selectedIndex !== null ? GALLERY_IMAGES[selectedIndex].alt : 'Xem ảnh'}
-          </DialogTitle>
-          {selectedIndex !== null && (
-            <div
-              className="relative w-full min-h-[50vh] sm:min-h-[60vh] flex items-center justify-center select-none touch-pan-y"
-              onTouchStart={onTouchStart}
-              onTouchEnd={onTouchEnd}
-            >
-              <div className="relative w-full h-[50vh] sm:h-[60vh]">
-                <Image
-                  src={GALLERY_IMAGES[selectedIndex].src}
-                  alt={GALLERY_IMAGES[selectedIndex].alt}
-                  fill
-                  className="object-contain"
-                  sizes="95vw"
-                />
-              </div>
-
-              {/* Nút prev/next */}
-              {GALLERY_IMAGES.length > 1 && (
-                <>
-                  <button
-                    type="button"
-                    onClick={(e) => { e.stopPropagation(); goPrev() }}
-                    className="absolute left-2 sm:left-4 top-1/2 -translate-y-1/2 w-10 h-10 sm:w-12 sm:h-12 rounded-full bg-white/20 hover:bg-white/30 backdrop-blur-sm flex items-center justify-center text-white transition-colors touch-manipulation"
-                    aria-label="Ảnh trước"
-                  >
-                    <ChevronLeft className="w-6 h-6" />
-                  </button>
-                  <button
-                    type="button"
-                    onClick={(e) => { e.stopPropagation(); goNext() }}
-                    className="absolute right-2 sm:right-4 top-1/2 -translate-y-1/2 w-10 h-10 sm:w-12 sm:h-12 rounded-full bg-white/20 hover:bg-white/30 backdrop-blur-sm flex items-center justify-center text-white transition-colors touch-manipulation"
-                    aria-label="Ảnh sau"
-                  >
-                    <ChevronRight className="w-6 h-6" />
-                  </button>
-                </>
-              )}
-
-              {/* Counter */}
-              <div className="absolute bottom-4 left-1/2 -translate-x-1/2 px-3 py-1.5 rounded-full bg-black/50 text-white text-sm font-medium">
-                {selectedIndex + 1} / {GALLERY_IMAGES.length}
-              </div>
-            </div>
-          )}
-        </DialogContent>
-      </Dialog>
+      <GalleryLightbox
+        images={images}
+        index={lightboxIndex}
+        onIndexChange={setLightboxIndex}
+        onClose={() => setLightboxIndex(null)}
+      />
     </>
   )
 }

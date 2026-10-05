@@ -1,11 +1,7 @@
 /**
- * Nhạc nền - thêm file vào public/music/
- * Phát tuần tự các bài, hết bài cuối quay lại bài đầu
+ * Nhạc nền - sửa trong content/wedding.json hoặc trang /admin
+ * Phát tuần tự các bài, hết bài cuối quay lại bài đầu; bài nào lỗi sẽ tự bỏ qua
  */
-export const BACKGROUND_MUSIC = {
-  playlist: [
-    '/music/1.mp3',
-    '/music/2.mp3',
-    '/music/3.mp3',
-  ],
-}
+import { CONTENT } from './content'
+
+export const BACKGROUND_MUSIC = CONTENT.music

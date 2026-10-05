@@ -1,198 +1,273 @@
 'use client'
 
 import { useState } from 'react'
-import { Button } from '@/components/ui/button'
-import { Input } from '@/components/ui/input'
-import { FieldGroup, FieldLabel } from '@/components/ui/field'
-import { FieldSet, FieldLegend } from '@/components/ui/field'
-import { useInView } from '@/hooks/use-in-view'
+import { CheckCircle2 } from 'lucide-react'
+import { useGuestName } from '@/hooks/use-guest-name'
+import { Reveal } from './reveal'
+import { SectionHeading } from './section-heading'
 
 const FORMSPREE_ID = process.env.NEXT_PUBLIC_FORMSPREE_ID
 
-export function RSVPForm() {
-  const { ref, isInView } = useInView()
-  const [formData, setFormData] = useState({
-    name: '',
-    phone: '',
-    attendance: 'yes',
-    note: '',
-  })
-  const [submitted, setSubmitted] = useState(false)
-  const [isSubmitting, setIsSubmitting] = useState(false)
-  const [error, setError] = useState<string | null>(null)
+const VN_PHONE = /^(?:\+?84|0)(?:3|5|7|8|9)\d{8}$/
 
-  const handleChange = (
-    e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement | HTMLSelectElement>
-  ) => {
+const INITIAL_FORM = {
+  /** null = khách chưa sửa, dùng tên trong link mời */
+  name: null as string | null,
+  phone: '',
+  attendance: 'yes' as 'yes' | 'no',
+  side: 'groom' as 'groom' | 'bride',
+  guests: '1',
+  note: '',
+}
+
+function normalizePhone(phone: string) {
+  return phone.replace(/[\s.\-()]/g, '')
+}
+
+function RadioOption({
+  name,
+  value,
+  checked,
+  onChange,
+  children,
+}: {
+  name: string
+  value: string
+  checked: boolean
+  onChange: (e: React.ChangeEvent<HTMLInputElement>) => void
+  children: React.ReactNode
+}) {
+  return (
+    <label className="flex items-center gap-3 cursor-pointer py-1">
+      <input
+        type="radio"
+        name={name}
+        value={value}
+        checked={checked}
+        onChange={onChange}
+        className="w-5 h-5 cursor-pointer accent-[var(--w-btn)]"
+      />
+      <span className="text-w-text">{children}</span>
+    </label>
+  )
+}
+
+export function RSVPForm() {
+  const [formData, setFormData] = useState(INITIAL_FORM)
+  const [gotcha, setGotcha] = useState('')
+  const [phoneError, setPhoneError] = useState<string | null>(null)
+  const [status, setStatus] = useState<'idle' | 'submitting' | 'success' | 'error'>('idle')
+  const [error, setError] = useState<string | null>(null)
+  const guestName = useGuestName()
+  const name = formData.name ?? guestName ?? ''
+
+  const handleChange = (e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement | HTMLSelectElement>) => {
     const { name, value } = e.target
     setFormData((prev) => ({ ...prev, [name]: value }))
+    if (name === 'phone') setPhoneError(null)
     setError(null)
   }
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault()
     setError(null)
-    setIsSubmitting(true)
 
-    if (FORMSPREE_ID) {
-      try {
-        const res = await fetch(`https://formspree.io/f/${FORMSPREE_ID}`, {
-          method: 'POST',
-          headers: { 'Content-Type': 'application/json' },
-          body: JSON.stringify({
-            name: formData.name,
-            phone: formData.phone,
-            attendance: formData.attendance === 'yes' ? 'Có, tôi sẽ tham dự' : 'Không, xin lỗi',
-            note: formData.note || '(Không có)',
-          }),
-        })
-        if (!res.ok) throw new Error('Gửi thất bại')
-        setSubmitted(true)
-        setFormData({ name: '', phone: '', attendance: 'yes', note: '' })
-        setTimeout(() => setSubmitted(false), 5000)
-      } catch {
-        setError('Không thể gửi. Vui lòng thử lại hoặc liên hệ trực tiếp.')
-      } finally {
-        setIsSubmitting(false)
-      }
-    } else {
-      console.log('RSVP Data:', formData)
-      setSubmitted(true)
-      setFormData({ name: '', phone: '', attendance: 'yes', note: '' })
-      setTimeout(() => setSubmitted(false), 3000)
-      setIsSubmitting(false)
+    const phone = normalizePhone(formData.phone)
+    if (!VN_PHONE.test(phone)) {
+      setPhoneError('Số điện thoại chưa đúng, ví dụ: 0912 345 678')
+      document.getElementById('rsvp-phone')?.focus()
+      return
+    }
+
+    if (!FORMSPREE_ID) {
+      console.error('Thiếu NEXT_PUBLIC_FORMSPREE_ID - xem .env.example')
+      setStatus('error')
+      setError('Hệ thống xác nhận đang được cập nhật. Vui lòng báo trực tiếp cho cô dâu chú rể.')
+      return
+    }
+
+    setStatus('submitting')
+    try {
+      const attending = formData.attendance === 'yes'
+      const res = await fetch(`https://formspree.io/f/${FORMSPREE_ID}`, {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json', Accept: 'application/json' },
+        body: JSON.stringify({
+          name: name.trim(),
+          phone,
+          attendance: attending ? 'Có, tôi sẽ tham dự' : 'Không, xin lỗi',
+          side: formData.side === 'groom' ? 'Khách nhà trai' : 'Khách nhà gái',
+          guests: attending ? formData.guests : '0',
+          note: formData.note.trim() || '(Không có)',
+          _subject: `Xác nhận tham dự: ${name.trim()}`,
+          _gotcha: gotcha,
+        }),
+      })
+      if (!res.ok) throw new Error('Gửi thất bại')
+      setStatus('success')
+      setFormData({ ...INITIAL_FORM, name: '' })
+    } catch {
+      setStatus('error')
+      setError('Không thể gửi. Vui lòng kiểm tra kết nối mạng và thử lại.')
     }
   }
 
-  return (
-    <section id="xac-nhan" className="py-16 sm:py-20 md:py-28" data-theme-section="alt">
-      <div className="max-w-4xl mx-auto px-4 sm:px-6">
-        <div className="section-frame-light">
-          <div
-            ref={ref}
-            className={`transition-all duration-700 ease-out ${
-              isInView ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-6'
-            }`}
-          >
-            <div className="text-center mb-12">
-              <h2 className="text-2xl sm:text-3xl md:text-4xl font-serif font-bold text-red-900">
-                Xác nhận tham dự
-              </h2>
-            </div>
+  const isAttending = formData.attendance === 'yes'
 
-            <div className="card-wedding theme-card rounded-2xl p-6 sm:p-8 md:p-10">
-            {submitted ? (
-              <div className="text-center py-8">
-                <div className="w-16 h-16 bg-red-100 rounded-full flex items-center justify-center mx-auto mb-4">
-                  <svg
-                    className="w-8 h-8 text-red-600"
-                    fill="none"
-                    stroke="currentColor"
-                    viewBox="0 0 24 24"
-                  >
-                    <path
-                      strokeLinecap="round"
-                      strokeLinejoin="round"
-                      strokeWidth={2}
-                      d="M5 13l4 4L19 7"
-                    />
-                  </svg>
-                </div>
-                <h3 className="text-xl font-semibold text-red-900 mb-2">Cảm ơn bạn!</h3>
-                <p className="text-red-600">Chúng tôi sẽ liên hệ lại với bạn sớm nhất.</p>
+  return (
+    <section id="xac-nhan" className="py-16 sm:py-20 md:py-28 scroll-mt-16">
+      <div className="max-w-4xl mx-auto px-4 sm:px-6">
+        <div className="section-frame">
+          <SectionHeading description="Vui lòng xác nhận để gia đình chuẩn bị chu đáo nhất">
+            Xác nhận tham dự
+          </SectionHeading>
+
+          <Reveal className="card-wedding rounded-2xl p-6 sm:p-8 md:p-10">
+            {status === 'success' ? (
+              <div className="text-center py-8" role="status">
+                <CheckCircle2 className="w-16 h-16 text-w-soft mx-auto mb-4" aria-hidden />
+                <h3 className="text-xl font-semibold text-w-strong mb-2">Cảm ơn bạn đã xác nhận!</h3>
+                <p className="text-w-muted mb-6">Gia đình đã nhận được thông tin của bạn.</p>
+                <button
+                  type="button"
+                  onClick={() => setStatus('idle')}
+                  className="text-sm font-medium text-w-text underline underline-offset-4"
+                >
+                  Gửi thêm xác nhận cho người khác
+                </button>
               </div>
             ) : (
               <form onSubmit={handleSubmit} className="space-y-6">
-                <FieldGroup>
-                  <FieldLabel htmlFor="name" className="text-red-800">
+                <div>
+                  <label htmlFor="rsvp-name" className="block text-sm font-medium text-w-text mb-2">
                     Họ và tên *
-                  </FieldLabel>
-                  <Input
-                    id="name"
+                  </label>
+                  <input
+                    id="rsvp-name"
                     name="name"
-                    value={formData.name}
+                    value={name}
                     onChange={handleChange}
                     placeholder="Nhập họ và tên của bạn"
                     required
-                    className="border-red-200 bg-red-50/50 focus:ring-red-500"
+                    autoComplete="name"
+                    maxLength={80}
+                    className="field-wedding"
                   />
-                </FieldGroup>
+                </div>
 
-                <FieldGroup>
-                  <FieldLabel htmlFor="phone" className="text-red-800">
+                <div>
+                  <label htmlFor="rsvp-phone" className="block text-sm font-medium text-w-text mb-2">
                     Số điện thoại *
-                  </FieldLabel>
-                  <Input
-                    id="phone"
+                  </label>
+                  <input
+                    id="rsvp-phone"
                     name="phone"
                     type="tel"
+                    inputMode="tel"
                     value={formData.phone}
                     onChange={handleChange}
-                    placeholder="Nhập số điện thoại"
+                    placeholder="0912 345 678"
                     required
-                    className="border-red-200 bg-red-50/50 focus:ring-red-500"
+                    autoComplete="tel"
+                    aria-invalid={phoneError ? true : undefined}
+                    aria-describedby={phoneError ? 'rsvp-phone-error' : undefined}
+                    className="field-wedding"
                   />
-                </FieldGroup>
+                  {phoneError && (
+                    <p id="rsvp-phone-error" className="error-wedding mt-2">
+                      {phoneError}
+                    </p>
+                  )}
+                </div>
 
-                <FieldSet>
-                  <FieldLegend className="text-red-800">
-                    Bạn có thể tham dự không? *
-                  </FieldLegend>
-                  <div className="flex flex-col sm:flex-row gap-3 sm:gap-6 mt-3">
-                    <label className="flex items-center gap-3 cursor-pointer">
-                      <input
-                        type="radio"
-                        name="attendance"
-                        value="yes"
-                        checked={formData.attendance === 'yes'}
-                        onChange={handleChange}
-                        className="w-4 h-4 cursor-pointer accent-red-600"
-                      />
-                      <span className="text-red-800">Có, tôi sẽ tham dự</span>
-                    </label>
-                    <label className="flex items-center gap-3 cursor-pointer">
-                      <input
-                        type="radio"
-                        name="attendance"
-                        value="no"
-                        checked={formData.attendance === 'no'}
-                        onChange={handleChange}
-                        className="w-4 h-4 cursor-pointer accent-red-600"
-                      />
-                      <span className="text-red-800">Không, xin lỗi</span>
-                    </label>
+                <fieldset>
+                  <legend className="text-sm font-medium text-w-text mb-2">Bạn có thể tham dự không? *</legend>
+                  <div className="flex flex-col sm:flex-row gap-1 sm:gap-6">
+                    <RadioOption name="attendance" value="yes" checked={isAttending} onChange={handleChange}>
+                      Có, tôi sẽ tham dự
+                    </RadioOption>
+                    <RadioOption name="attendance" value="no" checked={!isAttending} onChange={handleChange}>
+                      Rất tiếc, tôi không đến được
+                    </RadioOption>
                   </div>
-                </FieldSet>
+                </fieldset>
 
-                <FieldGroup>
-                  <FieldLabel htmlFor="note" className="text-red-800">
-                    Ghi chú đặc biệt
-                  </FieldLabel>
+                <fieldset>
+                  <legend className="text-sm font-medium text-w-text mb-2">Bạn là khách của *</legend>
+                  <div className="flex flex-col sm:flex-row gap-1 sm:gap-6">
+                    <RadioOption name="side" value="groom" checked={formData.side === 'groom'} onChange={handleChange}>
+                      Nhà trai
+                    </RadioOption>
+                    <RadioOption name="side" value="bride" checked={formData.side === 'bride'} onChange={handleChange}>
+                      Nhà gái
+                    </RadioOption>
+                  </div>
+                </fieldset>
+
+                {isAttending && (
+                  <div>
+                    <label htmlFor="rsvp-guests" className="block text-sm font-medium text-w-text mb-2">
+                      Số người tham dự (tính cả bạn)
+                    </label>
+                    <select
+                      id="rsvp-guests"
+                      name="guests"
+                      value={formData.guests}
+                      onChange={handleChange}
+                      className="field-wedding"
+                    >
+                      {['1', '2', '3', '4', '5'].map((n) => (
+                        <option key={n} value={n}>
+                          {n} người
+                        </option>
+                      ))}
+                      <option value="6+">Từ 6 người trở lên</option>
+                    </select>
+                  </div>
+                )}
+
+                <div>
+                  <label htmlFor="rsvp-note" className="block text-sm font-medium text-w-text mb-2">
+                    Ghi chú
+                  </label>
                   <textarea
-                    id="note"
+                    id="rsvp-note"
                     name="note"
                     value={formData.note}
                     onChange={handleChange}
-                    placeholder="Ví dụ: Thực đơn đặc biệt, số lượng khách..."
+                    placeholder="Ví dụ: ăn chay, đi cùng trẻ nhỏ..."
                     rows={3}
-                    className="w-full px-4 py-3 border border-red-200 rounded-xl bg-red-50/50 text-red-900 placeholder:text-red-400 focus:outline-none focus:ring-2 focus:ring-red-500 focus:border-transparent"
+                    maxLength={500}
+                    className="field-wedding resize-y"
                   />
-                </FieldGroup>
+                </div>
+
+                <input
+                  type="text"
+                  name="_gotcha"
+                  value={gotcha}
+                  onChange={(e) => setGotcha(e.target.value)}
+                  tabIndex={-1}
+                  autoComplete="off"
+                  className="hidden"
+                  aria-hidden
+                />
 
                 {error && (
-                  <p className="text-red-600 text-sm text-center">{error}</p>
+                  <p className="error-wedding text-center" role="alert">
+                    {error}
+                  </p>
                 )}
-                <Button
+                <button
                   type="submit"
-                  disabled={isSubmitting}
-                  className="w-full bg-red-700 hover:bg-red-800 text-white font-medium py-6 rounded-xl transition-colors disabled:opacity-70"
+                  disabled={status === 'submitting'}
+                  className="btn-shine w-full bg-w-btn hover:bg-w-btn-hover text-white font-medium py-4 rounded-xl transition-colors disabled:opacity-70"
                 >
-                  {isSubmitting ? 'Đang gửi...' : 'Gửi xác nhận'}
-                </Button>
+                  {status === 'submitting' ? 'Đang gửi...' : 'Gửi xác nhận'}
+                </button>
               </form>
             )}
-          </div>
-          </div>
+          </Reveal>
         </div>
       </div>
     </section>

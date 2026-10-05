@@ -3,69 +3,75 @@
 import { useEffect, useState } from 'react'
 import { WEDDING } from '@/lib/constants'
 
-interface CountdownState {
-  days: number
-  hours: number
-  minutes: number
-  seconds: number
+type CountdownState =
+  | { status: 'loading' }
+  | { status: 'counting'; days: number; hours: number; minutes: number; seconds: number }
+  | { status: 'today' }
+  | { status: 'past' }
+
+const START = new Date(WEDDING.startISO).getTime()
+const END = new Date(WEDDING.endISO).getTime()
+
+function calculate(now: number): CountdownState {
+  if (now >= END) return { status: 'past' }
+  if (now >= START) return { status: 'today' }
+  const diff = START - now
+  return {
+    status: 'counting',
+    days: Math.floor(diff / 86_400_000),
+    hours: Math.floor((diff / 3_600_000) % 24),
+    minutes: Math.floor((diff / 60_000) % 60),
+    seconds: Math.floor((diff / 1000) % 60),
+  }
+}
+
+function CountdownItem({ value, label }: { value: number | null; label: string }) {
+  return (
+    <div className="flex flex-col items-center">
+      <div className="invite-count-box w-14 h-14 sm:w-16 sm:h-16 flex items-center justify-center overflow-hidden text-xl sm:text-2xl font-semibold tabular-nums mb-1.5">
+        <span key={value ?? 'empty'} className={value === null ? undefined : 'count-tick'}>
+          {value === null ? '--' : String(value).padStart(2, '0')}
+        </span>
+      </div>
+      <span className="text-[0.65rem] uppercase tracking-[0.2em] invite-muted">{label}</span>
+    </div>
+  )
 }
 
 export function Countdown() {
-  const [countdown, setCountdown] = useState<CountdownState>({
-    days: 0,
-    hours: 0,
-    minutes: 0,
-    seconds: 0,
-  })
-  const [isPast, setIsPast] = useState(false)
+  const [state, setState] = useState<CountdownState>({ status: 'loading' })
 
   useEffect(() => {
-    const calculateCountdown = () => {
-      const weddingDate = new Date(WEDDING.dateISO).getTime()
-      const now = new Date().getTime()
-      const difference = weddingDate - now
-
-      if (difference <= 0) {
-        setIsPast(true)
-      } else {
-        setIsPast(false)
-        setCountdown({
-          days: Math.floor(difference / (1000 * 60 * 60 * 24)),
-          hours: Math.floor((difference / (1000 * 60 * 60)) % 24),
-          minutes: Math.floor((difference / 1000 / 60) % 60),
-          seconds: Math.floor((difference / 1000) % 60),
-        })
-      }
-    }
-
-    calculateCountdown()
-    const timer = setInterval(calculateCountdown, 1000)
+    const tick = () => setState(calculate(Date.now()))
+    tick()
+    const timer = setInterval(tick, 1000)
     return () => clearInterval(timer)
   }, [])
 
-  const CountdownItem = ({ value, label }: { value: number; label: string }) => (
-    <div className="flex flex-col items-center">
-      <div className="w-12 h-12 sm:w-14 sm:h-14 md:w-16 md:h-16 rounded-lg sm:rounded-xl bg-red-700 text-white flex items-center justify-center font-bold text-base sm:text-lg md:text-xl tabular-nums mb-1">
-        {String(value).padStart(2, '0')}
-      </div>
-      <span className="text-[10px] sm:text-xs text-red-200 font-medium">{label}</span>
-    </div>
-  )
-
-  if (isPast) {
+  if (state.status === 'past') {
     return (
-      <p className="text-lg sm:text-xl text-red-100 font-medium italic">
+      <p className="text-base sm:text-lg font-medium italic invite-names">
         Cảm ơn quý khách đã đến dự ngày trọng đại của chúng tôi!
       </p>
     )
   }
 
+  if (state.status === 'today') {
+    return (
+      <p className="text-base sm:text-lg font-medium italic invite-names">
+        Hôm nay là ngày vui của chúng tôi. Hẹn gặp quý khách!
+      </p>
+    )
+  }
+
+  const counting = state.status === 'counting' ? state : null
+
   return (
-    <div className="flex justify-center gap-2 sm:gap-4 md:gap-6 flex-wrap">
-      <CountdownItem value={countdown.days} label="Ngày" />
-      <CountdownItem value={countdown.hours} label="Giờ" />
-      <CountdownItem value={countdown.minutes} label="Phút" />
-      <CountdownItem value={countdown.seconds} label="Giây" />
+    <div className="flex justify-center gap-2.5 sm:gap-4" role="timer" aria-label="Đếm ngược đến lễ thành hôn">
+      <CountdownItem value={counting?.days ?? null} label="Ngày" />
+      <CountdownItem value={counting?.hours ?? null} label="Giờ" />
+      <CountdownItem value={counting?.minutes ?? null} label="Phút" />
+      <CountdownItem value={counting?.seconds ?? null} label="Giây" />
     </div>
   )
 }

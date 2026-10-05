@@ -1,9 +1,11 @@
 # Nhạc nền
 
-Thêm file nhạc vào đây và đặt tên:
+Thêm file nhạc vào đây rồi khai báo đường dẫn trong `lib/music.ts`, ví dụ:
 
-- **1.mp3** - Bài 1
-- **2.mp3** - Bài 2
-- **3.mp3** - Bài 3
+```ts
+playlist: ['/music/1.mp3', '/music/2.mp3'],
+```
 
-Phát tuần tự 1 → 2 → 3 → 1 → ... Cập nhật `lib/music.ts` nếu dùng tên file khác.
+Các bài phát tuần tự rồi quay lại bài đầu; một bài thì tự lặp lại. File khai báo nhưng không tồn tại sẽ được bỏ qua.
+
+Nên nén nhạc xuống khoảng 128 kbps (khoảng 1 MB mỗi phút) để khách mở thiệp bằng 4G nhanh hơn.

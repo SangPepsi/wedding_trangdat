@@ -1,0 +1,81 @@
+{
+  "couple": {
+    "groom": "Đức Toàn",
+    "bride": "Nhật Minh",
+    "groomShort": "Đức Toàn",
+    "brideShort": "Nhật Minh",
+    "groomBrand": "Toàn",
+    "brideBrand": "Minh"
+  },
+  "event": {
+    "start": "2026-12-20T14:00",
+    "end": "2026-12-20T18:00",
+    "lunarDate": "Tức ngày 12 tháng 11 năm Bính Ngọ",
+    "lunarYear": "Bính Ngọ",
+    "ceremonyName": "Lễ thành hôn",
+    "ceremonyTime": "14:00 - 15:30",
+    "ceremonyVenue": "Tại gia",
+    "location": "Đình làng thôn Nội Lăng, Thôn Nội Lăng, xã Tân Hưng, Tỉnh Hưng Yên",
+    "mealName": "Bữa cơm thân mật",
+    "mealTime": "17:00 - 18:00",
+    "mealVenue": "Tại gia",
+    "venueLat": 20.6635739,
+    "venueLng": 106.1004076
+  },
+  "addresses": {
+    "groomFamily": {
+      "address": "Đình làng thôn Tất Viên, xã Tân Hưng, tỉnh Hưng Yên",
+      "mapsUrl": "https://www.google.com/maps/search/?api=1&query=%C4%90%C3%ACnh+l%C3%A0ng+th%C3%B4n+T%E1%BA%A5t+Vi%C3%AAn%2C+x%C3%A3+T%C3%A2n+H%C6%B0ng%2C+H%C6%B0ng+Y%C3%AAn"
+    },
+    "brideFamily": {
+      "address": "Thôn Nội Lăng, xã Tân Hưng, Tỉnh Hưng Yên",
+      "mapsUrl": "https://www.google.com/maps/dir//%C4%90%C3%ACnh+l%C3%A0ng+th%C3%B4n+N%E1%BB%99i+L%C4%83ng,+Th%E1%BB%A7+S%C4%A9,+Ti%C3%Aan+L%E1%BB%AF,+H%C6%B0ng+Y%C3%Aan,+Vi%E1%BB%87t+Nam/@21.020672,105.8151741,14z/data=!4m8!4m7!1m0!1m5!1m1!1s0x3135c0fcc723b6df:0x43d0422c9f480f1f!2m2!1d106.1004076!2d20.6635739?entry=ttu"
+    }
+  },
+  "family": {
+    "nhaTrai": { "ong": "Nguyễn Văn A", "ba": "Trần Thị B" },
+    "nhaGai": { "ong": "Lê Văn C", "ba": "Phạm Thị D" }
+  },
+  "announcement": "TRÂN TRỌNG BÁO TIN LỄ THÀNH HÔN CỦA CON CHÚNG TÔI",
+  "story": {
+    "title": "Hành trình yêu",
+    "text": "Bắt đầu bằng một lần gặp gỡ vào tháng 5/2023. Gắn kết qua những chuyến đi của năm 2024. Hứa hẹn một đời bằng lời cầu hôn năm 2025. Và trọn vẹn hạnh phúc khi về chung một nhà vào năm 2026. Đức Toàn và Nhật Minh, bắt đầu một chương mới.",
+    "timeline": [
+      { "date": "05-2023", "event": "Lần đầu gặp gỡ" },
+      { "date": "2024", "event": "Chuyến đi đầu tiên" },
+      { "date": "2025", "event": "Lời cầu hôn ngọt ngào" },
+      { "date": "2026", "event": "Về chung một nhà" }
+    ]
+  },
+  "hero": { "src": "/gallery/bia.jpg", "focus": "68% 50%" },
+  "gallery": [
+    { "src": "/gallery/bia.jpg", "alt": "Ảnh cưới 1", "caption": "" },
+    { "src": "/gallery/2.jpg", "alt": "Ảnh cưới 2", "caption": "" },
+    { "src": "/gallery/3.jpg", "alt": "Ảnh cưới 3", "caption": "" },
+    { "src": "/gallery/4.jpg", "alt": "Ảnh cưới 4", "caption": "" },
+    { "src": "/gallery/5.jpg", "alt": "Ảnh cưới 5", "caption": "" },
+    { "src": "/gallery/6.jpg", "alt": "Ảnh cưới 6", "caption": "" },
+    { "src": "/gallery/7.jpg", "alt": "Ảnh cưới 7", "caption": "" },
+    { "src": "/gallery/8.jpg", "alt": "Ảnh cưới 8", "caption": "" }
+  ],
+  "gift": {
+    "groom": {
+      "qrPath": "/qrcode/groom.png",
+      "name": "Chú rể",
+      "bankName": "Vietcombank",
+      "accountNumber": "1234567890",
+      "accountName": ""
+    },
+    "bride": {
+      "qrPath": "/qrcode/bride.png",
+      "name": "Cô dâu",
+      "bankName": "Vietcombank",
+      "accountNumber": "0987654321",
+      "accountName": ""
+    }
+  },
+  "music": {
+    "playlist": ["/music/1.mp3"],
+    "volume": 0.5
+  }
+}

@@ -1,137 +1,249 @@
 'use client'
 
-import { useState } from 'react'
+import { useEffect, useRef, useState } from 'react'
 import Image from 'next/image'
-import { Gift } from 'lucide-react'
-import { useInView } from '@/hooks/use-in-view'
+import { Check, Copy, Gift, Hand, RotateCcw } from 'lucide-react'
 import { GIFT_QR } from '@/lib/gift'
 import { WEDDING } from '@/lib/constants'
-import { Dialog, DialogContent, DialogTitle } from '@/components/ui/dialog'
+import { Dialog, DialogContent, DialogDescription, DialogTitle } from '@/components/ui/dialog'
+import { Reveal } from './reveal'
+import { SectionHeading } from './section-heading'
 
-function QRCard({
-  qrPath,
+type GiftAccount = (typeof GIFT_QR)[keyof typeof GIFT_QR]
+type EnvelopeStage = 'closed' | 'opening' | 'open'
+
+/** Thời gian nắp lật + thiệp trượt lên trước khi hiện thẻ QR (khớp với transition trong globals.css) */
+const OPEN_DURATION = 1150
+
+async function copyText(text: string) {
+  try {
+    await navigator.clipboard.writeText(text)
+    return true
+  } catch {
+    // Trình duyệt trong app Zalo/Messenger cũ không có Clipboard API
+    const textarea = document.createElement('textarea')
+    textarea.value = text
+    textarea.setAttribute('readonly', '')
+    textarea.style.position = 'fixed'
+    textarea.style.opacity = '0'
+    document.body.appendChild(textarea)
+    textarea.select()
+    const ok = document.execCommand('copy')
+    document.body.removeChild(textarea)
+    return ok
+  }
+}
+
+function CopyAccountButton({ accountNumber }: { accountNumber: string }) {
+  const [copied, setCopied] = useState(false)
+  const timer = useRef<ReturnType<typeof setTimeout>>(undefined)
+
+  useEffect(() => () => clearTimeout(timer.current), [])
+
+  const handleCopy = async () => {
+    if (!(await copyText(accountNumber.replace(/\s/g, '')))) return
+    setCopied(true)
+    clearTimeout(timer.current)
+    timer.current = setTimeout(() => setCopied(false), 2000)
+  }
+
+  return (
+    <button
+      type="button"
+      onClick={handleCopy}
+      className="mt-3 inline-flex items-center gap-1.5 rounded-lg border border-w-line bg-w-tint px-3 py-1.5 text-xs font-medium text-w-strong hover:border-w-line-strong transition-colors"
+      aria-live="polite"
+    >
+      {copied ? <Check className="w-3.5 h-3.5" aria-hidden /> : <Copy className="w-3.5 h-3.5" aria-hidden />}
+      {copied ? 'Đã sao chép' : 'Sao chép số tài khoản'}
+    </button>
+  )
+}
+
+function GiftEnvelope({
+  account,
   fullName,
-  bankName,
-  accountNumber,
-  isInView,
+  shortName,
   delay,
   onQRClick,
 }: {
-  qrPath: string
+  account: GiftAccount
   fullName: string
-  bankName: string
-  accountNumber: string
-  isInView: boolean
-  delay: string
+  shortName: string
+  delay: number
   onQRClick: () => void
 }) {
+  const [stage, setStage] = useState<EnvelopeStage>('closed')
+  const envelopeRef = useRef<HTMLButtonElement>(null)
+  const cardRef = useRef<HTMLDivElement>(null)
+  const timer = useRef<ReturnType<typeof setTimeout>>(undefined)
+  const shouldFocusCard = useRef(false)
+
+  useEffect(() => () => clearTimeout(timer.current), [])
+
+  useEffect(() => {
+    if (stage === 'open' && shouldFocusCard.current) {
+      shouldFocusCard.current = false
+      cardRef.current?.focus({ preventScroll: true })
+    }
+  }, [stage])
+
+  const handleOpen = () => {
+    if (stage !== 'closed') return
+    shouldFocusCard.current = true
+    if (window.matchMedia('(prefers-reduced-motion: reduce)').matches) {
+      setStage('open')
+      return
+    }
+    setStage('opening')
+    const rect = envelopeRef.current?.getBoundingClientRect()
+    timer.current = setTimeout(() => {
+      setStage('open')
+      if (rect) {
+        const x = (rect.left + rect.width / 2) / window.innerWidth
+        const y = (rect.top + rect.height * 0.3) / window.innerHeight
+        import('@/lib/confetti').then(({ fireGiftBurst }) => fireGiftBurst(x, y))
+      }
+    }, OPEN_DURATION)
+  }
+
   return (
-    <div
-      className={`theme-qr-card rounded-2xl p-6 sm:p-8 border-2 border-[#d4a574] shadow-[0_0_0_1px_rgba(255,255,255,0.2)_inset] transition-all duration-700 ease-out ${
-        isInView ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-6'
-      }`}
-      style={{ transitionDelay: delay }}
-    >
-      <div className="flex justify-center mb-4">
-        <button
-          type="button"
-          onClick={onQRClick}
-          className="relative w-36 h-36 sm:w-40 sm:h-40 bg-white rounded-lg overflow-hidden mx-auto hover:ring-2 hover:ring-[#d4a574] transition-all focus:outline-none focus:ring-2 focus:ring-[#d4a574] cursor-zoom-in p-2"
-          aria-label={`Phóng to mã QR ${fullName}`}
+    <Reveal delay={delay} className="flex flex-col items-center">
+      {stage !== 'open' ? (
+        <div className="w-full flex flex-col items-center pt-10 sm:pt-12">
+          <button
+            ref={envelopeRef}
+            type="button"
+            onClick={handleOpen}
+            disabled={stage === 'opening'}
+            className={`gift-env ${stage === 'opening' ? 'is-open' : ''}`}
+            aria-label={`Mở phong bì mừng cưới ${account.name.toLowerCase()} ${fullName} để xem mã QR`}
+          >
+            <span className="gift-env-back" aria-hidden />
+            <span className="gift-env-letter" aria-hidden>
+              <span className="gift-env-letter-mark">囍</span>
+              <span className="gift-env-letter-text">Mã QR mừng cưới</span>
+            </span>
+            <span className="gift-env-pocket" aria-hidden>
+              <span className="gift-env-title">Mừng cưới</span>
+              <span className="gift-env-name">
+                {account.name} · {shortName}
+              </span>
+            </span>
+            <span className="gift-env-flap" aria-hidden />
+            <span className="gift-env-seal" aria-hidden>
+              囍
+            </span>
+          </button>
+          <p
+            className={`mt-5 inline-flex items-center gap-1.5 text-sm text-w-muted transition-opacity ${
+              stage === 'opening' ? 'opacity-0' : ''
+            }`}
+          >
+            <Hand className="w-4 h-4 gift-hint-icon" aria-hidden />
+            Chạm vào phong bì để mở
+          </p>
+        </div>
+      ) : (
+        <div
+          ref={cardRef}
+          tabIndex={-1}
+          className="gift-reveal w-full bg-w-qr rounded-2xl p-6 sm:p-8 border-2 border-w-gold text-center focus:outline-none"
         >
-          <Image
-            src={qrPath}
-            alt={`QR chuyển khoản ${fullName}`}
-            fill
-            className="object-contain"
-            sizes="160px"
-          />
-        </button>
-      </div>
-      <h3 className="text-lg font-serif font-bold text-white text-center mb-2">
-        {fullName}
-      </h3>
-      {(bankName || accountNumber) && (
-        <div className="text-center space-y-0.5 text-sm text-white/95">
-          {bankName && <p className="font-medium">{bankName}</p>}
-          {accountNumber && <p className="font-mono">{accountNumber}</p>}
+          <p className="text-xs uppercase tracking-[0.2em] text-w-muted mb-3">{account.name}</p>
+          <button
+            type="button"
+            onClick={onQRClick}
+            className="relative block w-40 h-40 bg-white rounded-lg overflow-hidden mx-auto mb-4 p-2 hover:ring-2 hover:ring-w-gold transition-all focus:outline-none focus-visible:ring-2 focus-visible:ring-w-gold cursor-zoom-in"
+            aria-label={`Phóng to mã QR của ${fullName}`}
+          >
+            <Image
+              src={account.qrPath}
+              alt={`Mã QR chuyển khoản của ${fullName}`}
+              fill
+              className="object-contain"
+              sizes="160px"
+            />
+          </button>
+          <h3 className="text-lg font-semibold text-w-strong mb-2">{fullName}</h3>
+          <div className="space-y-0.5 text-sm text-w-text">
+            {account.bankName && <p className="font-medium">{account.bankName}</p>}
+            {account.accountNumber && <p className="font-mono text-base tracking-wider">{account.accountNumber}</p>}
+            {account.accountName && <p className="text-xs uppercase text-w-muted">{account.accountName}</p>}
+          </div>
+          {account.accountNumber && <CopyAccountButton accountNumber={account.accountNumber} />}
+          <div>
+            <button
+              type="button"
+              onClick={() => setStage('closed')}
+              className="mt-4 inline-flex items-center gap-1 text-xs text-w-muted hover:text-w-strong underline-offset-2 hover:underline"
+            >
+              <RotateCcw className="w-3 h-3" aria-hidden />
+              Gói lại phong bì
+            </button>
+          </div>
         </div>
       )}
-    </div>
+    </Reveal>
   )
 }
 
 export function GiftSection() {
-  const { ref, isInView } = useInView()
-  const [zoomedQR, setZoomedQR] = useState<{ qrPath: string; name: string; fullName: string } | null>(null)
+  const [zoomed, setZoomed] = useState<{ account: GiftAccount; fullName: string } | null>(null)
 
   return (
     <>
-      <section id="hop-mung" className="py-16 sm:py-20 md:py-28 section-end" data-theme-section="end">
+      <section id="hop-mung" className="py-16 sm:py-20 md:py-28 scroll-mt-16">
         <div className="max-w-4xl mx-auto px-4 sm:px-6">
-          <div className="section-frame-light">
-            <div
-              ref={ref}
-              className={`text-center mb-10 sm:mb-14 transition-all duration-700 ease-out ${
-                isInView ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-6'
-              }`}
+          <div className="section-frame">
+            <SectionHeading
+              icon={<Gift className="w-7 h-7" aria-hidden />}
+              description="Nếu bạn muốn gửi lời chúc mừng qua chuyển khoản, hãy mở phong bì để xem mã QR và số tài khoản."
             >
-              <div className="flex justify-center mb-3">
-              <div className="gift-icon-wrap w-14 h-14 rounded-full bg-red-100 flex items-center justify-center">
-                <Gift className="w-7 h-7 text-red-600" />
-              </div>
-            </div>
-            <h2 className="text-2xl sm:text-3xl md:text-4xl font-serif font-bold text-red-900 mb-4">
               Hộp mừng cưới
-            </h2>
-            <p className="text-red-600 max-w-md mx-auto text-sm sm:text-base px-2">
-              Nếu bạn muốn gửi lời chúc mừng qua chuyển khoản, vui lòng quét mã QR bên dưới. Nhấn vào mã QR để phóng to.
-            </p>
-          </div>
+            </SectionHeading>
 
-          <div className="grid md:grid-cols-2 gap-6 sm:gap-8 p-6 sm:p-8 theme-card rounded-2xl border-wedding-gold">
-            <QRCard
-              qrPath={GIFT_QR.groom.qrPath}
-              fullName={WEDDING.groom}
-              bankName={GIFT_QR.groom.bankName}
-              accountNumber={GIFT_QR.groom.accountNumber}
-              isInView={isInView}
-              delay="100ms"
-              onQRClick={() => setZoomedQR({ qrPath: GIFT_QR.groom.qrPath, name: GIFT_QR.groom.name, fullName: WEDDING.groom })}
-            />
-            <QRCard
-              qrPath={GIFT_QR.bride.qrPath}
-              fullName={WEDDING.bride}
-              bankName={GIFT_QR.bride.bankName}
-              accountNumber={GIFT_QR.bride.accountNumber}
-              isInView={isInView}
-              delay="200ms"
-              onQRClick={() => setZoomedQR({ qrPath: GIFT_QR.bride.qrPath, name: GIFT_QR.bride.name, fullName: WEDDING.bride })}
-            />
-          </div>
+            <div className="grid md:grid-cols-2 gap-10 sm:gap-8 items-start">
+              <GiftEnvelope
+                account={GIFT_QR.groom}
+                fullName={WEDDING.groom}
+                shortName={WEDDING.groomShort}
+                delay={100}
+                onQRClick={() => setZoomed({ account: GIFT_QR.groom, fullName: WEDDING.groom })}
+              />
+              <GiftEnvelope
+                account={GIFT_QR.bride}
+                fullName={WEDDING.bride}
+                shortName={WEDDING.brideShort}
+                delay={200}
+                onQRClick={() => setZoomed({ account: GIFT_QR.bride, fullName: WEDDING.bride })}
+              />
+            </div>
           </div>
         </div>
       </section>
 
-      <Dialog open={zoomedQR !== null} onOpenChange={() => setZoomedQR(null)}>
-        <DialogContent className="max-w-[95vw] sm:max-w-md w-full p-6 bg-white rounded-2xl [&_[data-slot=dialog-close]]:text-red-700 [&_[data-slot=dialog-close]]:bg-red-100 [&_[data-slot=dialog-close]]:hover:bg-red-200">
-          <DialogTitle className="sr-only">
-            {zoomedQR ? `Mã QR chuyển khoản ${zoomedQR.name}` : 'Phóng to mã QR'}
+      <Dialog open={zoomed !== null} onOpenChange={(open) => !open && setZoomed(null)}>
+        <DialogContent className="max-w-[95vw] sm:max-w-md w-full p-6 bg-white text-stone-900 rounded-2xl">
+          <DialogTitle className="text-lg font-serif font-semibold text-center">
+            {zoomed ? `${zoomed.account.name} - ${zoomed.fullName}` : 'Mã QR'}
           </DialogTitle>
-          {zoomedQR && (
+          {zoomed && (
             <div className="text-center">
-              <p className="text-lg font-serif font-semibold text-red-900 mb-1">{zoomedQR.name}</p>
-              <p className="text-red-700 text-sm mb-4">{zoomedQR.fullName}</p>
-              <div className="relative w-64 h-64 sm:w-80 sm:h-80 mx-auto bg-white rounded-xl border-2 border-red-200 p-4">
+              <div className="relative w-64 h-64 sm:w-80 sm:h-80 mx-auto bg-white rounded-xl border-2 border-stone-200 p-4">
                 <Image
-                  src={zoomedQR.qrPath}
-                  alt={`QR chuyển khoản ${zoomedQR.name}`}
+                  src={zoomed.account.qrPath}
+                  alt={`Mã QR chuyển khoản của ${zoomed.fullName}`}
                   fill
                   className="object-contain"
                   sizes="320px"
                 />
               </div>
-              <p className="text-red-600 text-xs mt-4">Quét mã bằng ứng dụng ngân hàng</p>
+              <DialogDescription className="text-stone-600 text-sm mt-4">
+                {zoomed.account.bankName} · <span className="font-mono">{zoomed.account.accountNumber}</span>
+                <br />
+                Quét mã bằng ứng dụng ngân hàng
+              </DialogDescription>
             </div>
           )}
         </DialogContent>
