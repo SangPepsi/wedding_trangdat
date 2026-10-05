@@ -29,7 +29,7 @@
     },
     "brideFamily": {
       "address": "Thôn Tất Viên, xã Tân Hưng, Tỉnh Hưng Yên",
-      "mapsUrl": "https://www.google.com/maps/dir//%C4%90%C3%ACnh+l%C3%A0ng+th%C3%B4n+N%E1%BB%99i+L%C4%83ng,+Th%E1%BB%A7+S%C4%A9,+Ti%C3%Aan+L%E1%BB%AF,+H%C6%B0ng+Y%C3%Aan,+Vi%E1%BB%87t+Nam/@21.020672,105.8151741,14z/data=!4m8!4m7!1m0!1m5!1m1!1s0x3135c0fcc723b6df:0x43d0422c9f480f1f!2m2!1d106.1004076!2d20.6635739?entry=ttu"
+      "mapsUrl": "https://www.google.com/maps/search/?api=1&query=Th%C3%B4n+T%E1%BA%A5t+Vi%C3%AAn%2C+x%C3%A3+T%C3%A2n+H%C6%B0ng%2C+H%C6%B0ng+Y%C3%AAn"
     }
   },
   "family": {
@@ -53,10 +53,10 @@
     { "src": "/gallery/2.jpg", "alt": "Ảnh cưới 2", "caption": "" },
     { "src": "/gallery/3.jpg", "alt": "Ảnh cưới 3", "caption": "" },
     { "src": "/gallery/4.jpg", "alt": "Ảnh cưới 4", "caption": "" },
-    { "src": "/gallery/5.jpg", "alt": "Ảnh cưới 5", "caption": "" },
-    { "src": "/gallery/6.jpg", "alt": "Ảnh cưới 6", "caption": "" },
-    { "src": "/gallery/7.jpg", "alt": "Ảnh cưới 7", "caption": "" },
-    { "src": "/gallery/8.jpg", "alt": "Ảnh cưới 8", "caption": "" }
+    { "src": "/gallery/6.jpg", "alt": "Ảnh cưới 5", "caption": "" },
+    { "src": "/gallery/7.jpg", "alt": "Ảnh cưới 6", "caption": "" },
+    { "src": "/gallery/8.jpg", "alt": "Ảnh cưới 7", "caption": "" },
+    { "src": "/gallery/9.jpg", "alt": "Ảnh cưới 8", "caption": "" }
   ],
   "gift": {
     "groom": {

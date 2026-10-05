@@ -3,7 +3,7 @@
 import { useCallback, useEffect, useRef, useState, useSyncExternalStore } from 'react'
 import Image from 'next/image'
 import { ChevronLeft, ChevronRight, Images, Maximize2, Pause, Play } from 'lucide-react'
-import { GALLERY_IMAGES } from '@/lib/gallery'
+import type { GalleryImage } from '@/lib/gallery'
 import { WEDDING } from '@/lib/constants'
 import { GalleryLightbox } from './gallery-lightbox'
 import { SlideProgress } from './gallery-progress'
@@ -26,8 +26,14 @@ function subscribeReducedMotion(callback: () => void) {
 
 const pad = (n: number) => String(n).padStart(2, '0')
 
-export function GallerySection() {
-  const images = GALLERY_IMAGES
+function orientation(ratio?: number) {
+  if (!ratio) return 'landscape'
+  if (ratio < 0.9) return 'portrait'
+  if (ratio > 1.2) return 'landscape'
+  return 'square'
+}
+
+export function GallerySection({ images }: { images: GalleryImage[] }) {
   const total = images.length
   const [active, setActive] = useState(0)
   const [userPlaying, setUserPlaying] = useState<boolean | null>(null)
@@ -121,15 +127,23 @@ export function GallerySection() {
                   <div
                     key={image.src + i}
                     className={`gallery-layer ${i === active ? 'is-active' : ''}`}
+                    data-orient={orientation(image.ratio)}
                     aria-hidden={i !== active}
                   >
+                    <Image
+                      src={image.src}
+                      alt=""
+                      fill
+                      className="gallery-backdrop"
+                      sizes="(max-width: 1024px) 100vw, 960px"
+                    />
                     <div className={`gallery-kenburns ${i % 2 ? 'kb-right' : 'kb-left'}`}>
                       <Image
                         src={image.src}
                         alt={image.alt}
                         fill
                         priority={i === 0}
-                        className="object-cover"
+                        className="gallery-photo"
                         sizes="(max-width: 1024px) 100vw, 960px"
                       />
                     </div>

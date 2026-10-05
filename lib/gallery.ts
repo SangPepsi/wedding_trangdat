@@ -9,6 +9,8 @@ export interface GalleryImage {
   src: string
   alt: string
   caption?: string
+  /** Rộng / cao, đọc từ file ảnh phía server (lib/gallery-server.ts) */
+  ratio?: number
 }
 
 export const GALLERY_IMAGES: GalleryImage[] = CONTENT.gallery.map((g) => ({

@@ -14,6 +14,7 @@ import { WeddingFooter } from '@/components/wedding-footer'
 import { PetalLayer } from '@/components/petal-layer'
 import { CardSpotlight } from '@/components/card-spotlight'
 import { isGuestbookConfigured } from '@/lib/guestbook-store'
+import { getGalleryImages } from '@/lib/gallery-server'
 
 export default function Page() {
   const showGuestbook = isGuestbookConfigured || process.env.NODE_ENV === 'development'
@@ -30,7 +31,7 @@ export default function Page() {
         <FamilySection />
         <CeremonyAnnouncementSection />
         <ScheduleSection />
-        <GallerySection />
+        <GallerySection images={getGalleryImages()} />
         <RSVPForm />
         <GuestbookSection enabled={isGuestbookConfigured} />
         <GiftSection />

@@ -1,26 +1,148 @@
 'use client'
 
-import { useEffect, useState } from 'react'
-import { Heart, Palette } from 'lucide-react'
+import { useEffect, useId, useRef, useState, useSyncExternalStore } from 'react'
+import { ChevronsRight, Volume2, VolumeX } from 'lucide-react'
 import { WEDDING, ANNOUNCEMENT } from '@/lib/constants'
 import { useGuestName } from '@/hooks/use-guest-name'
-import { useWeddingTheme } from '@/hooks/use-wedding-theme'
-import { WEDDING_OPEN_EVENT } from '@/hooks/use-background-music'
+import { WEDDING_OPEN_EVENT, WEDDING_SILENCE_EVENT } from '@/hooks/use-background-music'
+import { playGateSounds } from '@/lib/gate-sounds'
 
-/** closed → opening (dấu sáp tách, nắp lật) → revealing (chớp sáng, hai cánh cửa mở) → hidden */
-type Stage = 'closed' | 'opening' | 'revealing' | 'hidden'
+/** closed → knocking (vòng cửa gõ 3 tiếng) → opening (tiếng cồng, chữ Hỷ tách, hai cánh cổng mở) → hidden */
+type Stage = 'closed' | 'knocking' | 'opening' | 'hidden'
 
-const OPENING_MS = 1150
-const REVEALING_MS = 1500
+/** Phải khớp với animation cn-knock / cn-medal-pulse (2.1s) và transition .cn-door trong globals.css */
+const KNOCKS_S = [0.15, 0.85, 1.55]
+const KNOCK_MS = 2100
+const DOOR_OPEN_S = 3.4
+const OPEN_MS = 4200
+const HERO_AT_MS = 1300
+const CONFETTI_AT_MS = 1800
+const MUSIC_AFTER_OPEN_MS = 2800
+
+const SOUND_KEY = 'wedding-gate-sound'
+/** Khách quay lại lần sau: bỏ màn gõ cửa, cổng mở luôn */
+const OPENED_KEY = 'wedding-opened'
+
+const soundListeners = new Set<() => void>()
+function subscribeSound(callback: () => void) {
+  soundListeners.add(callback)
+  return () => {
+    soundListeners.delete(callback)
+  }
+}
+function readSoundOn() {
+  try {
+    return localStorage.getItem(SOUND_KEY) !== 'off'
+  } catch {
+    return true
+  }
+}
+function writeSoundOn(on: boolean) {
+  try {
+    localStorage.setItem(SOUND_KEY, on ? 'on' : 'off')
+  } catch {}
+  soundListeners.forEach((l) => l())
+}
+function takeReturningVisit() {
+  try {
+    const returning = localStorage.getItem(OPENED_KEY) === '1'
+    localStorage.setItem(OPENED_KEY, '1')
+    return returning
+  } catch {
+    return false
+  }
+}
 
 const loadConfetti = () => import('@/lib/confetti')
 
-function SealPiece({ part }: { part: 'whole' | 'left' | 'right' }) {
+function Lantern({ side }: { side: 'left' | 'right' }) {
   return (
-    <div
-      className={`cover-seal cover-seal-piece cover-seal-${part} absolute inset-0 rounded-full flex items-center justify-center border-4`}
-    >
-      <Heart className="w-7 h-7 sm:w-8 sm:h-8 fill-current drop-shadow-sm" aria-hidden />
+    <div className={`cn-lantern cn-lantern-${side}`} aria-hidden>
+      <span className="cn-lantern-string" />
+      <span className="cn-lantern-cap" />
+      <span className="cn-lantern-body">
+        <span className="cn-lantern-char">囍</span>
+      </span>
+      <span className="cn-lantern-cap cn-lantern-cap-bottom" />
+      <span className="cn-lantern-tassel" />
+    </div>
+  )
+}
+
+/** Câu đối dán trên hai cánh cổng: vế trên bên phải, vế dưới bên trái (khi đứng nhìn vào cổng) */
+const COUPLETS = { left: '永結同心', right: '百年好合' } as const
+
+function Door({ side }: { side: 'left' | 'right' }) {
+  return (
+    <div className={`cn-door cn-door-${side}`}>
+      <span className="cn-door-panel">
+        <span className="cn-studs" />
+        <span className="cn-couplet">
+          {[...COUPLETS[side]].map((char) => (
+            <span key={char}>{char}</span>
+          ))}
+        </span>
+      </span>
+    </div>
+  )
+}
+
+const MANE = Array.from({ length: 14 }, (_, i) => {
+  const a = (i / 14) * Math.PI * 2
+  return { cx: Math.round((50 + 35 * Math.cos(a)) * 100) / 100, cy: Math.round((46 + 35 * Math.sin(a)) * 100) / 100 }
+})
+
+/** Vòng gõ cửa: mặt sư tử đồng ngậm vòng (phô thủ) */
+function Knocker({ side }: { side: 'left' | 'right' }) {
+  const id = useId().replace(/[^a-zA-Z0-9_-]/g, '')
+  const gold = `${id}-gold`
+  const mane = `${id}-mane`
+  const ink = '#5a3a0c'
+  return (
+    <span className={`cn-knocker cn-knocker-${side}`} aria-hidden>
+      <span className="cn-knocker-ring" />
+      <svg className="cn-knocker-lion" viewBox="0 0 100 100">
+        <defs>
+          <radialGradient id={gold} cx="40%" cy="32%" r="75%">
+            <stop offset="0" stopColor="#fff3c4" />
+            <stop offset="0.45" stopColor="#e3b24f" />
+            <stop offset="1" stopColor="#7a4e12" />
+          </radialGradient>
+          <radialGradient id={mane} cx="45%" cy="35%" r="70%">
+            <stop offset="0" stopColor="#f0c868" />
+            <stop offset="0.6" stopColor="#9a6a1c" />
+            <stop offset="1" stopColor="#5a3a0c" />
+          </radialGradient>
+        </defs>
+        {MANE.map((p) => (
+          <circle key={`${p.cx}-${p.cy}`} cx={p.cx} cy={p.cy} r="10" fill={`url(#${mane})`} stroke={ink} strokeWidth="1" />
+        ))}
+        <circle cx="50" cy="46" r="34" fill={`url(#${mane})`} />
+        <circle cx="50" cy="46" r="27" fill={`url(#${gold})`} stroke={ink} strokeWidth="1.5" />
+        <circle cx="50" cy="29" r="2.5" fill="#fff3c4" />
+        <path d="M31 38 Q39 29 47 37 M53 37 Q61 29 69 38" stroke={ink} strokeWidth="4" fill="none" strokeLinecap="round" />
+        <circle cx="39" cy="43" r="4.5" fill="#fff6d8" stroke={ink} strokeWidth="1.5" />
+        <circle cx="61" cy="43" r="4.5" fill="#fff6d8" stroke={ink} strokeWidth="1.5" />
+        <circle cx="39" cy="43.5" r="2" fill="#3a2208" />
+        <circle cx="61" cy="43.5" r="2" fill="#3a2208" />
+        <path d="M43 52 Q50 45 57 52 Q57 58 50 59 Q43 58 43 52Z" fill="#b07a22" stroke={ink} strokeWidth="1.5" />
+        <circle cx="32" cy="55" r="3.5" fill="none" stroke={ink} strokeWidth="1.2" />
+        <circle cx="68" cy="55" r="3.5" fill="none" stroke={ink} strokeWidth="1.2" />
+        <path d="M37 63 Q50 72 63 63" stroke={ink} strokeWidth="2.5" fill="none" strokeLinecap="round" />
+        <rect x="44" y="63" width="12" height="9" rx="3" fill={`url(#${gold})`} stroke={ink} strokeWidth="1.5" />
+      </svg>
+    </span>
+  )
+}
+
+function Medallion() {
+  return (
+    <div className="cn-medal" aria-hidden>
+      {(['whole', 'left', 'right'] as const).map((part) => (
+        <span key={part} className={`cn-medal-piece cn-medal-${part}`}>
+          <span className="cn-medal-char">囍</span>
+        </span>
+      ))}
     </div>
   )
 }
@@ -28,7 +150,6 @@ function SealPiece({ part }: { part: 'whole' | 'left' | 'right' }) {
 export function InvitationCover() {
   const [stage, setStage] = useState<Stage>('closed')
   const guestName = useGuestName()
-  const { themeName, cycleTheme } = useWeddingTheme()
 
   useEffect(() => {
     loadConfetti()
@@ -43,27 +164,78 @@ export function InvitationCover() {
     }
   }, [stage])
 
+  const soundOn = useSyncExternalStore(subscribeSound, readSoundOn, () => true)
+  const timersRef = useRef<ReturnType<typeof setTimeout>[]>([])
+  const stopSoundRef = useRef<(() => void) | null>(null)
+
+  useEffect(() => () => timersRef.current.forEach(clearTimeout), [])
+
+  const later = (fn: () => void, ms: number) => {
+    timersRef.current.push(setTimeout(fn, ms))
+  }
+
+  const reveal = () => {
+    document.documentElement.dataset.opened = 'true'
+  }
+  const hide = () => {
+    setStage('hidden')
+    window.scrollTo({ top: 0 })
+  }
+
   const handleOpen = () => {
     if (stage !== 'closed') return
-    setStage('opening')
-    // Phát nhạc phải nằm ngay trong thao tác bấm, trình duyệt mới cho phép
-    window.dispatchEvent(new Event(WEDDING_OPEN_EVENT))
-
     const reduceMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches
-    setTimeout(() => {
-      setStage('revealing')
-      document.documentElement.dataset.opened = 'true'
-      loadConfetti().then((m) => m.fireOpeningCelebration())
-      setTimeout(() => {
-        setStage('hidden')
-        window.scrollTo({ top: 0 })
-      }, reduceMotion ? 0 : REVEALING_MS)
-    }, reduceMotion ? 0 : OPENING_MS)
+    const returning = takeReturningVisit()
+    const knockMs = reduceMotion || returning ? 0 : KNOCK_MS
+    // Âm thanh và nhạc phải được khởi động ngay trong thao tác bấm, trình duyệt mới cho phép
+    if (soundOn && !reduceMotion) {
+      stopSoundRef.current = playGateSounds({
+        knocks: knockMs ? KNOCKS_S : [],
+        open: knockMs / 1000,
+        openDuration: DOOR_OPEN_S,
+      })
+    }
+    if (soundOn) {
+      window.dispatchEvent(
+        new CustomEvent(WEDDING_OPEN_EVENT, {
+          detail: { delayMs: reduceMotion ? 0 : knockMs + MUSIC_AFTER_OPEN_MS },
+        }),
+      )
+    }
+
+    const startOpening = () => {
+      setStage('opening')
+      later(reveal, reduceMotion ? 0 : HERO_AT_MS)
+      later(() => loadConfetti().then((m) => m.fireOpeningCelebration()), reduceMotion ? 0 : CONFETTI_AT_MS)
+      later(hide, reduceMotion ? 0 : OPEN_MS)
+    }
+    if (knockMs) {
+      setStage('knocking')
+      later(startOpening, knockMs)
+    } else {
+      startOpening()
+    }
+  }
+
+  const handleSkip = () => {
+    timersRef.current.forEach(clearTimeout)
+    timersRef.current = []
+    stopSoundRef.current?.()
+    if (stage === 'closed') takeReturningVisit()
+    if (soundOn) window.dispatchEvent(new CustomEvent(WEDDING_OPEN_EVENT, { detail: { delayMs: 0 } }))
+    reveal()
+    hide()
+  }
+
+  const toggleSound = () => {
+    writeSoundOn(!soundOn)
+    if (!soundOn) return
+    stopSoundRef.current?.()
+    if (stage !== 'closed') window.dispatchEvent(new Event(WEDDING_SILENCE_EVENT))
   }
 
   if (stage === 'hidden') return null
 
-  const isOpening = stage !== 'closed'
   const dateFormatted = WEDDING.dateShort.replace(/\//g, '.')
 
   return (
@@ -72,98 +244,91 @@ export function InvitationCover() {
       aria-modal="true"
       aria-labelledby="cover-title"
       data-stage={stage}
-      className="cover-root fixed inset-0 z-[100]"
+      className="cover-root cn-cover fixed inset-0 z-[100]"
     >
-      <div className="cover-door cover-door-left" aria-hidden />
-      <div className="cover-door cover-door-right" aria-hidden />
-      <div className="cover-flash" aria-hidden />
+      <div className="cn-gate" aria-hidden>
+        <Door side="left" />
+        <Door side="right" />
+      </div>
+      <div className="cn-light" aria-hidden />
+      <div className="cn-roof" aria-hidden>
+        <span className="cn-roof-beam" />
+        <span className="cn-roof-tiles" />
+      </div>
 
-      <button
-        type="button"
-        onClick={cycleTheme}
-        className="cover-palette absolute top-4 right-4 sm:top-6 sm:right-6 z-10 w-11 h-11 sm:w-12 sm:h-12 rounded-full bg-white/90 hover:bg-white shadow-lg border border-white/50 flex items-center justify-center text-stone-600 hover:text-stone-800 transition-all focus:outline-none focus-visible:ring-2 focus-visible:ring-white/70"
-        aria-label={`Đổi màu nền (hiện: ${themeName})`}
-        title={`Đổi màu (${themeName})`}
-      >
-        <Palette className="w-5 h-5 sm:w-6 sm:h-6" />
-      </button>
+      <Lantern side="left" />
+      <Lantern side="right" />
 
       <div className="absolute inset-0 overflow-y-auto">
-        <div className="min-h-full flex items-center justify-center p-4">
-          <div className="cover-card-wrap perspective-[1200px] w-full max-w-[420px]">
-            <div className="envelope-card relative w-full">
-              <div className="cover-gold-frame absolute -inset-[1px] rounded-[2rem] opacity-90" />
-              <div className="cover-inner-border absolute -inset-[2px] rounded-[1.5rem] m-[3px]" />
+        <div className="cn-content min-h-full flex flex-col items-center justify-center px-5 py-24 sm:py-28 text-center">
+          <p className="cn-fade cn-sub text-[10px] sm:text-xs uppercase tracking-[0.3em] mb-4 max-w-[17rem] sm:max-w-sm leading-relaxed">
+            {ANNOUNCEMENT}
+          </p>
 
-              <div className="relative w-full h-full rounded-[1.25rem] overflow-hidden">
-                <div className="cover-surface relative pt-[7.5rem] sm:pt-[8.75rem] pb-10 px-8 sm:px-12 text-center rounded-b-[1.25rem]">
-                  <div className="cover-letter cover-stagger">
-                    <p className="cover-sub text-[10px] sm:text-xs uppercase tracking-[0.3em] mb-4 font-light leading-relaxed">
-                      {ANNOUNCEMENT}
-                    </p>
-                    <h2
-                      id="cover-title"
-                      className="cover-text font-serif text-[1.75rem] sm:text-4xl font-bold tracking-wide mb-6 flex flex-nowrap items-center justify-center gap-x-2 sm:gap-x-3"
-                    >
-                      <span className="whitespace-nowrap drop-shadow-sm">{WEDDING.groomShort}</span>
-                      <Heart
-                        className="cover-accent w-5 h-5 sm:w-7 sm:h-7 fill-current shrink-0 drop-shadow-sm"
-                        aria-hidden
-                      />
-                      <span className="sr-only">và</span>
-                      <span className="whitespace-nowrap drop-shadow-sm">{WEDDING.brideShort}</span>
-                    </h2>
+          <div className="cn-fade cn-plaque mb-7 sm:mb-9">
+            <h2
+              id="cover-title"
+              className="font-serif text-[1.65rem] sm:text-4xl font-bold flex flex-nowrap items-center justify-center gap-x-2 sm:gap-x-3"
+            >
+              <span className="cn-names whitespace-nowrap">{WEDDING.groomShort}</span>
+              <span className="cn-names cn-amp" aria-hidden>
+                &
+              </span>
+              <span className="sr-only">và</span>
+              <span className="cn-names whitespace-nowrap">{WEDDING.brideShort}</span>
+            </h2>
+          </div>
 
-                    <div className="flex items-center justify-center gap-3 mb-6" aria-hidden>
-                      <span className="cover-line-left w-8 h-px opacity-70" />
-                      <span className="cover-accent-bg w-2 h-2 rounded-full" />
-                      <span className="cover-accent-bg w-16 h-px opacity-80" />
-                      <span className="cover-accent-bg w-2 h-2 rounded-full" />
-                      <span className="cover-line-right w-8 h-px opacity-70" />
-                    </div>
+          <div className="flex items-center justify-center gap-4 sm:gap-6 mb-7 sm:mb-9">
+            <Knocker side="left" />
+            <Medallion />
+            <Knocker side="right" />
+          </div>
 
-                    <p className="cover-date font-serif text-xl sm:text-2xl tracking-[0.2em] mb-2">{dateFormatted}</p>
+          <div className="cn-fade">
+            <p className="cn-date font-serif text-xl sm:text-2xl tracking-[0.2em] mb-1">{dateFormatted}</p>
+            {WEDDING.ceremony.lunarDate && (
+              <p className="cn-sub text-xs italic mb-5">({WEDDING.ceremony.lunarDate})</p>
+            )}
 
-                    {guestName ? (
-                      <div className="mb-8">
-                        <p className="cover-date text-xs uppercase tracking-[0.3em] font-light mb-2">
-                          Trân trọng kính mời
-                        </p>
-                        <p className="cover-text font-serif text-2xl sm:text-3xl break-words">{guestName}</p>
-                      </div>
-                    ) : (
-                      <p className="cover-date text-xs uppercase tracking-[0.35em] mb-10 font-light">
-                        Trân trọng kính mời
-                      </p>
-                    )}
-
-                    <button
-                      type="button"
-                      onClick={handleOpen}
-                      disabled={isOpening}
-                      autoFocus
-                      className="cover-btn relative overflow-hidden w-full py-4 font-bold text-sm uppercase tracking-[0.25em] rounded-xl shadow-lg active:scale-[0.98] transition-all duration-300 disabled:opacity-90 disabled:cursor-not-allowed border focus:outline-none focus-visible:ring-2 focus-visible:ring-white/70"
-                    >
-                      Mở thiệp cưới
-                    </button>
-                  </div>
-                </div>
-
-                <div className="envelope-flap cover-surface absolute top-0 left-0 right-0 h-20 sm:h-24 rounded-t-[1.25rem] rounded-b-[2rem]" />
+            {guestName ? (
+              <div className="mb-7">
+                <p className="cn-sub text-xs uppercase tracking-[0.3em] mb-1.5">Trân trọng kính mời</p>
+                <p className="cn-names font-serif text-2xl sm:text-3xl break-words">{guestName}</p>
               </div>
+            ) : (
+              <p className="cn-sub text-xs uppercase tracking-[0.35em] mb-7">Trân trọng kính mời</p>
+            )}
 
-              <div className="absolute top-20 sm:top-24 left-1/2 -translate-x-1/2 -translate-y-[42%] z-10" aria-hidden>
-                <div className="relative w-16 h-16 sm:w-20 sm:h-20">
-                  <div className="cover-seal-glow absolute -inset-6 rounded-full opacity-60" />
-                  <span className="cover-seal-ring absolute inset-0 rounded-full" />
-                  <SealPiece part="left" />
-                  <SealPiece part="right" />
-                  <SealPiece part="whole" />
-                </div>
-              </div>
-            </div>
+            <button
+              type="button"
+              onClick={handleOpen}
+              disabled={stage !== 'closed'}
+              autoFocus
+              className="cn-btn relative overflow-hidden px-10 py-3.5 font-bold text-sm uppercase tracking-[0.25em] rounded-full active:scale-[0.98] transition-transform focus:outline-none focus-visible:ring-2 focus-visible:ring-[#f3d27a]/80"
+            >
+              Mở thiệp cưới
+            </button>
           </div>
         </div>
+      </div>
+
+      <div className="cn-controls">
+        <button
+          type="button"
+          onClick={toggleSound}
+          className="cn-control"
+          aria-pressed={soundOn}
+          aria-label={soundOn ? 'Tắt âm thanh' : 'Bật âm thanh'}
+        >
+          {soundOn ? <Volume2 className="w-4 h-4" aria-hidden /> : <VolumeX className="w-4 h-4" aria-hidden />}
+          <span>{soundOn ? 'Âm thanh' : 'Đã tắt tiếng'}</span>
+        </button>
+        <span className="cn-control-sep" aria-hidden />
+        <button type="button" onClick={handleSkip} className="cn-control">
+          <span>Bỏ qua</span>
+          <ChevronsRight className="w-4 h-4" aria-hidden />
+        </button>
       </div>
     </div>
   )

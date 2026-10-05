@@ -166,7 +166,7 @@ export function RSVPForm() {
                     inputMode="tel"
                     value={formData.phone}
                     onChange={handleChange}
-                    placeholder="0912 345 678"
+                    placeholder="0972282892"
                     required
                     autoComplete="tel"
                     aria-invalid={phoneError ? true : undefined}

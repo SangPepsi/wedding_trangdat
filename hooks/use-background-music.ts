@@ -4,6 +4,8 @@ import { useCallback, useEffect, useRef, useState } from 'react'
 import { BACKGROUND_MUSIC } from '@/lib/music'
 
 export const WEDDING_OPEN_EVENT = 'wedding-open'
+/** Khách tắt tiếng ngay trên màn hình cổng: huỷ nhạc đang chờ bật */
+export const WEDDING_SILENCE_EVENT = 'wedding-silence'
 
 /**
  * Chỉ tạo và tải file nhạc khi khách mở thiệp hoặc bấm nút nhạc,
@@ -15,6 +17,7 @@ export function useBackgroundMusic() {
   const trackRef = useRef(0)
   const failedRef = useRef(new Set<number>())
   const pausedByVisibilityRef = useRef(false)
+  const fadeTimerRef = useRef<ReturnType<typeof setTimeout> | undefined>(undefined)
 
   const getAudio = useCallback(() => {
     if (audioRef.current) return audioRef.current
@@ -60,6 +63,35 @@ export function useBackgroundMusic() {
     getAudio()?.play().catch(() => {})
   }, [getAudio])
 
+  /**
+   * Bắt đầu phát (tắt tiếng) ngay trong thao tác bấm để trình duyệt cho phép,
+   * rồi sau delayMs mới bật tiếng và tăng dần âm lượng
+   */
+  const playAfter = useCallback(
+    (delayMs: number) => {
+      const audio = getAudio()
+      if (!audio) return
+      const target = BACKGROUND_MUSIC.volume
+      audio.muted = true
+      audio.play().catch(() => {})
+      clearTimeout(fadeTimerRef.current)
+      fadeTimerRef.current = setTimeout(() => {
+        fadeTimerRef.current = undefined
+        audio.volume = 0
+        audio.muted = false
+        const start = performance.now()
+        const FADE_MS = 3000
+        const step = (now: number) => {
+          const t = Math.min((now - start) / FADE_MS, 1)
+          audio.volume = target * t
+          if (t < 1) requestAnimationFrame(step)
+        }
+        requestAnimationFrame(step)
+      }, delayMs)
+    },
+    [getAudio],
+  )
+
   const toggle = useCallback(() => {
     const audio = getAudio()
     if (!audio) return
@@ -68,7 +100,23 @@ export function useBackgroundMusic() {
   }, [getAudio])
 
   useEffect(() => {
-    window.addEventListener(WEDDING_OPEN_EVENT, play)
+    const onOpen = (e: Event) => {
+      const delayMs = (e as CustomEvent<{ delayMs?: number }>).detail?.delayMs
+      if (delayMs) playAfter(delayMs)
+      else if (fadeTimerRef.current !== undefined) playAfter(0)
+      else play()
+    }
+    const onSilence = () => {
+      clearTimeout(fadeTimerRef.current)
+      fadeTimerRef.current = undefined
+      const audio = audioRef.current
+      if (!audio) return
+      audio.pause()
+      audio.muted = false
+      audio.volume = BACKGROUND_MUSIC.volume
+    }
+    window.addEventListener(WEDDING_OPEN_EVENT, onOpen)
+    window.addEventListener(WEDDING_SILENCE_EVENT, onSilence)
 
     const onVisibilityChange = () => {
       const audio = audioRef.current
@@ -84,12 +132,14 @@ export function useBackgroundMusic() {
     document.addEventListener('visibilitychange', onVisibilityChange)
 
     return () => {
-      window.removeEventListener(WEDDING_OPEN_EVENT, play)
+      window.removeEventListener(WEDDING_OPEN_EVENT, onOpen)
+      window.removeEventListener(WEDDING_SILENCE_EVENT, onSilence)
+      clearTimeout(fadeTimerRef.current)
       document.removeEventListener('visibilitychange', onVisibilityChange)
       audioRef.current?.pause()
       audioRef.current = null
     }
-  }, [play])
+  }, [play, playAfter])
 
   return { isPlaying, toggle }
 }
