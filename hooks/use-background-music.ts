@@ -4,8 +4,6 @@ import { useCallback, useEffect, useRef, useState } from 'react'
 import { BACKGROUND_MUSIC } from '@/lib/music'
 
 export const WEDDING_OPEN_EVENT = 'wedding-open'
-/** Khách tắt tiếng ngay trên màn hình cổng: huỷ nhạc đang chờ bật */
-export const WEDDING_SILENCE_EVENT = 'wedding-silence'
 
 /**
  * Chỉ tạo và tải file nhạc khi khách mở thiệp hoặc bấm nút nhạc,
@@ -103,20 +101,9 @@ export function useBackgroundMusic() {
     const onOpen = (e: Event) => {
       const delayMs = (e as CustomEvent<{ delayMs?: number }>).detail?.delayMs
       if (delayMs) playAfter(delayMs)
-      else if (fadeTimerRef.current !== undefined) playAfter(0)
       else play()
     }
-    const onSilence = () => {
-      clearTimeout(fadeTimerRef.current)
-      fadeTimerRef.current = undefined
-      const audio = audioRef.current
-      if (!audio) return
-      audio.pause()
-      audio.muted = false
-      audio.volume = BACKGROUND_MUSIC.volume
-    }
     window.addEventListener(WEDDING_OPEN_EVENT, onOpen)
-    window.addEventListener(WEDDING_SILENCE_EVENT, onSilence)
 
     const onVisibilityChange = () => {
       const audio = audioRef.current
@@ -133,7 +120,6 @@ export function useBackgroundMusic() {
 
     return () => {
       window.removeEventListener(WEDDING_OPEN_EVENT, onOpen)
-      window.removeEventListener(WEDDING_SILENCE_EVENT, onSilence)
       clearTimeout(fadeTimerRef.current)
       document.removeEventListener('visibilitychange', onVisibilityChange)
       audioRef.current?.pause()

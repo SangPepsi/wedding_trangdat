@@ -1,10 +1,9 @@
 'use client'
 
 import { useEffect, useId, useRef, useState } from 'react'
-import { ChevronsRight, Volume2, VolumeX } from 'lucide-react'
 import { WEDDING, ANNOUNCEMENT } from '@/lib/constants'
 import { useGuestName } from '@/hooks/use-guest-name'
-import { WEDDING_OPEN_EVENT, WEDDING_SILENCE_EVENT } from '@/hooks/use-background-music'
+import { WEDDING_OPEN_EVENT } from '@/hooks/use-background-music'
 import { playGateSounds } from '@/lib/gate-sounds'
 
 /** closed → knocking (vòng cửa gõ 3 tiếng) → opening (tiếng cồng, chữ Hỷ tách, hai cánh cổng mở) → hidden */
@@ -143,9 +142,7 @@ export function InvitationCover() {
     }
   }, [stage])
 
-  const [soundOn, setSoundOn] = useState(true)
   const timersRef = useRef<ReturnType<typeof setTimeout>[]>([])
-  const stopSoundRef = useRef<(() => void) | null>(null)
 
   useEffect(() => () => timersRef.current.forEach(clearTimeout), [])
 
@@ -167,20 +164,14 @@ export function InvitationCover() {
     const returning = takeReturningVisit()
     const knockMs = reduceMotion || returning ? 0 : KNOCK_MS
     // Âm thanh và nhạc phải được khởi động ngay trong thao tác bấm, trình duyệt mới cho phép
-    if (soundOn && !reduceMotion) {
-      stopSoundRef.current = playGateSounds({
-        knocks: knockMs ? KNOCKS_S : [],
-        open: knockMs / 1000,
-        openDuration: DOOR_OPEN_S,
-      })
+    if (!reduceMotion) {
+      playGateSounds({ knocks: knockMs ? KNOCKS_S : [], open: knockMs / 1000, openDuration: DOOR_OPEN_S })
     }
-    if (soundOn) {
-      window.dispatchEvent(
-        new CustomEvent(WEDDING_OPEN_EVENT, {
-          detail: { delayMs: reduceMotion ? 0 : knockMs + MUSIC_AFTER_OPEN_MS },
-        }),
-      )
-    }
+    window.dispatchEvent(
+      new CustomEvent(WEDDING_OPEN_EVENT, {
+        detail: { delayMs: reduceMotion ? 0 : knockMs + MUSIC_AFTER_OPEN_MS },
+      }),
+    )
 
     const startOpening = () => {
       setStage('opening')
@@ -194,23 +185,6 @@ export function InvitationCover() {
     } else {
       startOpening()
     }
-  }
-
-  const handleSkip = () => {
-    timersRef.current.forEach(clearTimeout)
-    timersRef.current = []
-    stopSoundRef.current?.()
-    if (stage === 'closed') takeReturningVisit()
-    if (soundOn) window.dispatchEvent(new CustomEvent(WEDDING_OPEN_EVENT, { detail: { delayMs: 0 } }))
-    reveal()
-    hide()
-  }
-
-  const toggleSound = () => {
-    setSoundOn(!soundOn)
-    if (!soundOn) return
-    stopSoundRef.current?.()
-    if (stage !== 'closed') window.dispatchEvent(new Event(WEDDING_SILENCE_EVENT))
   }
 
   if (stage === 'hidden') return null
@@ -287,24 +261,6 @@ export function InvitationCover() {
               className="cn-btn relative overflow-hidden px-10 py-3.5 font-bold text-sm uppercase tracking-[0.25em] rounded-full active:scale-[0.98] transition-transform focus:outline-none focus-visible:ring-2 focus-visible:ring-[#f3d27a]/80"
             >
               Mở thiệp cưới
-            </button>
-          </div>
-
-          <div className="cn-controls">
-            <button
-              type="button"
-              onClick={toggleSound}
-              className="cn-control"
-              aria-pressed={soundOn}
-              aria-label={soundOn ? 'Tắt âm thanh' : 'Bật âm thanh'}
-            >
-              {soundOn ? <Volume2 className="w-4 h-4" aria-hidden /> : <VolumeX className="w-4 h-4" aria-hidden />}
-              <span>{soundOn ? 'Âm thanh' : 'Đã tắt tiếng'}</span>
-            </button>
-            <span className="cn-control-sep" aria-hidden />
-            <button type="button" onClick={handleSkip} className="cn-control">
-              <span>Bỏ qua</span>
-              <ChevronsRight className="w-4 h-4" aria-hidden />
             </button>
           </div>
         </div>

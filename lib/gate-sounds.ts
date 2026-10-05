@@ -140,11 +140,10 @@ export interface GateTimeline {
   openDuration: number
 }
 
-/** Trả về hàm dừng ngay toàn bộ âm thanh (dùng khi khách bấm Bỏ qua / tắt tiếng) */
-export function playGateSounds({ knocks, open, openDuration }: GateTimeline): () => void {
+export function playGateSounds({ knocks, open, openDuration }: GateTimeline) {
   const AudioCtor =
     window.AudioContext || (window as unknown as { webkitAudioContext?: typeof AudioContext }).webkitAudioContext
-  if (!AudioCtor) return () => {}
+  if (!AudioCtor) return
   const ctx = new AudioCtor()
   ctx.resume().catch(() => {})
 
@@ -158,9 +157,5 @@ export function playGateSounds({ knocks, open, openDuration }: GateTimeline): ()
   gong(ctx, master, t0 + open)
   creak(ctx, master, t0 + open + 0.25, openDuration)
 
-  const stop = () => {
-    if (ctx.state !== 'closed') ctx.close().catch(() => {})
-  }
-  setTimeout(stop, (open + openDuration + 6) * 1000)
-  return stop
+  setTimeout(() => ctx.close().catch(() => {}), (open + openDuration + 6) * 1000)
 }

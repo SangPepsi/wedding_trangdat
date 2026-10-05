@@ -1545,9 +1545,6 @@
   .cn-content > :nth-child(4) {
     animation-delay: 0.75s;
   }
-  .cn-content > :nth-child(5) {
-    animation-delay: 1s;
-  }
   @keyframes cn-rise {
     from {
       opacity: 0;
@@ -1875,53 +1872,6 @@
     100% {
       translate: 120% 0;
     }
-  }
-
-  /* Tắt tiếng / Bỏ qua ngay dưới nút mở (nằm trong luồng nội dung để không bao giờ che nút) */
-  .cn-controls {
-    position: relative;
-    z-index: 3;
-    display: flex;
-    align-items: center;
-    gap: 0.25rem;
-    margin-top: 1.75rem;
-    padding: 0.2rem 0.4rem;
-    border: 1px solid rgb(243 210 122 / 0.3);
-    border-radius: 9999px;
-    background: rgb(40 6 6 / 0.55);
-    backdrop-filter: blur(6px);
-    transition: opacity 0.6s ease 1s;
-  }
-  .cover-root[data-stage='opening'] .cn-controls {
-    opacity: 0.6;
-  }
-  .cn-control {
-    display: inline-flex;
-    align-items: center;
-    gap: 0.4rem;
-    padding: 0.4rem 0.7rem;
-    border-radius: 9999px;
-    color: rgb(243 210 122 / 0.85);
-    font-size: 0.7rem;
-    letter-spacing: 0.18em;
-    text-transform: uppercase;
-    white-space: nowrap;
-    transition:
-      color 0.2s ease,
-      background-color 0.2s ease;
-  }
-  .cn-control:hover {
-    color: #fff6d8;
-    background-color: rgb(243 210 122 / 0.12);
-  }
-  .cn-control:focus-visible {
-    outline: 2px solid var(--cn-gold);
-    outline-offset: 2px;
-  }
-  .cn-control-sep {
-    width: 1px;
-    height: 0.9rem;
-    background: rgb(243 210 122 / 0.3);
   }
 
   /* Đèn lồng đỏ treo hai góc, đung đưa */
