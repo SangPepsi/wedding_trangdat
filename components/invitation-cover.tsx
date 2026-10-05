@@ -1,6 +1,6 @@
 'use client'
 
-import { useEffect, useId, useRef, useState, useSyncExternalStore } from 'react'
+import { useEffect, useId, useRef, useState } from 'react'
 import { ChevronsRight, Volume2, VolumeX } from 'lucide-react'
 import { WEDDING, ANNOUNCEMENT } from '@/lib/constants'
 import { useGuestName } from '@/hooks/use-guest-name'
@@ -19,30 +19,9 @@ const HERO_AT_MS = 1300
 const CONFETTI_AT_MS = 1800
 const MUSIC_AFTER_OPEN_MS = 2800
 
-const SOUND_KEY = 'wedding-gate-sound'
 /** Khách quay lại lần sau: bỏ màn gõ cửa, cổng mở luôn */
 const OPENED_KEY = 'wedding-opened'
 
-const soundListeners = new Set<() => void>()
-function subscribeSound(callback: () => void) {
-  soundListeners.add(callback)
-  return () => {
-    soundListeners.delete(callback)
-  }
-}
-function readSoundOn() {
-  try {
-    return localStorage.getItem(SOUND_KEY) !== 'off'
-  } catch {
-    return true
-  }
-}
-function writeSoundOn(on: boolean) {
-  try {
-    localStorage.setItem(SOUND_KEY, on ? 'on' : 'off')
-  } catch {}
-  soundListeners.forEach((l) => l())
-}
 function takeReturningVisit() {
   try {
     const returning = localStorage.getItem(OPENED_KEY) === '1'
@@ -164,7 +143,7 @@ export function InvitationCover() {
     }
   }, [stage])
 
-  const soundOn = useSyncExternalStore(subscribeSound, readSoundOn, () => true)
+  const [soundOn, setSoundOn] = useState(true)
   const timersRef = useRef<ReturnType<typeof setTimeout>[]>([])
   const stopSoundRef = useRef<(() => void) | null>(null)
 
@@ -228,7 +207,7 @@ export function InvitationCover() {
   }
 
   const toggleSound = () => {
-    writeSoundOn(!soundOn)
+    setSoundOn(!soundOn)
     if (!soundOn) return
     stopSoundRef.current?.()
     if (stage !== 'closed') window.dispatchEvent(new Event(WEDDING_SILENCE_EVENT))
@@ -310,25 +289,25 @@ export function InvitationCover() {
               Mở thiệp cưới
             </button>
           </div>
-        </div>
-      </div>
 
-      <div className="cn-controls">
-        <button
-          type="button"
-          onClick={toggleSound}
-          className="cn-control"
-          aria-pressed={soundOn}
-          aria-label={soundOn ? 'Tắt âm thanh' : 'Bật âm thanh'}
-        >
-          {soundOn ? <Volume2 className="w-4 h-4" aria-hidden /> : <VolumeX className="w-4 h-4" aria-hidden />}
-          <span>{soundOn ? 'Âm thanh' : 'Đã tắt tiếng'}</span>
-        </button>
-        <span className="cn-control-sep" aria-hidden />
-        <button type="button" onClick={handleSkip} className="cn-control">
-          <span>Bỏ qua</span>
-          <ChevronsRight className="w-4 h-4" aria-hidden />
-        </button>
+          <div className="cn-controls">
+            <button
+              type="button"
+              onClick={toggleSound}
+              className="cn-control"
+              aria-pressed={soundOn}
+              aria-label={soundOn ? 'Tắt âm thanh' : 'Bật âm thanh'}
+            >
+              {soundOn ? <Volume2 className="w-4 h-4" aria-hidden /> : <VolumeX className="w-4 h-4" aria-hidden />}
+              <span>{soundOn ? 'Âm thanh' : 'Đã tắt tiếng'}</span>
+            </button>
+            <span className="cn-control-sep" aria-hidden />
+            <button type="button" onClick={handleSkip} className="cn-control">
+              <span>Bỏ qua</span>
+              <ChevronsRight className="w-4 h-4" aria-hidden />
+            </button>
+          </div>
+        </div>
       </div>
     </div>
   )

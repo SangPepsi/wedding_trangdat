@@ -1545,6 +1545,9 @@
   .cn-content > :nth-child(4) {
     animation-delay: 0.75s;
   }
+  .cn-content > :nth-child(5) {
+    animation-delay: 1s;
+  }
   @keyframes cn-rise {
     from {
       opacity: 0;
@@ -1874,17 +1877,15 @@
     }
   }
 
-  /* Tắt tiếng / Bỏ qua ở đáy màn hình cổng */
+  /* Tắt tiếng / Bỏ qua ngay dưới nút mở (nằm trong luồng nội dung để không bao giờ che nút) */
   .cn-controls {
-    position: absolute;
-    left: 50%;
-    bottom: max(1rem, env(safe-area-inset-bottom));
+    position: relative;
     z-index: 3;
     display: flex;
     align-items: center;
     gap: 0.25rem;
+    margin-top: 1.75rem;
     padding: 0.2rem 0.4rem;
-    translate: -50% 0;
     border: 1px solid rgb(243 210 122 / 0.3);
     border-radius: 9999px;
     background: rgb(40 6 6 / 0.55);
