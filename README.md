@@ -1,4 +1,4 @@
-# Thiệp cưới online - Đức Toàn & Nhật Minh
+# Thiệp cưới online - Tiến Đạt & Huyền Trang
 
 Next.js 16, React 19, Tailwind CSS 4. Trang tĩnh, deploy miễn phí trên Vercel.
 

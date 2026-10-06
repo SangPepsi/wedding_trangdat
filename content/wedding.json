@@ -1,11 +1,11 @@
 {
   "couple": {
-    "groom": "Đức Toàn",
-    "bride": "Nhật Minh",
-    "groomShort": "Đức Toàn",
-    "brideShort": "Nhật Minh",
-    "groomBrand": "Toàn",
-    "brideBrand": "Minh"
+    "groom": "Tiến Đạt",
+    "bride": "Huyền Trang",
+    "groomShort": "Tiến Đạt",
+    "brideShort": "Huyền Trang",
+    "groomBrand": "Đạt",
+    "brideBrand": "Trang"
   },
   "event": {
     "start": "2026-12-20T14:00",
@@ -15,7 +15,7 @@
     "ceremonyName": "Lễ thành hôn",
     "ceremonyTime": "14:00 - 15:30",
     "ceremonyVenue": "Tại gia",
-    "location": "Đình làng thôn Tất Viên, Thôn Tất Viên, xã Tân Hưng, Tỉnh Hưng Yên",
+    "location": "Đình làng thôn Nội Năng, xã Tân Hưng, tỉnh Hưng Yên",
     "mealName": "Bữa cơm thân mật",
     "mealTime": "17:00 - 18:00",
     "mealVenue": "Tại gia",
@@ -24,12 +24,12 @@
   },
   "addresses": {
     "groomFamily": {
-      "address": "Đình làng thôn Tất Viên, xã Tân Hưng, tỉnh Hưng Yên",
-      "mapsUrl": "https://www.google.com/maps/search/?api=1&query=%C4%90%C3%ACnh+l%C3%A0ng+th%C3%B4n+T%E1%BA%A5t+Vi%C3%AAn%2C+x%C3%A3+T%C3%A2n+H%C6%B0ng%2C+H%C6%B0ng+Y%C3%AAn"
+      "address": "Đình làng thôn Nội Năng, xã Tân Hưng, tỉnh Hưng Yên",
+      "mapsUrl": "https://www.google.com/maps/search/?api=1&query=%C4%90%C3%ACnh+l%C3%A0ng+th%C3%B4n+N%E1%BB%99i+N%C4%83ng%2C+x%C3%A3+T%C3%A2n+H%C6%B0ng%2C+H%C6%B0ng+Y%C3%AAn"
     },
     "brideFamily": {
-      "address": "Thôn Tất Viên, xã Tân Hưng, Tỉnh Hưng Yên",
-      "mapsUrl": "https://www.google.com/maps/search/?api=1&query=Th%C3%B4n+T%E1%BA%A5t+Vi%C3%AAn%2C+x%C3%A3+T%C3%A2n+H%C6%B0ng%2C+H%C6%B0ng+Y%C3%AAn"
+      "address": "Văn Giang, tỉnh Hưng Yên",
+      "mapsUrl": "https://www.google.com/maps/search/?api=1&query=V%C4%83n+Giang%2C+H%C6%B0ng+Y%C3%AAn"
     }
   },
   "family": {
@@ -39,7 +39,7 @@
   "announcement": "TRÂN TRỌNG BÁO TIN LỄ THÀNH HÔN CỦA CON CHÚNG TÔI",
   "story": {
     "title": "Hành trình yêu",
-    "text": "Bắt đầu bằng một lần gặp gỡ vào năm 2025. Gắn kết qua những chuyến đi của năm 2026. Hứa hẹn một đời bằng lời cầu hôn năm 2026. Và trọn vẹn hạnh phúc khi về chung một nhà vào năm 2026. Đức Toàn và Nhật Minh, bắt đầu một chương mới.",
+    "text": "Bắt đầu bằng một lần gặp gỡ vào năm 2025. Gắn kết qua những chuyến đi của năm 2026. Hứa hẹn một đời bằng lời cầu hôn năm 2026. Và trọn vẹn hạnh phúc khi về chung một nhà vào năm 2026. Tiến Đạt và Huyền Trang, bắt đầu một chương mới.",
     "timeline": [
       { "date": "11-2025", "event": "Lần đầu gặp gỡ" },
       { "date": "2025", "event": "Chuyến đi đầu tiên" },
@@ -47,16 +47,15 @@
       { "date": "2026", "event": "Về chung một nhà" }
     ]
   },
-  "hero": { "src": "/gallery/bia.jpg", "focus": "68% 50%" },
+  "hero": { "src": "/gallery/dattrang-bia.jpg", "focus": "45% 66%" },
   "gallery": [
-    { "src": "/gallery/bia.jpg", "alt": "Ảnh cưới 1", "caption": "" },
-    { "src": "/gallery/2.jpg", "alt": "Ảnh cưới 2", "caption": "" },
-    { "src": "/gallery/3.jpg", "alt": "Ảnh cưới 3", "caption": "" },
-    { "src": "/gallery/4.jpg", "alt": "Ảnh cưới 4", "caption": "" },
-    { "src": "/gallery/6.jpg", "alt": "Ảnh cưới 5", "caption": "" },
-    { "src": "/gallery/7.jpg", "alt": "Ảnh cưới 6", "caption": "" },
-    { "src": "/gallery/8.jpg", "alt": "Ảnh cưới 7", "caption": "" },
-    { "src": "/gallery/9.jpg", "alt": "Ảnh cưới 8", "caption": "" }
+    { "src": "/gallery/dattrang-bia.jpg", "alt": "Ảnh cưới 1", "caption": "" },
+    { "src": "/gallery/dattrang-1.jpg", "alt": "Ảnh cưới 2", "caption": "" },
+    { "src": "/gallery/dattrang-2.jpg", "alt": "Ảnh cưới 3", "caption": "" },
+    { "src": "/gallery/dattrang-3.jpg", "alt": "Ảnh cưới 4", "caption": "" },
+    { "src": "/gallery/dattrang-4.jpg", "alt": "Ảnh cưới 5", "caption": "" },
+    { "src": "/gallery/dattrang-5.jpg", "alt": "Ảnh cưới 6", "caption": "" },
+    { "src": "/gallery/dattrang-7.jpg", "alt": "Ảnh cưới 7", "caption": "" }
   ],
   "gift": {
     "groom": {
