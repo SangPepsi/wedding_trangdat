@@ -448,6 +448,30 @@
       filter: drop-shadow(0 18px 30px rgb(0 0 0 / 0.55));
     }
   }
+  /* Album ảnh dọc: khung đã dọc nên ảnh dọc phủ kín khung, giữ đúng tiêu điểm của từng ảnh */
+  .gallery-stage[data-album='portrait'] .gallery-layer[data-orient='portrait'] {
+    --kb-scale: 1.06;
+  }
+  .gallery-stage[data-album='portrait'] .gallery-layer[data-orient='portrait'] .gallery-backdrop {
+    display: none;
+  }
+  .gallery-stage[data-album='portrait'] .gallery-layer[data-orient='portrait'] .gallery-photo {
+    object-fit: cover;
+    object-position: 50% 75%;
+    filter: none;
+  }
+  .gallery-strip[data-album='portrait'] .gallery-thumb {
+    width: 3.5rem;
+    height: 4.75rem;
+  }
+  @media (min-width: 768px) {
+    .gallery-strip[data-album='portrait'] .gallery-thumb {
+      width: auto;
+      height: auto;
+      aspect-ratio: 3 / 4;
+      margin: 0;
+    }
+  }
   .gallery-vignette {
     position: absolute;
     inset: 0;

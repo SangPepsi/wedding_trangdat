@@ -43,7 +43,8 @@ export interface WeddingContent {
     timeline: { date: string; event: string }[]
   }
   hero: { src: string; focus: string }
-  gallery: { src: string; alt: string; caption: string }[]
+  /** focus: vị trí giữ lại khi ảnh bị cắt cho vừa khung, ví dụ "50% 80%" (ngang, dọc) */
+  gallery: { src: string; alt: string; caption: string; focus?: string }[]
   gift: Record<'groom' | 'bride', GiftAccount>
   music: { playlist: string[]; volume: number }
 }
@@ -112,7 +113,12 @@ export function validateContent(v: unknown): string | null {
   if (!allStrings(v.story, ['title', 'text']) || !Array.isArray((v.story as Record<string, unknown>).timeline))
     return 'Câu chuyện không hợp lệ'
   if (!allStrings(v.hero, ['src', 'focus'])) return 'Ảnh bìa không hợp lệ'
-  if (!Array.isArray(v.gallery) || !v.gallery.every((g) => allStrings(g, ['src', 'alt', 'caption'])))
+  if (
+    !Array.isArray(v.gallery) ||
+    !v.gallery.every(
+      (g) => isObject(g) && allStrings(g, ['src', 'alt', 'caption']) && (g.focus === undefined || typeof g.focus === 'string'),
+    )
+  )
     return 'Album ảnh không hợp lệ'
   const giftKeys = ['qrPath', 'name', 'bankName', 'accountNumber', 'accountName']
   if (!isObject(v.gift) || !allStrings(v.gift.groom, giftKeys) || !allStrings(v.gift.bride, giftKeys))

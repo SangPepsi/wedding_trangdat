@@ -73,7 +73,11 @@ export function GallerySection({ images }: { images: GalleryImage[] }) {
     const strip = stripRef.current
     const thumb = strip?.querySelector<HTMLElement>(`[data-index="${active}"]`)
     if (!strip || !thumb) return
-    strip.scrollTo({ left: thumb.offsetLeft - strip.clientWidth / 2 + thumb.clientWidth / 2, behavior: 'smooth' })
+    strip.scrollTo({
+      left: thumb.offsetLeft - strip.clientWidth / 2 + thumb.clientWidth / 2,
+      top: thumb.offsetTop - strip.clientHeight / 2 + thumb.clientHeight / 2,
+      behavior: 'smooth',
+    })
   }, [active])
 
   const onTouchStart = (e: React.TouchEvent) => {
@@ -96,6 +100,9 @@ export function GallerySection({ images }: { images: GalleryImage[] }) {
 
   if (total === 0) return null
   const current = images[active]
+  // Album chủ yếu ảnh dọc (chụp bằng điện thoại): dùng khung dọc và cột ảnh nhỏ bên cạnh trên màn hình rộng
+  const portraitAlbum = images.filter((image) => orientation(image.ratio) === 'portrait').length > total / 2
+  const album = portraitAlbum ? 'portrait' : 'landscape'
 
   return (
     <>
@@ -109,9 +116,11 @@ export function GallerySection({ images }: { images: GalleryImage[] }) {
               Album ảnh cưới
             </SectionHeading>
 
-            <Reveal variant="mask">
+            <div className={portraitAlbum ? 'md:flex md:items-center md:justify-center md:gap-6' : ''}>
+            <Reveal variant="mask" className={portraitAlbum ? 'md:w-[26rem] md:shrink-0' : ''}>
               <div
                 ref={stageRef}
+                data-album={album}
                 role="region"
                 aria-roledescription="carousel"
                 aria-label="Trình chiếu ảnh cưới"
@@ -121,7 +130,9 @@ export function GallerySection({ images }: { images: GalleryImage[] }) {
                 onPointerLeave={(e) => e.pointerType === 'mouse' && setHovered(false)}
                 onTouchStart={onTouchStart}
                 onTouchEnd={onTouchEnd}
-                className="gallery-stage group/stage relative aspect-[4/5] sm:aspect-[16/10] select-none touch-pan-y"
+                className={`gallery-stage group/stage relative select-none touch-pan-y ${
+                  portraitAlbum ? 'aspect-[3/4] max-w-md mx-auto' : 'aspect-[4/5] sm:aspect-[16/10]'
+                }`}
               >
                 {images.map((image, i) => (
                   <div
@@ -144,7 +155,8 @@ export function GallerySection({ images }: { images: GalleryImage[] }) {
                         fill
                         priority={i === 0}
                         className="gallery-photo"
-                        sizes="(max-width: 1024px) 100vw, 960px"
+                        style={image.focus ? { objectPosition: image.focus } : undefined}
+                        sizes={portraitAlbum ? '(max-width: 768px) 100vw, 420px' : '(max-width: 1024px) 100vw, 960px'}
                       />
                     </div>
                   </div>
@@ -209,7 +221,11 @@ export function GallerySection({ images }: { images: GalleryImage[] }) {
                         {WEDDING.groomBrand} &amp; {WEDDING.brideBrand}
                         <span className="hidden sm:inline"> · {WEDDING.dateShort}</span>
                       </p>
-                      <p className="font-serif text-[1.65rem] sm:text-5xl leading-tight drop-shadow-lg line-clamp-2">
+                      <p
+                        className={`font-serif leading-tight drop-shadow-lg line-clamp-2 ${
+                          portraitAlbum ? 'text-xl sm:text-3xl' : 'text-[1.65rem] sm:text-5xl'
+                        }`}
+                      >
                         {current.caption ?? 'Khoảnh khắc yêu thương'}
                       </p>
                     </div>
@@ -242,8 +258,16 @@ export function GallerySection({ images }: { images: GalleryImage[] }) {
             </Reveal>
 
             {total > 1 && (
-              <Reveal delay={150}>
-                <div ref={stripRef} className="gallery-strip mt-4 flex gap-2 sm:gap-3 overflow-x-auto py-1 px-1">
+              <Reveal delay={150} className={portraitAlbum ? 'md:w-[18rem] md:shrink-0' : ''}>
+                <div
+                  ref={stripRef}
+                  data-album={album}
+                  className={`gallery-strip relative mt-4 flex gap-2 sm:gap-3 overflow-x-auto py-1 px-1 ${
+                    portraitAlbum
+                      ? 'md:mt-0 md:grid md:grid-cols-3 md:gap-3 md:max-h-[34.5rem] md:overflow-x-hidden md:overflow-y-auto md:p-1'
+                      : ''
+                  }`}
+                >
                   {images.map((image, i) => (
                     <button
                       key={image.src + i}
@@ -254,12 +278,20 @@ export function GallerySection({ images }: { images: GalleryImage[] }) {
                       aria-label={`Xem ảnh ${i + 1}`}
                       aria-current={i === active}
                     >
-                      <Image src={image.src} alt="" fill className="object-cover" sizes="112px" />
+                      <Image
+                        src={image.src}
+                        alt=""
+                        fill
+                        className="object-cover"
+                        style={image.focus ? { objectPosition: image.focus } : undefined}
+                        sizes="112px"
+                      />
                     </button>
                   ))}
                 </div>
               </Reveal>
             )}
+            </div>
           </div>
         </div>
       </section>

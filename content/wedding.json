@@ -49,13 +49,13 @@
   },
   "hero": { "src": "/gallery/dattrang-bia.jpg", "focus": "45% 66%" },
   "gallery": [
-    { "src": "/gallery/dattrang-bia.jpg", "alt": "Ảnh cưới 1", "caption": "" },
-    { "src": "/gallery/dattrang-1.jpg", "alt": "Ảnh cưới 2", "caption": "" },
-    { "src": "/gallery/dattrang-2.jpg", "alt": "Ảnh cưới 3", "caption": "" },
-    { "src": "/gallery/dattrang-3.jpg", "alt": "Ảnh cưới 4", "caption": "" },
-    { "src": "/gallery/dattrang-4.jpg", "alt": "Ảnh cưới 5", "caption": "" },
-    { "src": "/gallery/dattrang-5.jpg", "alt": "Ảnh cưới 6", "caption": "" },
-    { "src": "/gallery/dattrang-7.jpg", "alt": "Ảnh cưới 7", "caption": "" }
+    { "src": "/gallery/dattrang-bia.jpg", "alt": "Ảnh cưới 1", "caption": "", "focus": "50% 95%" },
+    { "src": "/gallery/dattrang-1.jpg", "alt": "Ảnh cưới 2", "caption": "", "focus": "50% 95%" },
+    { "src": "/gallery/dattrang-2.jpg", "alt": "Ảnh cưới 3", "caption": "", "focus": "50% 95%" },
+    { "src": "/gallery/dattrang-3.jpg", "alt": "Ảnh cưới 4", "caption": "", "focus": "50% 95%" },
+    { "src": "/gallery/dattrang-4.jpg", "alt": "Ảnh cưới 5", "caption": "", "focus": "50% 95%" },
+    { "src": "/gallery/dattrang-5.jpg", "alt": "Ảnh cưới 6", "caption": "", "focus": "50% 95%" },
+    { "src": "/gallery/dattrang-7.jpg", "alt": "Ảnh cưới 7", "caption": "", "focus": "50% 95%" }
   ],
   "gift": {
     "groom": {
