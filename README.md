@@ -48,17 +48,27 @@ https://your-domain.vercel.app/?to=Anh%20Minh%20%26%20Ch%E1%BB%8B%20Lan
 
 Thiệp sẽ hiện "Trân trọng kính mời Anh Minh & Chị Lan", đồng thời tên được điền sẵn vào form xác nhận và sổ lưu bút. Có thể gõ tiếng Việt có dấu trực tiếp vào thanh địa chỉ, trình duyệt tự mã hóa.
 
-## Sổ lưu bút
+Cách tiện hơn: vào trang quản lý → tab **Khách mời**, dán danh sách tên để tạo link và lời mời cho từng người, đồng thời theo dõi ai đã mở thiệp.
 
-Lời chúc lưu trên Upstash Redis (miễn phí), cài ngay trong Vercel:
+## Trang quản lý `/quan-ly`
+
+Đăng nhập bằng `GUESTBOOK_ADMIN_PASSWORD`, gồm 3 tab:
+
+- **Xác nhận tham dự**: danh sách khách gửi form, tổng số người theo nhà trai / nhà gái, tải file Excel. Khách gửi lại cùng số điện thoại thì cập nhật chứ không bị trùng.
+- **Khách mời**: thêm tên, chép lời mời kèm link riêng, xem ai đã mở thiệp, ai đã xác nhận. Nút **Mở thử** không tính là khách đã mở.
+- **Lời chúc**: xoá lời chúc trong sổ lưu bút.
+
+## Lưu trữ (Upstash Redis)
+
+Sổ lưu bút, xác nhận tham dự và danh sách khách mời lưu trên Upstash Redis (miễn phí), cài ngay trong Vercel:
 
 1. Vercel → project → **Storage** → **Create Database** → chọn **Upstash** (Redis) → tạo và **Connect** vào project. Vercel tự thêm `KV_REST_API_URL`, `KV_REST_API_TOKEN`.
 2. Settings → Environment Variables → thêm `GUESTBOOK_ADMIN_PASSWORD` (mật khẩu tự đặt).
 3. Redeploy.
 
-Xoá lời chúc: mở `https://<tên-miền>/quan-ly-loi-chuc`, nhập mật khẩu, bấm **Xoá**.
+Chạy trên máy: copy 3 biến trên vào `.env.local` rồi khởi động lại `npm run dev`. Khi đó máy và web dùng chung một kho dữ liệu.
 
-Chạy trên máy: copy 3 biến trên vào `.env.local` rồi khởi động lại `npm run dev`. Khi đó máy và web dùng chung một kho lời chúc.
+Chưa kết nối Upstash thì form xác nhận gửi qua Formspree nếu có `NEXT_PUBLIC_FORMSPREE_ID`.
 
 ## Thêm bộ màu mới
 

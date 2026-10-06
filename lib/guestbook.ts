@@ -2,6 +2,8 @@
  * Sổ lưu bút - lời chúc lưu trên Upstash Redis qua API /api/guestbook
  * Phần lưu trữ phía server: lib/guestbook-store.ts
  */
+import { adminHeaders, readJson } from './fetch-json'
+
 export const GUESTBOOK_LIMITS = { name: 60, message: 500 }
 
 export interface GuestbookEntry {
@@ -9,12 +11,6 @@ export interface GuestbookEntry {
   name: string
   message: string
   createdAt: string
-}
-
-async function readJson<T>(res: Response): Promise<T> {
-  const data = (await res.json().catch(() => ({}))) as T & { error?: string }
-  if (!res.ok) throw new Error(data.error || `Guestbook ${res.status}`)
-  return data
 }
 
 export async function fetchGuestbook(): Promise<GuestbookEntry[]> {
@@ -36,12 +32,12 @@ export async function postGuestbook(entry: { name: string; message: string; webs
 export async function deleteGuestbookEntry(id: string, password: string) {
   const res = await fetch(`/api/guestbook/${encodeURIComponent(id)}`, {
     method: 'DELETE',
-    headers: { 'x-admin-password': password },
+    headers: adminHeaders(password),
   })
   await readJson(res)
 }
 
 export async function verifyGuestbookPassword(password: string) {
-  const res = await fetch('/api/guestbook/auth', { method: 'POST', headers: { 'x-admin-password': password } })
+  const res = await fetch('/api/guestbook/auth', { method: 'POST', headers: adminHeaders(password) })
   await readJson(res)
 }

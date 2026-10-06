@@ -3,6 +3,7 @@ import { Countdown } from './countdown'
 import { HeroPhoto } from './hero-photo'
 import { TiltCard } from './tilt-card'
 import { CornerOrnament, OrnamentDivider } from './invitation-ornaments'
+import { GuestGreeting } from './guest-greeting'
 import { WEDDING } from '@/lib/constants'
 
 export function HeroSection() {
@@ -38,6 +39,7 @@ export function HeroSection() {
                   囍
                 </p>
                 <p className="invite-kicker mt-2">Trân trọng kính mời</p>
+                <GuestGreeting />
 
                 <h1 className="mt-4 font-serif text-[2.6rem] sm:text-5xl leading-[1.1] invite-names invite-shimmer">
                   <span className="block">{WEDDING.groomShort}</span>

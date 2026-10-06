@@ -3,12 +3,12 @@
 import { useState } from 'react'
 import { CheckCircle2 } from 'lucide-react'
 import { useGuestName } from '@/hooks/use-guest-name'
+import { normalizePhone, postRsvp, RSVP_GUEST_OPTIONS, VN_PHONE } from '@/lib/rsvp'
 import { Reveal } from './reveal'
 import { SectionHeading } from './section-heading'
 
+/** Chỉ dùng khi chưa kết nối Upstash Redis */
 const FORMSPREE_ID = process.env.NEXT_PUBLIC_FORMSPREE_ID
-
-const VN_PHONE = /^(?:\+?84|0)(?:3|5|7|8|9)\d{8}$/
 
 const INITIAL_FORM = {
   /** null = khách chưa sửa, dùng tên trong link mời */
@@ -20,8 +20,13 @@ const INITIAL_FORM = {
   note: '',
 }
 
-function normalizePhone(phone: string) {
-  return phone.replace(/[\s.\-()]/g, '')
+async function postFormspree(payload: Record<string, string>) {
+  const res = await fetch(`https://formspree.io/f/${FORMSPREE_ID}`, {
+    method: 'POST',
+    headers: { 'Content-Type': 'application/json', Accept: 'application/json' },
+    body: JSON.stringify(payload),
+  })
+  if (!res.ok) throw new Error('Gửi thất bại')
 }
 
 function RadioOption({
@@ -79,20 +84,27 @@ export function RSVPForm() {
       return
     }
 
-    if (!FORMSPREE_ID) {
-      console.error('Thiếu NEXT_PUBLIC_FORMSPREE_ID - xem .env.example')
-      setStatus('error')
-      setError('Hệ thống xác nhận đang được cập nhật. Vui lòng báo trực tiếp cho cô dâu chú rể.')
-      return
-    }
-
     setStatus('submitting')
+    const attending = formData.attendance === 'yes'
     try {
-      const attending = formData.attendance === 'yes'
-      const res = await fetch(`https://formspree.io/f/${FORMSPREE_ID}`, {
-        method: 'POST',
-        headers: { 'Content-Type': 'application/json', Accept: 'application/json' },
-        body: JSON.stringify({
+      try {
+        await postRsvp({
+          name: name.trim(),
+          phone,
+          attending,
+          side: formData.side,
+          guests: formData.guests,
+          note: formData.note.trim(),
+          invite: guestName ?? undefined,
+          _gotcha: gotcha,
+        })
+      } catch (err) {
+        const notConfigured = (err as { status?: number }).status === 503
+        if (!notConfigured) throw err
+        if (!FORMSPREE_ID) {
+          throw new Error('Hệ thống xác nhận đang được cập nhật. Vui lòng báo trực tiếp cho cô dâu chú rể.')
+        }
+        await postFormspree({
           name: name.trim(),
           phone,
           attendance: attending ? 'Có, tôi sẽ tham dự' : 'Không, xin lỗi',
@@ -101,14 +113,14 @@ export function RSVPForm() {
           note: formData.note.trim() || '(Không có)',
           _subject: `Xác nhận tham dự: ${name.trim()}`,
           _gotcha: gotcha,
-        }),
-      })
-      if (!res.ok) throw new Error('Gửi thất bại')
+        })
+      }
       setStatus('success')
       setFormData({ ...INITIAL_FORM, name: '' })
-    } catch {
+    } catch (err) {
       setStatus('error')
-      setError('Không thể gửi. Vui lòng kiểm tra kết nối mạng và thử lại.')
+      const message = err instanceof Error && err.message !== 'Failed to fetch' ? err.message : ''
+      setError(message || 'Không thể gửi. Vui lòng kiểm tra kết nối mạng và thử lại.')
     }
   }
 
@@ -216,12 +228,11 @@ export function RSVPForm() {
                       onChange={handleChange}
                       className="field-wedding"
                     >
-                      {['1', '2', '3', '4', '5'].map((n) => (
+                      {RSVP_GUEST_OPTIONS.map((n) => (
                         <option key={n} value={n}>
-                          {n} người
+                          {n === '6+' ? 'Từ 6 người trở lên' : `${n} người`}
                         </option>
                       ))}
-                      <option value="6+">Từ 6 người trở lên</option>
                     </select>
                   </div>
                 )}

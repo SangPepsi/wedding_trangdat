@@ -13,6 +13,7 @@ import { GiftSection } from '@/components/gift-section'
 import { WeddingFooter } from '@/components/wedding-footer'
 import { PetalLayer } from '@/components/petal-layer'
 import { CardSpotlight } from '@/components/card-spotlight'
+import { GuestOpenTracker } from '@/components/guest-open-tracker'
 import { isGuestbookConfigured } from '@/lib/guestbook-store'
 import { getGalleryImages } from '@/lib/gallery-server'
 
@@ -21,6 +22,7 @@ export default function Page() {
   return (
     <>
       <InvitationCover />
+      {isGuestbookConfigured && <GuestOpenTracker />}
       <div className="paper-grain" aria-hidden />
       <PetalLayer />
       <CardSpotlight />
