@@ -12,6 +12,8 @@ import { SectionHeading } from './section-heading'
 
 const SLIDE_INTERVAL = 5000
 const REDUCED_MOTION = '(prefers-reduced-motion: reduce)'
+/** Vòng xoay 3D cần ít nhất chừng này ảnh mới thành vòng tròn */
+const RING_MIN_IMAGES = 3
 
 function subscribeVisibility(callback: () => void) {
   document.addEventListener('visibilitychange', callback)
@@ -25,6 +27,7 @@ function subscribeReducedMotion(callback: () => void) {
 }
 
 const pad = (n: number) => String(n).padStart(2, '0')
+const mod = (n: number, m: number) => ((n % m) + m) % m
 
 function orientation(ratio?: number) {
   if (!ratio) return 'landscape'
@@ -35,7 +38,8 @@ function orientation(ratio?: number) {
 
 export function GallerySection({ images }: { images: GalleryImage[] }) {
   const total = images.length
-  const [active, setActive] = useState(0)
+  // Đếm số bước đã xoay (không giới hạn) để vòng 3D luôn quay tiếp theo chiều ngắn nhất, không quay ngược cả vòng
+  const [turn, setTurn] = useState(0)
   const [userPlaying, setUserPlaying] = useState<boolean | null>(null)
   const [hovered, setHovered] = useState(false)
   const [inView, setInView] = useState(false)
@@ -43,6 +47,8 @@ export function GallerySection({ images }: { images: GalleryImage[] }) {
   const stageRef = useRef<HTMLDivElement>(null)
   const stripRef = useRef<HTMLDivElement>(null)
   const touchStartX = useRef<number | null>(null)
+
+  const active = total ? mod(turn, total) : 0
 
   const pageVisible = useSyncExternalStore(subscribeVisibility, () => !document.hidden, () => true)
   const reducedMotion = useSyncExternalStore(
@@ -55,9 +61,17 @@ export function GallerySection({ images }: { images: GalleryImage[] }) {
   const playing = total > 1 && (userPlaying ?? !reducedMotion)
   const running = playing && !hovered && inView && pageVisible && lightboxIndex === null
 
-  const goTo = useCallback((i: number) => setActive(((i % total) + total) % total), [total])
-  const goNext = useCallback(() => setActive((i) => (i + 1) % total), [total])
-  const goPrev = useCallback(() => setActive((i) => (i - 1 + total) % total), [total])
+  const goTo = useCallback(
+    (i: number) =>
+      setTurn((t) => {
+        let delta = mod(i - t, total)
+        if (delta > total / 2) delta -= total
+        return t + delta
+      }),
+    [total],
+  )
+  const goNext = useCallback(() => setTurn((t) => t + 1), [])
+  const goPrev = useCallback(() => setTurn((t) => t - 1), [])
 
   useEffect(() => {
     const el = stageRef.current
@@ -73,11 +87,7 @@ export function GallerySection({ images }: { images: GalleryImage[] }) {
     const strip = stripRef.current
     const thumb = strip?.querySelector<HTMLElement>(`[data-index="${active}"]`)
     if (!strip || !thumb) return
-    strip.scrollTo({
-      left: thumb.offsetLeft - strip.clientWidth / 2 + thumb.clientWidth / 2,
-      top: thumb.offsetTop - strip.clientHeight / 2 + thumb.clientHeight / 2,
-      behavior: 'smooth',
-    })
+    strip.scrollTo({ left: thumb.offsetLeft - strip.clientWidth / 2 + thumb.clientWidth / 2, behavior: 'smooth' })
   }, [active])
 
   const onTouchStart = (e: React.TouchEvent) => {
@@ -100,9 +110,210 @@ export function GallerySection({ images }: { images: GalleryImage[] }) {
 
   if (total === 0) return null
   const current = images[active]
-  // Album chủ yếu ảnh dọc (chụp bằng điện thoại): dùng khung dọc và cột ảnh nhỏ bên cạnh trên màn hình rộng
+  // Album chủ yếu ảnh dọc (chụp bằng điện thoại) thì xếp thành vòng xoay 3D
   const portraitAlbum = images.filter((image) => orientation(image.ratio) === 'portrait').length > total / 2
-  const album = portraitAlbum ? 'portrait' : 'landscape'
+  const ring = portraitAlbum && total >= RING_MIN_IMAGES
+
+  const stageProps = {
+    ref: stageRef,
+    role: 'region',
+    'aria-roledescription': 'carousel',
+    'aria-label': 'Trình chiếu ảnh cưới',
+    tabIndex: 0,
+    onKeyDown: onStageKeyDown,
+    onPointerEnter: (e: React.PointerEvent) => e.pointerType === 'mouse' && setHovered(true),
+    onPointerLeave: (e: React.PointerEvent) => e.pointerType === 'mouse' && setHovered(false),
+    onTouchStart,
+    onTouchEnd,
+  }
+
+  const playButton = total > 1 && (
+    <button
+      type="button"
+      onClick={() => setUserPlaying(!playing)}
+      className="gallery-icon-btn"
+      aria-label={playing ? 'Dừng tự chuyển ảnh' : 'Tự chuyển ảnh'}
+      aria-pressed={playing}
+    >
+      {playing ? <Pause className="w-4 h-4" aria-hidden /> : <Play className="w-4 h-4" aria-hidden />}
+    </button>
+  )
+
+  const zoomButton = (
+    <button type="button" onClick={() => setLightboxIndex(active)} className="gallery-icon-btn" aria-label="Xem toàn màn hình">
+      <Maximize2 className="w-4 h-4" aria-hidden />
+    </button>
+  )
+
+  const navButtons = (hideUntilHover: boolean) =>
+    total > 1 && (
+      <>
+        <button
+          type="button"
+          onClick={goPrev}
+          className={`gallery-nav z-[2] left-3 sm:left-5 ${hideUntilHover ? 'sm:opacity-0 sm:group-hover/stage:opacity-100 sm:focus-visible:opacity-100' : ''}`}
+          aria-label="Ảnh trước"
+        >
+          <ChevronLeft className="w-6 h-6" aria-hidden />
+        </button>
+        <button
+          type="button"
+          onClick={goNext}
+          className={`gallery-nav z-[2] right-3 sm:right-5 ${hideUntilHover ? 'sm:opacity-0 sm:group-hover/stage:opacity-100 sm:focus-visible:opacity-100' : ''}`}
+          aria-label="Ảnh sau"
+        >
+          <ChevronRight className="w-6 h-6" aria-hidden />
+        </button>
+      </>
+    )
+
+  const progressBars = total > 1 && (
+    <div className="flex gap-1.5" aria-hidden>
+      {images.map((image, i) => (
+        <span key={image.src + i} className="gallery-progress-track">
+          {i < active && <span className="gallery-progress-done" />}
+          {i === active && (
+            <SlideProgress
+              slideKey={turn}
+              duration={SLIDE_INTERVAL}
+              running={running}
+              onDone={goNext}
+              className={playing ? '' : 'is-static'}
+            />
+          )}
+        </span>
+      ))}
+    </div>
+  )
+
+  const ringStage = (
+    <>
+      <div
+        {...stageProps}
+        className="gallery-ring-stage group/stage relative select-none touch-pan-y"
+        style={{ '--n': total, '--turn': turn } as React.CSSProperties}
+      >
+        <div className="gallery-ring-floor" aria-hidden />
+        <div className="gallery-ring">
+          {images.map((image, i) => (
+            <button
+              key={image.src + i}
+              type="button"
+              className={`gallery-ring-card ${i === active ? 'is-active' : ''}`}
+              style={{ '--i': i } as React.CSSProperties}
+              onClick={() => (i === active ? setLightboxIndex(i) : goTo(i))}
+              tabIndex={i === active ? 0 : -1}
+              aria-label={i === active ? `Phóng to ảnh ${i + 1}` : `Xem ảnh ${i + 1}`}
+            >
+              <Image
+                src={image.src}
+                alt={image.alt}
+                fill
+                priority={i === 0}
+                className="object-cover"
+                style={image.focus ? { objectPosition: image.focus } : undefined}
+                sizes="(max-width: 640px) 60vw, 280px"
+              />
+            </button>
+          ))}
+        </div>
+        {navButtons(false)}
+      </div>
+
+      <div className="gallery-ring-panel mx-auto max-w-md">
+        <div className="flex items-center gap-3">
+          {playButton}
+          <div key={active} className="gallery-caption min-w-0 flex-1 text-center">
+            <p className="text-[0.65rem] sm:text-xs uppercase tracking-[0.3em] text-w-muted whitespace-nowrap">
+              {WEDDING.groomBrand} &amp; {WEDDING.brideBrand} · {WEDDING.dateShort}
+            </p>
+            <p className="font-serif text-2xl sm:text-3xl leading-tight text-w-strong line-clamp-1">
+              {current.caption ?? 'Khoảnh khắc yêu thương'}
+            </p>
+          </div>
+          {zoomButton}
+        </div>
+        <div className="mt-3 flex items-center gap-3">
+          <div className="flex-1">{progressBars}</div>
+          <p className="shrink-0 tabular-nums tracking-[0.2em] text-sm text-w-text" aria-live="polite">
+            <span className="font-semibold">{pad(active + 1)}</span>
+            <span className="text-w-muted"> / {pad(total)}</span>
+          </p>
+        </div>
+      </div>
+    </>
+  )
+
+  const slideStage = (
+    <div
+      {...stageProps}
+      className={`gallery-stage group/stage relative select-none touch-pan-y ${
+        portraitAlbum ? 'aspect-[3/4] max-w-md mx-auto' : 'aspect-[4/5] sm:aspect-[16/10]'
+      }`}
+      data-album={portraitAlbum ? 'portrait' : 'landscape'}
+    >
+      {images.map((image, i) => (
+        <div
+          key={image.src + i}
+          className={`gallery-layer ${i === active ? 'is-active' : ''}`}
+          data-orient={orientation(image.ratio)}
+          aria-hidden={i !== active}
+        >
+          <Image src={image.src} alt="" fill className="gallery-backdrop" sizes="(max-width: 1024px) 100vw, 960px" />
+          <div className={`gallery-kenburns ${i % 2 ? 'kb-right' : 'kb-left'}`}>
+            <Image
+              src={image.src}
+              alt={image.alt}
+              fill
+              priority={i === 0}
+              className="gallery-photo"
+              style={image.focus ? { objectPosition: image.focus } : undefined}
+              sizes="(max-width: 1024px) 100vw, 960px"
+            />
+          </div>
+        </div>
+      ))}
+
+      <div className="gallery-vignette" aria-hidden />
+
+      <button
+        type="button"
+        onClick={() => setLightboxIndex(active)}
+        className="absolute inset-0 z-[1] cursor-zoom-in focus:outline-none"
+        aria-label={`Phóng to ảnh ${active + 1}`}
+      />
+
+      <div className="absolute top-3 right-3 sm:top-4 sm:right-4 z-[2] flex gap-2">
+        {playButton}
+        {zoomButton}
+      </div>
+
+      {navButtons(true)}
+
+      <div className="absolute inset-x-0 bottom-0 z-[2] px-5 sm:px-8 pb-5 sm:pb-7 pointer-events-none text-white">
+        <div className="flex items-end justify-between gap-4">
+          <div key={active} className="gallery-caption min-w-0">
+            <p className="text-[0.65rem] sm:text-xs uppercase tracking-[0.3em] text-white/75 mb-1 whitespace-nowrap">
+              {WEDDING.groomBrand} &amp; {WEDDING.brideBrand}
+              <span className="hidden sm:inline"> · {WEDDING.dateShort}</span>
+            </p>
+            <p
+              className={`font-serif leading-tight drop-shadow-lg line-clamp-2 ${
+                portraitAlbum ? 'text-xl sm:text-3xl' : 'text-[1.65rem] sm:text-5xl'
+              }`}
+            >
+              {current.caption ?? 'Khoảnh khắc yêu thương'}
+            </p>
+          </div>
+          <p className="shrink-0 tabular-nums tracking-[0.2em] text-sm sm:text-base" aria-live="polite">
+            <span className="text-lg sm:text-2xl font-semibold">{pad(active + 1)}</span>
+            <span className="text-white/60"> / {pad(total)}</span>
+          </p>
+        </div>
+        {progressBars && <div className="mt-4">{progressBars}</div>}
+      </div>
+    </div>
+  )
 
   return (
     <>
@@ -116,157 +327,14 @@ export function GallerySection({ images }: { images: GalleryImage[] }) {
               Album ảnh cưới
             </SectionHeading>
 
-            <div className={portraitAlbum ? 'md:flex md:items-center md:justify-center md:gap-6' : ''}>
-            <Reveal variant="mask" className={portraitAlbum ? 'md:w-[26rem] md:shrink-0' : ''}>
-              <div
-                ref={stageRef}
-                data-album={album}
-                role="region"
-                aria-roledescription="carousel"
-                aria-label="Trình chiếu ảnh cưới"
-                tabIndex={0}
-                onKeyDown={onStageKeyDown}
-                onPointerEnter={(e) => e.pointerType === 'mouse' && setHovered(true)}
-                onPointerLeave={(e) => e.pointerType === 'mouse' && setHovered(false)}
-                onTouchStart={onTouchStart}
-                onTouchEnd={onTouchEnd}
-                className={`gallery-stage group/stage relative select-none touch-pan-y ${
-                  portraitAlbum ? 'aspect-[3/4] max-w-md mx-auto' : 'aspect-[4/5] sm:aspect-[16/10]'
-                }`}
-              >
-                {images.map((image, i) => (
-                  <div
-                    key={image.src + i}
-                    className={`gallery-layer ${i === active ? 'is-active' : ''}`}
-                    data-orient={orientation(image.ratio)}
-                    aria-hidden={i !== active}
-                  >
-                    <Image
-                      src={image.src}
-                      alt=""
-                      fill
-                      className="gallery-backdrop"
-                      sizes="(max-width: 1024px) 100vw, 960px"
-                    />
-                    <div className={`gallery-kenburns ${i % 2 ? 'kb-right' : 'kb-left'}`}>
-                      <Image
-                        src={image.src}
-                        alt={image.alt}
-                        fill
-                        priority={i === 0}
-                        className="gallery-photo"
-                        style={image.focus ? { objectPosition: image.focus } : undefined}
-                        sizes={portraitAlbum ? '(max-width: 768px) 100vw, 420px' : '(max-width: 1024px) 100vw, 960px'}
-                      />
-                    </div>
-                  </div>
-                ))}
-
-                <div className="gallery-vignette" aria-hidden />
-
-                <button
-                  type="button"
-                  onClick={() => setLightboxIndex(active)}
-                  className="absolute inset-0 z-[1] cursor-zoom-in focus:outline-none"
-                  aria-label={`Phóng to ảnh ${active + 1}`}
-                />
-
-                <div className="absolute top-3 right-3 sm:top-4 sm:right-4 z-[2] flex gap-2">
-                  {total > 1 && (
-                    <button
-                      type="button"
-                      onClick={() => setUserPlaying(!playing)}
-                      className="gallery-icon-btn"
-                      aria-label={playing ? 'Dừng tự chuyển ảnh' : 'Tự chuyển ảnh'}
-                      aria-pressed={playing}
-                    >
-                      {playing ? <Pause className="w-4 h-4" aria-hidden /> : <Play className="w-4 h-4" aria-hidden />}
-                    </button>
-                  )}
-                  <button
-                    type="button"
-                    onClick={() => setLightboxIndex(active)}
-                    className="gallery-icon-btn"
-                    aria-label="Xem toàn màn hình"
-                  >
-                    <Maximize2 className="w-4 h-4" aria-hidden />
-                  </button>
-                </div>
-
-                {total > 1 && (
-                  <>
-                    <button
-                      type="button"
-                      onClick={goPrev}
-                      className="gallery-nav z-[2] left-3 sm:left-5 sm:opacity-0 sm:group-hover/stage:opacity-100 sm:focus-visible:opacity-100"
-                      aria-label="Ảnh trước"
-                    >
-                      <ChevronLeft className="w-6 h-6" aria-hidden />
-                    </button>
-                    <button
-                      type="button"
-                      onClick={goNext}
-                      className="gallery-nav z-[2] right-3 sm:right-5 sm:opacity-0 sm:group-hover/stage:opacity-100 sm:focus-visible:opacity-100"
-                      aria-label="Ảnh sau"
-                    >
-                      <ChevronRight className="w-6 h-6" aria-hidden />
-                    </button>
-                  </>
-                )}
-
-                <div className="absolute inset-x-0 bottom-0 z-[2] px-5 sm:px-8 pb-5 sm:pb-7 pointer-events-none text-white">
-                  <div className="flex items-end justify-between gap-4">
-                    <div key={active} className="gallery-caption min-w-0">
-                      <p className="text-[0.65rem] sm:text-xs uppercase tracking-[0.3em] text-white/75 mb-1 whitespace-nowrap">
-                        {WEDDING.groomBrand} &amp; {WEDDING.brideBrand}
-                        <span className="hidden sm:inline"> · {WEDDING.dateShort}</span>
-                      </p>
-                      <p
-                        className={`font-serif leading-tight drop-shadow-lg line-clamp-2 ${
-                          portraitAlbum ? 'text-xl sm:text-3xl' : 'text-[1.65rem] sm:text-5xl'
-                        }`}
-                      >
-                        {current.caption ?? 'Khoảnh khắc yêu thương'}
-                      </p>
-                    </div>
-                    <p className="shrink-0 tabular-nums tracking-[0.2em] text-sm sm:text-base" aria-live="polite">
-                      <span className="text-lg sm:text-2xl font-semibold">{pad(active + 1)}</span>
-                      <span className="text-white/60"> / {pad(total)}</span>
-                    </p>
-                  </div>
-
-                  {total > 1 && (
-                    <div className="mt-4 flex gap-1.5" aria-hidden>
-                      {images.map((image, i) => (
-                        <span key={image.src + i} className="gallery-progress-track">
-                          {i < active && <span className="gallery-progress-done" />}
-                          {i === active && (
-                            <SlideProgress
-                              slideKey={active}
-                              duration={SLIDE_INTERVAL}
-                              running={running}
-                              onDone={goNext}
-                              className={playing ? '' : 'is-static'}
-                            />
-                          )}
-                        </span>
-                      ))}
-                    </div>
-                  )}
-                </div>
-              </div>
-            </Reveal>
+            <Reveal variant={ring ? 'zoom' : 'mask'}>{ring ? ringStage : slideStage}</Reveal>
 
             {total > 1 && (
-              <Reveal delay={150} className={portraitAlbum ? 'md:w-[18rem] md:shrink-0' : ''}>
+              <Reveal delay={150}>
                 <div
                   ref={stripRef}
-                  data-album={album}
-                  className={`gallery-strip relative mt-4 flex gap-2 sm:gap-3 overflow-x-auto py-1 px-1 ${
-                    portraitAlbum
-                      ? 'md:mt-0 md:grid md:grid-cols-3 md:gap-3 md:max-h-[34.5rem] md:overflow-x-hidden md:overflow-y-auto md:p-1'
-                      : ''
-                  }`}
+                  data-album={portraitAlbum ? 'portrait' : 'landscape'}
+                  className="gallery-strip relative mt-4 flex gap-2 sm:gap-3 overflow-x-auto py-1 px-1"
                 >
                   {images.map((image, i) => (
                     <button
@@ -291,7 +359,6 @@ export function GallerySection({ images }: { images: GalleryImage[] }) {
                 </div>
               </Reveal>
             )}
-            </div>
           </div>
         </div>
       </section>
