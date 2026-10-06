@@ -18,7 +18,7 @@ const scriptFont = Great_Vibes({
   display: 'swap',
 })
 
-const SITE_URL = process.env.NEXT_PUBLIC_SITE_URL || 'https://tien-dat-thi-trang.vercel.app'
+const SITE_URL = process.env.NEXT_PUBLIC_SITE_URL || 'https://wedding-trangdat.vercel.app'
 const TITLE = `${WEDDING.groomShort} & ${WEDDING.brideShort} - Thiệp Cưới`
 const DESCRIPTION = `Thiệp cưới ${WEDDING.groom} & ${WEDDING.bride} - ${WEDDING.date}. Trân trọng kính mời quý khách đến dự ngày trọng đại của chúng tôi.`
 
