@@ -7,6 +7,8 @@ import { timingSafeEqual } from 'node:crypto'
  */
 const REDIS_URL = process.env.KV_REST_API_URL || process.env.UPSTASH_REDIS_REST_URL
 const REDIS_TOKEN = process.env.KV_REST_API_TOKEN || process.env.UPSTASH_REDIS_REST_TOKEN
+/** Tiền tố khóa để nhiều thiệp dùng chung một database, ví dụ "trangdat:" */
+const KEY_PREFIX = process.env.REDIS_KEY_PREFIX || ''
 
 const AUTH_LIMIT = { max: 10, windowSeconds: 900 }
 
@@ -19,7 +21,8 @@ export async function pipeline(commands: (string | number)[][]): Promise<unknown
   const res = await fetch(`${REDIS_URL.replace(/\/$/, '')}/pipeline`, {
     method: 'POST',
     headers: { Authorization: `Bearer ${REDIS_TOKEN}`, 'Content-Type': 'application/json' },
-    body: JSON.stringify(commands),
+    // Mọi lệnh đang dùng đều chỉ có một khóa, nằm ở vị trí thứ hai
+    body: JSON.stringify(commands.map(([cmd, key, ...rest]) => [cmd, `${KEY_PREFIX}${key}`, ...rest])),
     cache: 'no-store',
   })
   if (!res.ok) throw new Error(`Redis ${res.status}`)
